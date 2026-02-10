@@ -1,6 +1,6 @@
 # My-Filters
 
-This repository serves as a **cloud backup** for my personal uBlock Origin filter sets.
+This repository serves as a **cloud backup** for my personal uBlock Origin filters & UserScript.
 
 ## 🚀 Purpose
 * **Redundancy:** To ensure my custom filters are never lost if my local browser profile is cleared.
