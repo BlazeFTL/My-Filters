@@ -2550,10 +2550,11 @@ example.com##+js(trusted-create-html, div, <img src="x" onerror="const d=documen
 !nathanmichaelphoto.com#@#+js()
 !nathanmichaelphoto.com,torupload.com##+js(trusted-click-element, '1000, #method_free', 2000)
 !nathanmichaelphoto.com,torupload.com##+js(trusted-create-html, div, <img src="x" onerror="const processClick=()=>{const freeBtn=document.querySelector('#method_free'); if(freeBtn) freeBtn.click(); const xd=document.getElementById('xd'); const cap=document.querySelector('.captcha_code'); const btn=document.getElementById('downloadbtn'); const sec=document.getElementById('seconds'); const timerReady=!sec||sec.innerText===''||parseInt(sec.innerText)<=1; if(xd&&xd.value.trim()!==''&&cap&&cap.value.length===4&&btn&&timerReady){if(btn.disabled)btn.disabled=false; btn.click();}}; const observer=new MutationObserver(()=>processClick()); observer.observe(document.body\, {childList:true\, subtree:true\, attributes:true}); processClick();">)
-!nathanmichaelphoto.com##.py-5.container:has-text(IDM)
-!nathanmichaelphoto.com,torupload.com##.footer
-!torupload.com###tempbtn > div:has-text(Prem)
-!torupload.com##.fw-semibold.mt-2.text-success.small
+nathanmichaelphoto.com##.py-5.container:has-text(IDM)
+nathanmichaelphoto.com,torupload.com##.footer
+torupload.com###tempbtn > div:has-text(Prem)
+torupload.com##.fw-semibold.mt-2.text-success.small
+! Download Button Hiding Fix
 !nathanmichaelphoto.com###countdown, #seconds:style(display: flex !important; visibility: visible !important;)
 !nathanmichaelphoto.com###downloadbtn:style(width: 80% ! important;)
 
