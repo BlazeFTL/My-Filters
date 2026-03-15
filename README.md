@@ -32,7 +32,7 @@ Click the subscribe button to add the filter list instantly:
 
 ---
 
-# ⚙️ Manual Import
+## Method 2: Manual Import
 
 1. Open **uBlock Origin Dashboard**
 2. Go to **Filter lists**
@@ -45,8 +45,8 @@ https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-
 ```
 
 6. Click **Apply changes**
-
-> ⚠️ **Important:** Trust configuration is required for advanced filters.
+***
+> ⚠️ **Important:** Trust configuration is required for both Method 1 and Method 2.
 
 These filters may use advanced scriptlets which require trusted source configuration.
 
