@@ -6,7 +6,6 @@
 ! Homepage: https://github.com/BlazeFTL/My-Filters
 ! Forums: https://github.com/BlazeFTL/My-Filters/issues
 
-
 ! Jun 29, 2024 https://reddit.com
 !reddit.com##xpromo-nsfw-blocking-modal
 !reddit.com##*:style(filter: none !important; pointer-events: auto !important;)
