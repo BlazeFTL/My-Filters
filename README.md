@@ -20,6 +20,74 @@ This repo contains various `filters` that include:
 
 ---
 
+# 🚀 Quick Installation
+
+## Method 1: One-Click Subscribe (Recommended)
+
+Click the subscribe button to add the filter list instantly:
+
+| Filter List | Subscribe |
+|------------|-----------|
+| **🛡 BlazeFTL My-Filters** | [![Subscribe](https://img.shields.io/static/v1?label=Subscribe&message=BlazeFTL%20My-Filters&color=blue&style=for-the-badge)](https://subscribe.adblockplus.org/?location=https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-static-filters_2026-03-16_00.57.42.txt&title=BlazeFTL%20My-Filters) |
+
+---
+
+# ⚙️ Manual Import
+
+1. Open **uBlock Origin Dashboard**
+2. Go to **Filter lists**
+3. Scroll to **Custom**
+4. Check **Import…**
+5. Paste the URL below:
+
+```
+https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-static-filters_2026-03-16_00.57.42.txt
+```
+
+6. Click **Apply changes**
+
+---
+
+# ⚙️ Required Configuration
+
+> ⚠️ **Important:** Trust configuration is required for advanced filters.
+
+These filters may use advanced scriptlets which require trusted source configuration.
+
+### Steps
+
+1. Open **uBlock Origin Dashboard → Settings**
+2. Enable **I am an advanced user**
+3. Click the **⚙️ gear icon**
+4. Find:
+
+```
+trustedListPrefixes
+```
+
+5. Add this value (space separated):
+
+```
+https://raw.githubusercontent.com/BlazeFTL/My-Filters/
+```
+
+### Example
+
+```
+Before:
+ublock-
+
+After:
+ublock- https://raw.githubusercontent.com/BlazeFTL/My-Filters/
+```
+
+6. Click **Apply changes**
+7. Restart browser
+
+---
+
+✅ After installation the filters will automatically update from GitHub.
+
 ### Links
 * **Main Contribution Fork:** [UBO-Blazed](https://github.com/BlazeFTL/UBO-Blazed)
 * **Official uAssets:** [uBlockOrigin/uAssets](https://github.com/uBlockOrigin/uAssets)
