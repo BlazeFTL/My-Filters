@@ -931,6 +931,7 @@ hexload.com##.p-5.footer, .animated-button, .animated-button2
 hexload.com##.mt-4.rounded.btn-sm.btn-danger.btn
 hexload.com##.justify-content-lg-start.justify-content-center.mt-2.align-items-center.d-flex.p-0.m-0.row
 hexload.com##+js(rpnt, script, /window\.open\(.*?\);/)
+hexload.com##+js(rpnt, script, clickCount < requiredAllClicks, false)
 
 ! Mar 15, 2026 https://usersdrive.com
 usersdrive.com##.report, .pro, .content, .col-md > .name
