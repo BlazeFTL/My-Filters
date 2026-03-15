@@ -46,10 +46,6 @@ https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-
 
 6. Click **Apply changes**
 
----
-
-# ⚙️ Required Configuration
-
 > ⚠️ **Important:** Trust configuration is required for advanced filters.
 
 These filters may use advanced scriptlets which require trusted source configuration.
@@ -86,7 +82,7 @@ ublock- https://raw.githubusercontent.com/BlazeFTL/My-Filters/
 
 ---
 
-✅ After installation the filters will automatically update from GitHub.
+✅ After installation the filters will automatically update from GitHub. But then again you should manually update once
 
 ### Links
 * **Main Contribution Fork:** [UBO-Blazed](https://github.com/BlazeFTL/UBO-Blazed)
