@@ -965,6 +965,7 @@ down.fast-down.com,down.mdiaload.com##.sharetabs ul.tabs, .sharetabs:style(width
 down.fast-down.com,down.mdiaload.com#@#tbody > tr div.share:upward(2)
 ! Maybe Only On down.mdiaload.com
 down.mdiaload.com##div.demand-supply
+down.fast-down.com##[title="Premium Download"]
 
 ! Aug 18, 2024 https://1337x.to
 x1337x.cc,1337x.to##li:has-text(/TORRENT DOWN|PLAY NOW/i)
