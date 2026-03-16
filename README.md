@@ -1,4 +1,4 @@
-# My-Filters
+# 🛡️My-Filters
 
 This repository serves as a **cloud backup** for my personal uBlock Origin filters & UserScript.
 
