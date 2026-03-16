@@ -244,6 +244,9 @@ www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.web_player_v9_buf
 
 ! Jun 29, 2024 https://github.com
 !!#if false
+github.dev##.action-toolbar-container
+github.dev##.editor-actions
+github.dev##div.menubar-menu-button:has-text(/Run|Terminal|Help/)
 github.com##.cm-panel.cm-help-panel
 github.com##[class^="prc-components-UnderlineItem-"]:has-text(/Copilot|project|stars|gists|enterprise|Sponsor|Docs|Support|Community|security|Insight/i)
 github.com##a[class^="prc-Button-ButtonBase-"]:has-text(Milestone)
