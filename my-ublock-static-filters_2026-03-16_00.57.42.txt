@@ -864,46 +864,40 @@ go2.pics##+js(rpnt, script, 5000);, 10);)
 ! First Shortner
 ! For PSA Ad Click Check
 !##+js(trusted-create-html, body, <img src='x' onerror='(function() { "use strict"; let detectado = false; Object.defineProperty(document\, "hasFocus"\, { value: () => !detectado\, configurable: true }); const observer = new MutationObserver((_\, obs) => { if (document.body.textContent.includes("Open Website")) { detectado = true; obs.disconnect(); } }); observer.observe(document.documentElement\, { childList: true\, subtree: true }); })();'></img>)
-!cashgrowth.online##+js(rpnt, script, /const currentIp\s*=\s*"([^"]+)";/, const currentIp = null;)
-!cashgrowth.online##+js(trusted-create-html, div, <img src='x' onerror='(function() { function clickBtn() { const btn = document.querySelector("#delete-session-btn"); if (btn) { btn.click(); console.log("Botón clickeado"); return true; } return false; } if (!clickBtn()) { new MutationObserver((_\, obs) => { if (clickBtn()) obs.disconnect(); }).observe(document.body\, { childList: true\, subtree: true }); } })();'></img>)
-!cashgrowth.online##+js(no-fetch-if, /lookup.test|ipify.org/)
-! Instant Bypass
-!webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, div, <img src='x.png' onerror='(function() { const island = document.querySelector("astro-island"); if (!island) return; const props = island.getAttribute("props"); if (!props) return; const decoded = props.replace(/&quot;/g\, "\""); const data = JSON.parse(decoded); const url = data.session?.[1]?.finalDestination?.[1]; if (url) window.location.href = url; })();'></img>)
-!webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##div > strong, astro-island > .inline-timer-server-positioned, .verify-button-container, .navigation-enabled.nav-container, ._th-container, .unified-blocking-overlay, .post-navigation, .inline-timer-manager, .redirect-container, .main-content:others()
+!SHARECUT
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##div > strong, astro-island > .inline-timer-server-positioned, .verify-button-container, .navigation-enabled.nav-container, ._th-container, .unified-blocking-overlay, .post-navigation, .inline-timer-manager, .redirect-container, .main-content:others()
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##.inline-timer-manager:style(display: block !important)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(set, document.hidden,  true)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(set, document.hasFocus, trueFunc)
+! New
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net###verify-button-container, [id^="timer-pos"]:others()
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(aeld, /focus|blur|mouseenter|mouseleave/)
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(nano-sib, , /1000|1e3|100/gm, 0.02)
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(no-fetch-if, /test-ipv6.com|ipify.org|lookup.test/)
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(rpnt, script, /const\s+currentIp\s*=\s*["']([0-9a-fA-F.:]+)["'];?/gm)
 
-webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##.inline-timer-manager:style(display: block !important)
-webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(set, document.hidden,  true)
-! D4Nilo4MR
-!webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-replace-node-text, script, /^([^{])/, "document.addEventListener('DOMContentLoaded',()=>{const i=document.createElement('iframe');i.style='height:0;width:0;border:0';i.id='aswift_0';document.body.appendChild(i);i.focus();const f=document.createElement('div');f.id='9JJFp';document.body.appendChild(f);});$1", sedCount, 2)
-!webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, html, <iframe id="ins" src="" </iframe>)
-!webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, html, <iframe src=""></iframe>)
+! Very First Click Delete Session
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, div, <img src='x' onerror='(function() { function clickBtn() { const btn = document.querySelector("#delete-session-btn"); if (btn) { btn.click(); console.log("Botón clickeado"); return true; } return false; } if (!clickBtn()) { new MutationObserver((_\, obs) => { if (clickBtn()) obs.disconnect(); }).observe(document.body\, { childList: true\, subtree: true }); } })();'></img>)
+! Instant Bypass 1st
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, div, <img src='x.png' onerror='(function() { const island = document.querySelector("astro-island"); if (!island) return; const props = island.getAttribute("props"); if (!props) return; const decoded = props.replace(/&quot;/g\, "\""); const data = JSON.parse(decoded); const url = data.session?.[1]?.finalDestination?.[1]; if (url) window.location.href = url; })();'></img>)
+! 2nd (Delete Session+Instant ByPass)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='x' onerror='const obs = new MutationObserver(() => { const btn = document.querySelector("#delete-session-btn"); if (btn?.offsetParent) btn.click(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true }); const p = JSON.parse(document.querySelector("astro-island").getAttribute("props")); const d = p.session[1].finalDestination[1]; if (d) window.location.href = d;'></img>)
+! 3rd (Ad Click ByPass 1st)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
+! 4th (Ad Click ByPass 2nd)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
+! 5th
+fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/ndev.png' onerror='let i = setInterval(() => document.querySelector("#coffer-image-container\, .verify-image") && (clearInterval(i)\, window.appStores.startCofferTimer())\, 500);'>)
+
+! D4Nilo4MR Ad Click Focus
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-replace-node-text, script, /^([^{])/, "document.addEventListener('DOMContentLoaded',()=>{const i=document.createElement('iframe');i.style='height:0;width:0;border:0';i.id='aswift_0';document.body.appendChild(i);i.focus();const f=document.createElement('div');f.id='9JJFp';document.body.appendChild(f);});$1", sedCount, 2)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, html, <iframe id="ins" src="" </iframe>)
+!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, html, <iframe src=""></iframe>)
 !||/BlogPostManager*js$script,replace=/!document.hidden;/true/
-*$script,replace=/1000|1e3/200/gms,domain=u2.webgalatasaray.net|utravel.sosyallekazan.com|lalaloot.com|sosyallekazan.com|ravellawfirm.com|education.yolasblog.online|flights.fikirsaati.net
+!*$script,replace=/1000|1e3/200/gms,domain=u2.webgalatasaray.net|utravel.sosyallekazan.com|lalaloot.com|sosyallekazan.com|ravellawfirm.com|education.yolasblog.online|flights.fikirsaati.net|fridfullresa.org
+
 ! https://shrtfly.com/full/?api=60f82b57c14c11c040c664b9d777fadc&url=aHR0cHM6Ly9nZXQtdG8ubGluay93aWNrZWQtZm9yLWdvb2QtMjAyNS0xMDgwcC0xMGJpdC13ZWJyaXAtNmNoLXgyNjUtaGV2Yy1wc2EtMTk3Ny8%2FaWQ9TVRjMk56STBNell3TUE%3D
 ||shrtfly.com/full/?api=*&url$urlskip=?url -base64
-
-! Psa Final Links
-!*$script,domain=get-to.link,redirect-rule=noopjs
-get-to.link##+js(rmnt, script, fstatic)
-get-to.link##.rev-container, #loading-overlay, #topbnr, [href*="clicknupload."], [href*="usersdrive"], [href*="ddownload"], [href*="nitroflare"]
-get-to.link##[href*="katfile"]
-
-!SHARECUT
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(set, document.hasFocus, trueFunc)
-!lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(trusted-create-html, body, <img src='x' onerror='const obs = new MutationObserver(() => { const btn = document.querySelector("#delete-session-btn"); if (btn?.offsetParent) btn.click(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true }); const p = JSON.parse(document.querySelector("astro-island").getAttribute("props")); const d = p.session[1].finalDestination[1]; if (d) window.location.href = d;'></img>)
-! New 1
-!lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
-! New 2
-!lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
-! Update 2
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com###verify-button-container, [id^="timer-pos"]:others()
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(aeld, /focus|blur|mouseenter|mouseleave/)
-!lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(trusted-create-html, body, <img src='/ndev.png' onerror='let i = setInterval(() => document.querySelector("#coffer-image-container\, .verify-image") && (clearInterval(i)\, window.appStores.startCofferTimer())\, 500);'>)
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(nano-sib, , /1000|1e3|100/gm, 0.02)
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(no-fetch-if, /test-ipv6.com|ipify.org/)
-lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(rpnt, script, /const\s+currentIp\s*=\s*["']([0-9a-fA-F.:]+)["'];?/gm)
-! 3
-fridfullresa.org,lalaloot.com,cashgrowth.online,webgalatasaray.net,ravellawfirm.com##+js(trusted-create-html, body, <img src='/ndev.png' onerror='let i = setInterval(() => document.querySelector("#coffer-image-container\, .verify-image") && (clearInterval(i)\, window.appStores.startCofferTimer())\, 500);'>)
 
 ! AdUrl.io
 mobiend.com,bitcotrade.net##+js(rpnt, script, 1000), 10))
@@ -966,6 +960,11 @@ down.fast-down.com,down.mdiaload.com#@#tbody > tr div.share:upward(2)
 ! Maybe Only On down.mdiaload.com
 down.mdiaload.com##div.demand-supply
 down.fast-down.com##[title="Premium Download"]
+
+! Psa Final Links
+!*$script,domain=get-to.link,redirect-rule=noopjs
+get-to.link##+js(rmnt, script, fstatic)
+get-to.link##.rev-container, #loading-overlay, #topbnr, [href*="clicknupload."], [href*="usersdrive"], [href*="ddownload"], [href*="nitroflare"], [href*="katfile"]
 
 ! Aug 18, 2024 https://1337x.to
 x1337x.cc,1337x.to##li:has-text(/TORRENT DOWN|PLAY NOW/i)
