@@ -41,7 +41,7 @@ Click the subscribe button to add the filter list instantly:
 5. Paste the URL below:
 
 ```
-https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/My-Filters_Static_Sites
+https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/My-Filters_Static_Sites.txt
 ```
 
 6. Click **Apply changes**
