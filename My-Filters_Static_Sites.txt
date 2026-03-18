@@ -1738,6 +1738,17 @@ chatgpt.com##.rtl\:translate-x-1\/2.ltr\:-translate-x-1\/2.lg\:start-1\/2.gap-2.
 chatgpt.com##.pe-2\.5.ps-2.py-1\.5.cursor-default.-me-2\.5.-ms-2.-my-1\.5.__menu-item-trailing-btn
 pixeldrain.net##p:has-text(Upgrade your)
 
+! Mar 18, 2026 https://www.speedtest.net
+speedtest.net##.lower-content-blend.lower-content
+speedtest.net##.footer
+speedtest.net##body, html:style(background: #141526! important;)
+
+! Mar 18, 2026 https://proof.ovh.net
+proof.ovh.net###iperf
+proof.ovh.net###main > [href="/files/"]
+proof.ovh.net##tr:has-text(/1 me|10 me/i)
+proof.ovh.net##li:has-text(Proofs)
+
 ! Shortners
 ouo.press###form-captcha, #form-go:style(display: block !important;)
 ouo.press###form-captcha, #form-go:others()
