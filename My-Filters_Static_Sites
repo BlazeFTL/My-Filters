@@ -453,24 +453,6 @@ main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; widt
 !!#endif
 !#endif
 
-! https://uploadrar.com/usxc1stdxhdx
-!uploadrar.*##a[href][target="_blank"]
-!uploadrar.*##a[href][rel*="nofollow"] > button
-uploadrar.*##.m-2.btn-lg.btn-outline-primary.btn, .mb-2.text-dark.fs-3.text-center, .fs-4, .mb-4.download, .header, .text-dark.small.fw-500.mb-3 > center, .active.btn-lg.btn-primary.btn, .mb-5.block, .downloadbtn.download-btn.btn-primary.btn:others()
-
-! upfiles.com/gixi3WV7
-upfilesgo.com,upfion.com##fieldset, .faqs, footer, .premium.download-option, .features, .speed, h4
-upfilesgo.com,upfion.com##.page-title h3:style(word-break: break-all! important;)
-upfilesgo.com,upfion.com##+js(nowoif)
-upfilesgo.com,upfion.com##+js(set, shouldOpenPopUp, false)
-upfilesgo.com,upfion.com##+js(set, blurred, false)
-upfilesgo.com,upfion.com##+js(acs, navigator, FingerprintJS)
-@@||vhit.io/scripts/vhit.js$script,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
-@@*$ghide,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
-!upfilesgo.com,upfion.com,upfiles.app,upfiles-urls.com##+js(prevent-fetch, method:HEAD)
-*$image,1p,domain=upfion.com|upfilesgo.com
-||fonts.googleapis.com^$stylesheet,domain=upfion.com|upfilesgo.com
-
 ! https://dailyuploads.net/uqv9dxflkxdk
 dailyuploads.net##.downleft, #news_last, [href="javascript:void(0)"], .sharetabs, footer
 dailyuploads.net##small > [href^="https://dailyuploads.net/"]
@@ -552,26 +534,6 @@ mega4upload.net##.section-title:style(margin-bottom: initial !important;)
 mega4upload.net###downloadForm > .mb-3.text-center [name*="prem"]
 mega4upload.net##.g-recaptcha > div > div > [src]:style(margin-top: -180px !important; margin-left: 40px !important;)
 
-! https://mediafire.com/file/jnu57c7229i1g90/Arm64-v8a_Facebook_470.0.0.61.82+(453212607)+v4.apk/
-||ezoic.net^$domain=mediafire.com
-||ezojs.com^$script,domain=mediafire.com
-||translate.google.com^$script,domain=mediafire.com
-mediafire.com###download_link > a[href="#"]
-mediafire.com###pop-disclaimer, .description, .sidebar
-mediafire.com##.DLMobile-shareOptions > p, .DLExtraInfo-wrap, .footer, .DLMobile-shareOptions > ul > li > .nopop, .ezoic_ad_unit, [id*="gpt-"], .header, .MFPremiumDownload, .Avast, .MFUltra, .DlBtnUltraUpsell
-mediafire.com##.center:style(margin-top: initial !important;)
-mediafire.com##.sticky-mode .content, .sticky-mode .nonDLContentWrap, .ads-enabled:style(min-height: initial !important;)
-mediafire.com##.mobile.promo-avast.page.mf-dlr, .center:style(flex-grow: initial ! important; padding: initial ! important;)
-mediafire.com#@#.nonDLContentWrap:style(min-height: 1300px !important;)
-mediafire.com##.center:style(width: 100% ! important;)
-mediafire.com##[class*="popsok.input"]:style(display: block !important;)
-mediafire.com##+js(rmnt, script, /sAdSupplier|ezoic|Ezoic|googHeadTranslate/gm)
-mediafire.com##+js(rpnt, script, 3;, 0;, condition, delayInSeconds)
-mediafire.com##+js(rpnt, script, 16000, 5000, condition, retry)
-mediafire.com##+js(rpnt, script, /998|3000/gm, 10, condition, countDown)
-mediafire.com##+js(rpnt, script, /true/gm, false, condition, displayAds)
-mediafire.com##+js(nano-stb, download_link, *, 0.001)
-
 ! https://modsfire.com/15TtYJD8IGjbKhA
 modsfire.com##.inf-down, .report-button.file-block, .step, .report-btn.modlist-btn, .disc-tabbing-wrp, .subscription-footer.footer
 modsfire.com##.links-explore-wrp
@@ -636,28 +598,6 @@ downev.com##div.col-md-6, div.col-md-4, body > p, [href*="buymeacoffee.com"]
 up4load.com##.premium-table-responsive, .footer, .m-2.submit-btn.btn-primary.btn, .download-meta .text-muted
 up4load.com##.block-tabs.nav-fill.nav > a.nav-link:nth-of-type(3)
 up4load.com##a.nav-link:nth-of-type(2)
-
-! Oct 5, 2025 https://cloudfam.io
-cloudfam.io##main.py-12:style(padding-top: initial ! important; height: initial!important;)
-cloudfam.io##div.my-8
-cloudfam.io##.px-4.py-12.max-w-2xl.mx-auto.container > .text-center.mb-8
-cloudfam.io##.mb-1.text-slate-500.tracking-\[0\.2em\].uppercase.text-\[10px\]
-cloudfam.io##.text-center.text-slate-500.text-\[11px\].mt-4
-cloudfam.io##.py-8.text-center > .text-gray-500.text-sm
-cloudfam.io##b
-cloudfam.io##.leading-relaxed.text-slate-500.text-xs.mt-4, .mb-6.text-gray-600.sm\:text-base.text-sm, .mb-6.cf-timer-wrap, .cf-login-btn, .premium.download-option, .cf-footer, .cf-timer-wrap, .cf-subtitle, .cf-title
-cloudfam.io##.items-center.py-2.flex.relative
-cloudfam.io##.hover\:shadow-2xl.hover\:-translate-y-1.duration-200.transition-all.text-left.w-full.block.cursor-pointer.relative.group.cf-action-btn
-cloudfam.io##.border-slate-100.border.p-3.rounded-lg.bg-slate-50
-cloudfam.io##.mt-auto.py-6.border-slate-200.border-t.bg-white
-cloudfam.io##.space-y-2.text-center.mt-6
-cloudfam.io##.mb-6.p-3.rounded-lg.border-slate-200.border.bg-slate-50
-cloudfam.io##.z-10.relative.mb-6.max-w-4xl.w-full
-cloudfam.io##.cf-card > div:has-text(OR)
-cloudfam.io##.cf-main:style(flex: initial ! important; height: initial!important;)
-cloudfam.io##.min-h-screen:style(min-height: initial ! important;)
-cloudfam.io##+js(rpnt, script, /2000|1000/gm, 10, condition, /timer|remaining/)
-cloudfam.io##+js(nowoif)
 
 ! May 22, 2024 dropbox.com
 dropbox.com##[class*="web-interstitial-container"]
@@ -737,27 +677,6 @@ hdhub4u.*##.recent-movies:style(zoom: 0.75 !important;)
 ||googleapis.com^$script,xhr,domain=hdhub4u.*
 ||hdhub4u.*/wp-content/$xhr,script,domain=hdhub4u.*
 ||hdhub4u.*/wp-includes/$script,domain=hdhub4u.*
-
-! https://hubcloud.bz/drive/kkyto6hwtatxyae
-cryptoinsights.site,carnewz.site,hubcdn.fans,stockbhoomi.com,trendingnewzhub.com,90fpsconfig.in,newsadda4u.com,gamerxyt.com,hubcloud.*##.alert-primary.alert, div.alert-info.alert, .alert-warning.alert, .tab-content, #banner-container, [href*="winexch.com/"]
-hubcdn.fans,stockbhoomi.com,trendingnewzhub.com,90fpsconfig.in,newsadda4u.com,gamerxyt.com,hubcloud.*##+js(nano-stb, /.?/, *)
-! https://hubdrive.fit/file/2348713710
-hubdrive.*##.bg-white.sticky-footer
-hubdrive.*##.btn-user.btn-primary.btn:has-text(Login)
-
-! Hdhub4u Sample Shortner Current
-*$urlskip=?r -base64,domain=inventoryidea.com|cryptoinsights.site|cryptonewz.one
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##+js(trusted-click-element, '1000, #verify_btn, 1000, #verify_btn', 3000)
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz###status_msg, #countdown, .get-link:others()
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##.text-center.section.features, #topx:style(height:0.0001px !important;)
-!cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##+js(rpnt, style, /background-image|background-size/gm)
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##+js(nano-sib, /.?/, 1000, *)
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##+js(rpnt, script, 2000, 10, condition, set)
-cryptonewz.one,inventoryidea.com,cryptoinsights.site,gadgetsweb.xyz##+js(rmnt, script, /"iframe"|history|apis\.damanworlds/gm)
-! Extra By Surrp
-gadgetsweb.xyz##+js(rmnt, script, intervalId)
-gadgetsweb.xyz##+js(set, document.hidden, false)
-gadgetsweb.xyz##+js(nano-sib, !hidden, 1000, 0.001)
 
 ! 2022-12-08 Vegamovies Hdhub Old Downloader
 anyrojgar.com###top_nav, .rd_btn, .soractrl:style(display: block !important;)
@@ -939,34 +858,6 @@ psa.wf##+js(rpnt, script, 4000, 10, condition, redirect)
 ! Shortner Gateway
 go2.pics##+js(rpnt, script, 5000);, 10);)
 
-! First Shortner
-! For PSA Ad Click Check
-!##+js(trusted-create-html, body, <img src='x' onerror='(function() { "use strict"; let detectado = false; Object.defineProperty(document\, "hasFocus"\, { value: () => !detectado\, configurable: true }); const observer = new MutationObserver((_\, obs) => { if (document.body.textContent.includes("Open Website")) { detectado = true; obs.disconnect(); } }); observer.observe(document.documentElement\, { childList: true\, subtree: true }); })();'></img>)
-!SHARECUT
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##div > strong, astro-island > .inline-timer-server-positioned, .verify-button-container, .navigation-enabled.nav-container, ._th-container, .unified-blocking-overlay, .post-navigation, .inline-timer-manager, .redirect-container, .main-content:others()
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##.inline-timer-manager:style(display: block !important)
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(set, document.hidden,  true)
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(set, document.hasFocus, trueFunc)
-! New
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net###verify-button-container, [id^="timer-pos"]:others()
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(aeld, /focus|blur|mouseenter|mouseleave/)
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(nano-sib, , /1000|1e3|100/gm, 0.02)
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(no-fetch-if, /test-ipv6.com|ipify.org|lookup.test/)
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(rpnt, script, /const\s+currentIp\s*=\s*["']([0-9a-fA-F.:]+)["'];?/gm)
-
-! Very First Click Delete Session
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, div, <img src='x' onerror='(function() { function clickBtn() { const btn = document.querySelector("#delete-session-btn"); if (btn) { btn.click(); console.log("Botón clickeado"); return true; } return false; } if (!clickBtn()) { new MutationObserver((_\, obs) => { if (clickBtn()) obs.disconnect(); }).observe(document.body\, { childList: true\, subtree: true }); } })();'></img>)
-! Instant Bypass 1st
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, div, <img src='x.png' onerror='(function() { const island = document.querySelector("astro-island"); if (!island) return; const props = island.getAttribute("props"); if (!props) return; const decoded = props.replace(/&quot;/g\, "\""); const data = JSON.parse(decoded); const url = data.session?.[1]?.finalDestination?.[1]; if (url) window.location.href = url; })();'></img>)
-! 2nd (Delete Session+Instant ByPass)
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='x' onerror='const obs = new MutationObserver(() => { const btn = document.querySelector("#delete-session-btn"); if (btn?.offsetParent) btn.click(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true }); const p = JSON.parse(document.querySelector("astro-island").getAttribute("props")); const d = p.session[1].finalDestination[1]; if (d) window.location.href = d;'></img>)
-! 3rd (Ad Click ByPass 1st)
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
-! 4th (Ad Click ByPass 2nd)
-!fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/n5dev.png' onerror='const check = () => { const el = document.querySelector("#coffer-image-container\, .verify-image"); if (el && (el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0)) { window.appStores.startCofferTimer(); return true; } return false; }; const obs = new MutationObserver(() => { if (check()) obs.disconnect(); }); obs.observe(document.body\, { childList: true\, subtree: true\, attributes: true\, attributeFilter: ["style"\, "class"] }); if (check()) obs.disconnect();'></img>)
-! 5th
-fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, body, <img src='/ndev.png' onerror='let i = setInterval(() => document.querySelector("#coffer-image-container\, .verify-image") && (clearInterval(i)\, window.appStores.startCofferTimer())\, 500);'>)
-
 ! D4Nilo4MR Ad Click Focus
 !fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-replace-node-text, script, /^([^{])/, "document.addEventListener('DOMContentLoaded',()=>{const i=document.createElement('iframe');i.style='height:0;width:0;border:0';i.id='aswift_0';document.body.appendChild(i);i.focus();const f=document.createElement('div');f.id='9JJFp';document.body.appendChild(f);});$1", sedCount, 2)
 !fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosyallekazan.com,ravellawfirm.com,education.yolasblog.online,flights.fikirsaati.net##+js(trusted-create-html, html, <iframe id="ins" src="" </iframe>)
@@ -976,20 +867,6 @@ fridfullresa.org,webgalatasaray.net,utravel.sosyallekazan.com,lalaloot.com,sosya
 
 ! https://shrtfly.com/full/?api=60f82b57c14c11c040c664b9d777fadc&url=aHR0cHM6Ly9nZXQtdG8ubGluay93aWNrZWQtZm9yLWdvb2QtMjAyNS0xMDgwcC0xMGJpdC13ZWJyaXAtNmNoLXgyNjUtaGV2Yy1wc2EtMTk3Ny8%2FaWQ9TVRjMk56STBNell3TUE%3D
 ||shrtfly.com/full/?api=*&url$urlskip=?url -base64
-
-! AdUrl.io
-mobiend.com,bitcotrade.net##+js(rpnt, script, 1000), 10))
-mobiend.com,bitcotrade.net##+js(rpnt, script, 100), 1))
-!obiend.com,bitcotrade.net###wolfexe-snp, .btn-primary, #go_down:style(display: block !important;)
-!obiend.com,bitcotrade.net###wolfexe-snp, .btn-primary, #go_down:others()
-mobiend.com,bitcotrade.net###go_down, .btn-primary:style(display: block !important;)
-mobiend.com,bitcotrade.net###go_down:others()
-!mobiend.com,bitcotrade.net##+js(trusted-click-element, '1000, #go_down > .btn-primary.btn', 3000)
-mobiend.com,bitcotrade.net##+js(trusted-click-element, '#go_down > .btn-primary.btn', 3000)
-adurl.io###ad-popup-overlay
-adurl.io##.fadeIn.wow.pt-5.mt-5.footer.text-light.bg-primary.container-fluid
-/wp-includes/$script,1p,domain=mobiend.com|bitcotrade.net
-/wp-content/$script,1p,domain=mobiend.com|bitcotrade.net
 
 ! Jan 23, 2026 https://shortxlinks.com
 mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com###wpsafelinkhuman, #wpsafe-wait1, #wpsafegenerate, #wpsafe-link, #wpsafe-wait2, .container, #wpsafe-generate, [id*="kdsafe-"]:others()
@@ -1847,6 +1724,7 @@ www.youtube.com##:matches-path(/@teguhdwi/videos) ytd-rich-item-renderer.ytd-ric
 ! AI Upgrade Nag
 gemini.google.com##.ng-star-inserted.adv-upsell.buttons-container
 gemini.google.com##zs-advanced-upsell.ng-star-inserted
+! Allow Google Tracking For Captcha
 www.google.*#@#+js(set-constant, rwt, noopFunc)
 www.google.*#@#+js(set-attr, c-wiz[data-p] [data-query] a[target="_blank"][role="link"], rlhc, 1)
 www.google.*,recaptcha.net###rc-anchor-classic-warning, .rc-anchor-pt
