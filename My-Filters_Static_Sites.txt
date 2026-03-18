@@ -1747,7 +1747,9 @@ speedtest.net##body, html:style(background: #141526! important;)
 proof.ovh.net###iperf
 proof.ovh.net###main > [href="/files/"]
 proof.ovh.net##tr:has-text(/1 me|10 me/i)
-proof.ovh.net##li:has-text(Proofs)
+proof.ovh.net##li:has-text(Proofs)\
+nperf.com##.poweredByNperf
+nperf.com##.logoNperf, .partnerLogo
 
 ! Shortners
 ouo.press###form-captcha, #form-go:style(display: block !important;)
