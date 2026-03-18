@@ -28,7 +28,7 @@ Click the subscribe button to add the filter list instantly:
 
 | Filter List | Subscribe |
 |------------|-----------|
-| **🛡 BlazeFTL My-Filters** | [![Subscribe](https://img.shields.io/static/v1?label=Subscribe&message=BlazeFTL%20My-Filters&color=blue&style=for-the-badge)](https://subscribe.adblockplus.org/?location=https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-static-filters_2026-03-16_00.57.42.txt&title=BlazeFTL%20My-Filters) |
+| **🛡 BlazeFTL My-Filters** | [![Subscribe](https://img.shields.io/static/v1?label=Subscribe&message=BlazeFTL%20My-Filters&color=blue&style=for-the-badge)](https://subscribe.adblockplus.org/?location=https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/My-Filters_Static_Sites.txt&title=BlazeFTL%20My-Filters) |
 
 ---
 
