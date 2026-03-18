@@ -281,6 +281,7 @@ github.com##:matches-path(/uBlockOrigin/uAssets) [class*="NewMarkdownViewer-modu
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="NewMarkdownViewer-module__safe-html-box"] > h3:has-text(/Other extensions used|Screenshot|Country|Configuration|Browser name/)
 github.com##:matches-path(/uBlockOrigin/uAssets) div[class*="Section-module__SectionContainer--"]:not(:has-text(Noti))
 github.com##:matches-path(/uBlockOrigin/uAssets) [id^="folder-row-"]:not(:has-text(/filters|quick|ubo-/))
+github.com##:matches-path(/BlazeFTL/UBO-Blazed) [id^="folder-row-"]:not(:has-text(/filters|quick|ubo-/))
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="NewMarkdownViewer-module__safe-html-box"] > h3:has-text(Prerequisites)
 github.com##:matches-path(/uBlockOrigin/uAssets) .contains-task-list
 github.com##:matches-path(/uBlockOrigin/uAssets) .js-comment-body.markdown-body.comment-body.d-block > h3:has-text(/Prerequisit|Other extension/)
@@ -374,6 +375,83 @@ cs.rin.ru##[style*="color: #BFFFFF"]:style(color: black !important;)
 cs.rin.ru##.quotecontent > span > span:style(color: green !important;)
 cs.rin.ru##.quotecontent > .quotecontent > span:nth-of-type(3):style(color: green !important;)
 cs.rin.ru##span > span > span > span > span:style(color: green !important;)
+
+! Oct 25, 2025 http://main.circleftp.net
+main.circleftp.net###responsive-menu-item-21451 > .responsive-menu-item-link, #responsive-menu-item-157433 > .responsive-menu-item-link, #responsive-menu-item-100778 > .responsive-menu-item-link, #responsive-menu-item-141965 > .responsive-menu-item-link, #responsive-menu-item-67561 > .responsive-menu-item-link, #responsive-menu-item-75516 > .responsive-menu-item-link, #responsive-menu-item-22141 > .responsive-menu-item-link, [href="http://hd.circleftp.net/"], [href="http://main.circleftp.net/category/islamic/"], [href="http://main.circleftp.net/category/mobile-apps-and-games/"], #menu-item-22140, #menu-item-75518
+main.circleftp.net##[href="http://hd.circleftp.net/"]
+main.circleftp.net###menu-item-44 > [href="http://circleftp.net/movie-list"]:remove-attr(href)
+!#if !env_mobile
+main.circleftp.net##.entry-featured:style(height: 30%! important; width: 30%! important; margin-left: 34%! important;)
+main.circleftp.net##.cf-date-wrapper:has(.gm-modern-download-button):style(margin-left: 34% ! important; margin-top: -20px ! important;)
+main.circleftp.net##.entry-header:style(font-size: 85% ! important;)
+main.circleftp.net##.category_wrapper > article > [href] > .loaded.lazy.wp-post-image.size-medium.attachment-medium:style(height: 10vw! important;)
+main.circleftp.net##.category_wrapper > article:style(width: 150px ! important;)
+main.circleftp.net##.nano-content.width.max:style(font-size: 1.31rem ! important;)
+main.circleftp.net##.category_wrapper article:style(min-height: 300px! important;)
+main.circleftp.net##section.listing article a:style(margin-top: initial! important; margin-bottom: initial! important; line-height: 0.8 ! important;)
+main.circleftp.net##.entry-title:style(height: 30%! important; font-size: 13px ! important; padding: 0 5px ! important;)
+!#endif
+
+! Oct 27, 2025 http://new.circleftp.net
+new.circleftp.net##a.dropdown-item.text-capitalize:has-text(Console)
+new.circleftp.net##div.col-sm-6.col-md-4.col-lg-3.col-xxl-2:has-text(/\(PSP\)|\(PS3\)|\(PS2\)|\(XBOX\)|\(PSN\)|\(PS4\)|\(NSP\)/)
+new.circleftp.net##div.col-sm-6.col-md-4.col-lg-3.col-xxl-2:has-text(/POCO F1|Pocophone F1|Xbox/i)
+new.circleftp.net##.nav-link.ms-1.text-uppercase.fw-normal.text-white
+new.circleftp.net##.show.dropdown-menu > a.dropdown-item.text-capitalize:has-text(/Islamic|Comic|Mobile|Wwe/i)
+new.circleftp.net##.py-2.mt-auto.text-center.mb-0.text-white.bg-dark
+new.circleftp.net##a.dropdown-item.text-capitalize:has-text(/^Console/)
+!new.circleftp.net##.row>*:style(width: 50% ! important;)
+!new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 80% ! important; width: 80% ! important;)
+new.circleftp.net##.text-white:style(font-size: 90% ! important;)
+!#if !env_mobile
+new.circleftp.net##.card.m-4.p-2:style(max-width: 50% !important; width: auto !important; margin-left: 27%! important;)
+new.circleftp.net##div.card.p-2:style(height: 30! important; width: 30%! important; margin-left: 37%! important;)
+new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 250px ! important; width: 220px ! important;)
+!#endif
+||circleftp.net^$media,domain=new.circleftp.net
+
+! For Mobile Maybe
+!#if false
+! 1. Responsive Grid (3 per row for better fit) Little Not Alinged
+new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
+new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; display: flex !important; flex-direction: column !important; margin-bottom: 30px !important; padding: 5px !important;)
+! 2. Standardize Image & Card Height
+new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(width: 100% !important; height: 180px !important; object-fit: cover !important;)
+! 3. Fix Text Cutoff (Wraps to multiple lines)
+new.circleftp.net##.text-white.fs-5:style(white-space: normal !important; overflow: visible !important; height: auto !important; display: block !important; font-size: 0.9rem !important; line-height: 1.2 !important; min-height: 50px !important; padding: 0 5px !important;)
+! 4. Align Buttons to the Bottom
+new.circleftp.net##.btn-danger:style(margin-top: auto !important; width: 90% !important; align-self: center !important; font-size: 0.8rem !important; padding: 5px !important;)
+new.circleftp.net##.text-white.fs-5:style(transform: scale(.65) !important;)
+!#endif
+
+!#if env_mobile
+!!#if false
+! 1. Grid Setup (3 per row) Alinged But Font Small
+new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
+new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; padding: 5px !important; margin-bottom: 20px !important; display: flex !important;)
+! 2. Card Layout (The Flexbox Trick)
+new.circleftp.net##.SinglePost_singlePost_card__MLfCk:style(display: flex !important; flex-direction: column !important; width: 100% !important; height: 100% !important; background: rgba(255,255,255,0.05) !important;)
+! 3. Text & Title (Fixed Height + Line Breaks)
+new.circleftp.net##.SinglePost_singlePost_text__TQn9G:style(flex-grow: 1 !important; display: flex !important; flex-direction: column !important; padding: 10px 5px !important;)
+new.circleftp.net##.text-white.fs-5:style(font-size: 0.75rem !important; line-height: 1.2 !important; white-space: normal !important; word-break: break-word !important; height: 3.6em !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 3 !important; -webkit-box-orient: vertical !important; margin-bottom: 5px !important;)
+! 4. Image Height
+new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(height: 150px !important; width: 100% !important; object-fit: contain !important;)
+new.circleftp.net##.text-white.fs-5:style(transform: scale(.75) !important;)
+!!#endif
+!#endif
+
+!#if env_mobile
+!!#if false
+! Forces uniform dimensions for the article and image
+main.circleftp.net##.category_wrapper > article img:style(width: 147px !important; height: 200px !important; object-fit: cover !important; display: block !important;)
+! Cleans up the text alignment to match the Featured style
+main.circleftp.net##.category_wrapper > article .entry-title:style(text-align: center !important; font-size: 14px !important; min-height: 40px !important;)
+main.circleftp.net##.category_wrapper:style(display: flex !important; flex-wrap: wrap !important;)
+main.circleftp.net##.category_wrapper > article:style(flex: 0 0 33.33% !important; max-width: 33.33% !important;)
+main.circleftp.net##.downloadbtn:style(margin: 0 4px !important;)
+main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; width: 31% !important;)
+!!#endif
+!#endif
 
 ! https://uploadrar.com/usxc1stdxhdx
 !uploadrar.*##a[href][target="_blank"]
@@ -2003,13 +2081,13 @@ scriptgrowagarden.com##+js(trusted-click-element, #notarobot > #notarobot, , , l
 ! https://arolinks.com/G9a
 ! https://vplink.in/yObrd
 !#if false
-famemingles.com,vidhia.in,crimejasoos.in##[id*="btn"], [id*="snp"]:style(display: block !important; margin-top: 180px !important;)
+!famemingles.com,vidhia.in,crimejasoos.in##[id*="btn"], [id*="snp"]:style(display: block !important; margin-top: 180px !important;)
 !famemingles.com,vidhia.in,crimejasoos.in###btn7, #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
 !Arolinks Custom Button
-famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/readmore" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue Arolinks On 3rd Page</button></a>)
+!famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/readmore" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue Arolinks On 3rd Page</button></a>)
 ! VPLink Custom Button
-famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/studyeducates/learn_more.php"]" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue VpLinks On 3rd Page</button></a>)
-famemingles.com,vidhia.in,crimejasoos.in###gcont, .ad-container
+!famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/studyeducates/learn_more.php"]" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue VpLinks On 3rd Page</button></a>)
+!famemingles.com,vidhia.in,crimejasoos.in###gcont, .ad-container
 !#endif
 !famemingles.com,vidhia.in,crimejasoos.in###gcont, .inside-article
 
@@ -2028,46 +2106,6 @@ dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##
 arolinks.com##+js(set, blurred, false)
 
 vercel-bypass.vercel.app##+js(rpnt, script, /show_9788260\(\).*?\.then/s, show_9788260().catch)
-
-! https://lksfy.com/rIxDD
-! Instant ByPass ViolentMonkey
-!main.24jobalert.com,sharclub.in##+js(aopr, AdBDetected)
-!main.24jobalert.com,sharclub.in##.tag, #bottom-container-2, #bottom-container-timer:others()
-!main.24jobalert.com,sharclub.in###bottomButton:style(display: block !important)
-!main.24jobalert.com,sharclub.in##+js(rpnt, script, timeLeft = duration, timeLeft = 0)
-! Instant ByPass
-main.sportswordz.com,wblaxmibhandar.com,sharclub.in##+js(rpnt, script, /window\.location\.href.*/, (function(){const i=new URLSearchParams(location.search).get("id");if(i){window.stop();location.replace("https://lksfy.com/"+i);}})())
-
-! https://liteshort.com/4XZyh
-liteshort.com##+js(rpnt, script, window.location.href = adsUrl;)
-!liteshort.com##+js(trusted-create-html, div, <img src='x' onerror="(function(){'use strict';function fixLinks(){document.querySelectorAll('a[href^=&quot;intent://&quot;]').forEach(link=>{const href=link.href;const match=href.match(/intent:\/\/([^#]+)/);if(match&&match[1]){link.href='https://'+match[1];link.onclick=e=>e.stopPropagation();}});}fixLinks();new MutationObserver(fixLinks).observe(document.body||document.documentElement\,{childList:true\,subtree:true});})()">)
-kvrohtak.in,autosimplify.in###notarobot, #rtg-snp2, #tp-snp2, #rtg-snp21:style(display: block !important;)
-kvrohtak.in,autosimplify.in###notarobot, #getlink, #rtg-snp2, #tp-wait1, #tp-generate, #tp-snp2, #rtg-snp21:others()
-! Instant ByPass
-!telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) window.location.href = 'https://link.liteshort.com/' + getCK.value; })();")
-
-telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) { setTimeout(() => { window.location.href = 'https://link.liteshort.com/' + getCK.value; }, 1000); } })();")
-
-
-!liteshort.com##+js(set-constant, window.innerWidth, 1920)
-!liteshort.com##+js(set-constant, window.innerHeight, 1000)
-! Chrome Nag
-!*$doc,replace=/intent/https/,domain=liteshort.com|seturl.in
-!*$doc,replace=/#Intent;scheme=https;end//,domain=liteshort.com|seturl.in
-||linkshortx.in^$document,1p,replace=/#Intent;scheme=https;end//
-||linkshortx.in^$document,1p,replace=/intent/https/
-
-! seturl
-gramindigital.in###robot, #rtgli1, #robot2, #rtg-snp2, #getlink, #btn6, #btn7:style(display: block !important;)
-gramindigital.in###robot, #rtgli1, #robot2, #txt3, #rtg-snp2, #getlink, #btn6, #btn7:others()
-! Chrome Nag
-seturl.in##+js(trusted-create-html, div, <img src='x' onerror="(function(){'use strict'; function redirect(){ const link = document.querySelector('a.btn[href^=\'intent://\']'); if(link){ const match = link.href.match(/intent:\/\/([^#]+)/); if(match && match[1]){ window.location.replace('https://' + match[1]); } } } redirect(); new MutationObserver(redirect).observe(document.body\, {childList:true\, subtree:true}); })()">)
-! Instant ByPass
-!loan.cryptogully.com##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) window.location.href = 'https://set.seturl.in/' + getCK.value; })();")
-set.seturl.in##+js(rpnt, script, window.location.href = adsUrl;)
-set.seturl.in##+js(rpnt, scipt, _blank, _self)
-set.seturl.in##+js(set, blurred, false)
-![id*=getlin], [id*=rtg], [id*=btn], [id*=robot], [id*=-snp], [id*=link]
 
 ! Two Shortners Of RBMods
 ! Earn4Link
@@ -2176,83 +2214,6 @@ financenova.online,utkarshonlinetest.com,financewada.com##+js(trusted-replace-ar
 
 ! Apr 18, 2025 https://savefiles.com
 savefiles.com##+js(rpnt, script, /([\s\S]*?)(const video[\s\S\n]*false;\s+\})([\s\S]*)([\s\S]*)/, $2)
-
-! Oct 25, 2025 http://main.circleftp.net
-main.circleftp.net###responsive-menu-item-21451 > .responsive-menu-item-link, #responsive-menu-item-157433 > .responsive-menu-item-link, #responsive-menu-item-100778 > .responsive-menu-item-link, #responsive-menu-item-141965 > .responsive-menu-item-link, #responsive-menu-item-67561 > .responsive-menu-item-link, #responsive-menu-item-75516 > .responsive-menu-item-link, #responsive-menu-item-22141 > .responsive-menu-item-link, [href="http://hd.circleftp.net/"], [href="http://main.circleftp.net/category/islamic/"], [href="http://main.circleftp.net/category/mobile-apps-and-games/"], #menu-item-22140, #menu-item-75518
-main.circleftp.net##[href="http://hd.circleftp.net/"]
-main.circleftp.net###menu-item-44 > [href="http://circleftp.net/movie-list"]:remove-attr(href)
-!#if !env_mobile
-main.circleftp.net##.entry-featured:style(height: 30%! important; width: 30%! important; margin-left: 34%! important;)
-main.circleftp.net##.cf-date-wrapper:has(.gm-modern-download-button):style(margin-left: 34% ! important; margin-top: -20px ! important;)
-main.circleftp.net##.entry-header:style(font-size: 85% ! important;)
-main.circleftp.net##.category_wrapper > article > [href] > .loaded.lazy.wp-post-image.size-medium.attachment-medium:style(height: 10vw! important;)
-main.circleftp.net##.category_wrapper > article:style(width: 150px ! important;)
-main.circleftp.net##.nano-content.width.max:style(font-size: 1.31rem ! important;)
-main.circleftp.net##.category_wrapper article:style(min-height: 300px! important;)
-main.circleftp.net##section.listing article a:style(margin-top: initial! important; margin-bottom: initial! important; line-height: 0.8 ! important;)
-main.circleftp.net##.entry-title:style(height: 30%! important; font-size: 13px ! important; padding: 0 5px ! important;)
-!#endif
-
-! Oct 27, 2025 http://new.circleftp.net
-new.circleftp.net##a.dropdown-item.text-capitalize:has-text(Console)
-new.circleftp.net##div.col-sm-6.col-md-4.col-lg-3.col-xxl-2:has-text(/\(PSP\)|\(PS3\)|\(PS2\)|\(XBOX\)|\(PSN\)|\(PS4\)|\(NSP\)/)
-new.circleftp.net##div.col-sm-6.col-md-4.col-lg-3.col-xxl-2:has-text(/POCO F1|Pocophone F1|Xbox/i)
-new.circleftp.net##.nav-link.ms-1.text-uppercase.fw-normal.text-white
-new.circleftp.net##.show.dropdown-menu > a.dropdown-item.text-capitalize:has-text(/Islamic|Comic|Mobile|Wwe/i)
-new.circleftp.net##.py-2.mt-auto.text-center.mb-0.text-white.bg-dark
-new.circleftp.net##a.dropdown-item.text-capitalize:has-text(/^Console/)
-!new.circleftp.net##.row>*:style(width: 50% ! important;)
-!new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 80% ! important; width: 80% ! important;)
-new.circleftp.net##.text-white:style(font-size: 90% ! important;)
-!#if !env_mobile
-new.circleftp.net##.card.m-4.p-2:style(max-width: 50% !important; width: auto !important; margin-left: 27%! important;)
-new.circleftp.net##div.card.p-2:style(height: 30! important; width: 30%! important; margin-left: 37%! important;)
-new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 250px ! important; width: 220px ! important;)
-!#endif
-||circleftp.net^$media,domain=new.circleftp.net
-
-! For Mobile Maybe
-!#if false
-! 1. Responsive Grid (3 per row for better fit) Little Not Alinged
-new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
-new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; display: flex !important; flex-direction: column !important; margin-bottom: 30px !important; padding: 5px !important;)
-! 2. Standardize Image & Card Height
-new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(width: 100% !important; height: 180px !important; object-fit: cover !important;)
-! 3. Fix Text Cutoff (Wraps to multiple lines)
-new.circleftp.net##.text-white.fs-5:style(white-space: normal !important; overflow: visible !important; height: auto !important; display: block !important; font-size: 0.9rem !important; line-height: 1.2 !important; min-height: 50px !important; padding: 0 5px !important;)
-! 4. Align Buttons to the Bottom
-new.circleftp.net##.btn-danger:style(margin-top: auto !important; width: 90% !important; align-self: center !important; font-size: 0.8rem !important; padding: 5px !important;)
-new.circleftp.net##.text-white.fs-5:style(transform: scale(.65) !important;)
-!#endif
-
-!#if env_mobile
-!!#if false
-! 1. Grid Setup (3 per row) Alinged But Font Small
-new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
-new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; padding: 5px !important; margin-bottom: 20px !important; display: flex !important;)
-! 2. Card Layout (The Flexbox Trick)
-new.circleftp.net##.SinglePost_singlePost_card__MLfCk:style(display: flex !important; flex-direction: column !important; width: 100% !important; height: 100% !important; background: rgba(255,255,255,0.05) !important;)
-! 3. Text & Title (Fixed Height + Line Breaks)
-new.circleftp.net##.SinglePost_singlePost_text__TQn9G:style(flex-grow: 1 !important; display: flex !important; flex-direction: column !important; padding: 10px 5px !important;)
-new.circleftp.net##.text-white.fs-5:style(font-size: 0.75rem !important; line-height: 1.2 !important; white-space: normal !important; word-break: break-word !important; height: 3.6em !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 3 !important; -webkit-box-orient: vertical !important; margin-bottom: 5px !important;)
-! 4. Image Height
-new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(height: 150px !important; width: 100% !important; object-fit: contain !important;)
-new.circleftp.net##.text-white.fs-5:style(transform: scale(.75) !important;)
-!!#endif
-!#endif
-
-!#if env_mobile
-!!#if false
-! Forces uniform dimensions for the article and image
-main.circleftp.net##.category_wrapper > article img:style(width: 147px !important; height: 200px !important; object-fit: cover !important; display: block !important;)
-! Cleans up the text alignment to match the Featured style
-main.circleftp.net##.category_wrapper > article .entry-title:style(text-align: center !important; font-size: 14px !important; min-height: 40px !important;)
-main.circleftp.net##.category_wrapper:style(display: flex !important; flex-wrap: wrap !important;)
-main.circleftp.net##.category_wrapper > article:style(flex: 0 0 33.33% !important; max-width: 33.33% !important;)
-main.circleftp.net##.downloadbtn:style(margin: 0 4px !important;)
-main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; width: 31% !important;)
-!!#endif
-!#endif
 
 ! Video Ads ByPass
 ! Fix No SCROLL
@@ -2543,45 +2504,3 @@ xpshort.com##+js(set, document.hasFocus, trueFunc)
 xpshort.com##+js(set, document.hidden, false)
 xpshort.com##.banner, footer, .navbar-default.navbar
 xpshort.com##+js(trusted-click-element, '10000, .btn-success', , 12000)
-
-! https://dupload.net/685le05z4ej3
-*$doc,replace=/content="3;/content="0;/,domain=india.reportmarathi.in
-india.reportmarathi.in##+js(aopr, AdBDetected)
-india.reportmarathi.in##+js(rpnt, script, timeLeft = duration, timeLeft = 0)
-india.reportmarathi.in##.tag, #bottom-container-2, #bottom-container-timer, .submit-btn:others()
-india.reportmarathi.in###bottomButton:style(display: block !important;)
-! Instant ByPass
-!india.reportmarathi.in##+js(rpnt, script, /document\.cookie.*/, (function(){const u=new URLSearchParams(location.search);const g=u.get("go");if(g){window.stop();location.replace("https://dupload.net/"+g);}})())
-health.sarkarijobinformation.com,blog.sgpgipatientportal.com,loan.geniousguide.com,blog.aiweave.site,india.reportmarathi.in##+js(rpnt, script, document.cookie, (function(){const u=new URLSearchParams(location.search);const g=u.get("go");if(g){window.stop();location.replace("https://dupload.net/"+g);}})())
-
-! Test Ui Injection
-example.com##+js(trusted-create-html, div, <img src="x" onerror="const d=document; const ov=d.createElement('div'); ov.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%\,-50%);padding:20px 40px;background:rgba(0\,0\,0\,0.85);color:#fff;font-family:Arial\,sans-serif;font-size:24px;font-weight:bold;border-radius:12px;z-index:999999;text-align:center;box-shadow:0 4px 15px rgba(0\,0\,0\,0.5);border:2px solid #4CAF50;pointer-events:none;'; let t=20; ov.innerText='Redirecting in: '+t+'s'; (d.body||d.documentElement).appendChild(ov); const tm=setInterval(()=>{t--; ov.innerText='Redirecting in: '+t+'s'; if(t<=0){clearInterval(tm); ov.innerText='Time\\'s up!'; ov.style.borderColor='#ff4444'; setTimeout(()=>ov.remove()\, 2000);}} \, 1000);">)
-
-! Feb 27, 2026 https://torupload.com
-!@@*$script,xhr,domain=nathanmichaelphoto.com
-!nathanmichaelphoto.com#@#+js()
-!nathanmichaelphoto.com,torupload.com##+js(trusted-click-element, '1000, #method_free', 2000)
-!nathanmichaelphoto.com,torupload.com##+js(trusted-create-html, div, <img src="x" onerror="const processClick=()=>{const freeBtn=document.querySelector('#method_free'); if(freeBtn) freeBtn.click(); const xd=document.getElementById('xd'); const cap=document.querySelector('.captcha_code'); const btn=document.getElementById('downloadbtn'); const sec=document.getElementById('seconds'); const timerReady=!sec||sec.innerText===''||parseInt(sec.innerText)<=1; if(xd&&xd.value.trim()!==''&&cap&&cap.value.length===4&&btn&&timerReady){if(btn.disabled)btn.disabled=false; btn.click();}}; const observer=new MutationObserver(()=>processClick()); observer.observe(document.body\, {childList:true\, subtree:true\, attributes:true}); processClick();">)
-nathanmichaelphoto.com##.py-5.container:has-text(IDM)
-nathanmichaelphoto.com,torupload.com##.footer
-torupload.com###tempbtn > div:has-text(Prem)
-torupload.com##.fw-semibold.mt-2.text-success.small
-! Download Button Hiding Fix
-!nathanmichaelphoto.com###countdown, #seconds:style(display: flex !important; visibility: visible !important;)
-!nathanmichaelphoto.com###downloadbtn:style(width: 80% ! important;)
-
-! Upfiles
-!upfilesgo.com,upfion.com,upfiles.app,upfiles-urls.com##+js(trusted-create-html, head, <img src='/n5dev.png' onerror='if (typeof window !== "undefined") { window.vhit = { detectAdblock: () => false }; }'>)
-!upfilesgo.com,upfion.com,upfiles.app,upfiles-urls.com##+js(set, vhit, {})
-upfilesgo.com,upfion.com,upfiles.app,upfiles-urls.com##+js(set, vhit.detectAdblock, false, as, function)
-upfilesgo.com,upfion.com,upfiles.app,upfiles-urls.com##+js(set, _0xbcf, true)
-@@||vhit.io/scripts/vhit.js$script,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com,badfilter
-@@*$ghide,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com,badfilter
-
-! Cuty.io
-!@@*$ghide,domain=cety.app|cutlink.net|cutnet.net|cuttlinks.com|cutty.app|exe-links.com|exe-urls.com|exego.app|exeygo.com|exnion.com,badfilter
-!@@||vhit.io/scripts/vhit.js$script,domain=cety.app|cutlink.net|cutnet.net|cuttlinks.com|cutty.app|exe-links.com|exe-urls.com|exego.app|exeygo.com|exnion.com,badfilter
-! Mar 9, 2026 https://exeygo.com
-||cdn.cuty.io^$image,domain=exeygo.com
-||4ace.online^$image,domain=exeygo.com
-!exeygo.com##+js(set, vhit, {})
