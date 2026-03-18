@@ -41,7 +41,7 @@ Click the subscribe button to add the filter list instantly:
 5. Paste the URL below:
 
 ```
-https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/my-ublock-static-filters_2026-03-16_00.57.42.txt
+https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/main/My-Filters_Static_Sites
 ```
 
 6. Click **Apply changes**
