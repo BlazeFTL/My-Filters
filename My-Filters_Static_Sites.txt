@@ -1912,12 +1912,6 @@ headlinerpost.com,drinkspartner.com##+js(rpnt, script, timeLeft = duration, time
 headlinerpost.com,drinkspartner.com##+js(trusted-suppress-native-method, eval, '"/chp_?ad/"')
 shrinkforearn.in##[href*="waufooke.com"], .footer, .banner-inner, .w-nav.nav-rounded-center
 
-! https://inshorturl.com/GJViRuI
-techautomobile.in,techinfo24.in,mahitimanch.in,jnvharidwar.org###btn6:style(display: flex !important; justify-content: center !important; align-items: center !important; max-width: 100vw !important; height: 60px !important; font-size: 18px !important; text-align: center !important; line-height: 1 !important; margin-top: 60px !important;)
-techautomobile.in,techinfo24.in,mahitimanch.in,jnvharidwar.org##+js(set-cookie, page, 1)
-techautomobile.in,techinfo24.in,mahitimanch.in,jnvharidwar.org##.Tag, #btn6, .box-main:others()
-techautomobile.in,techinfo24.in,mahitimanch.in,jnvharidwar.org##+js(rpnt, script, /1700/gm, 10, condition, time)
-
 ! 2022-10-28 mixrootmod.com
 mixrootmod.com###wpsafe-link:style(display: block !important;)
 mixrootmod.com##.entry-inner strong, #wpsafe-link:others()
