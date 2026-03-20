@@ -694,6 +694,8 @@ anyrojgar.com##+js(trusted-click-element, #top_nav)
 1cinevood.*,cinevood.*##h6:has(span:contains("/720p|480p/i")) + a
 1cinevood.*,cinevood.*##.aligncenter.wp-image-57.size-full
 1cinevood.*,cinevood.*##strong > [href^="https://techtalk.life/"]
+1cinevood.*,cinevood.*##.countdown-box~*
+1cinevood.*,cinevood.*##.footer
 ||/wp-includes/$script,1p,domain=1cinevood.*|cinevood.*
 ! Stream
 streamhls.to##+js(rpnt, script, /([\s\S]*?)(const video[\s\S\n]*false;\s+\})([\s\S]*)([\s\S]*)/, $2)
