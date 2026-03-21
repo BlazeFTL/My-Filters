@@ -1546,6 +1546,7 @@ dodi-repacks.site##p:has-text(/^\u00A0$/)
 dodi-repacks.site##hr:empty
 dodi-repacks.site##.category-uncategorized.hentry.sticky.format-standard.status-publish.type-post.post.post-80:has-text(Support The Site)
 dodi-repacks.site##+js(trusted-set-attr, .entry-content a[href], target, _blank)
+dodi-repacks.site##+js(aopr, document.oncontextmenu)
 
 ! https://swiftuploads.com/gXeGOaBJ3Aa7/file
 ||cleartag.run^$script,domain=swiftuploads.com
