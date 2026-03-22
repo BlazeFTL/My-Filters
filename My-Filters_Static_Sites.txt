@@ -665,6 +665,7 @@ hdhub4u.*##.mwb-2col
 hdhub4u.*##.content-wrapper.container:not(:has(.row)):style(width: 100% ! important; margin-left: 2% ! important;)
 hdhub4u.*##.navbar-left.navbar-nav.nav
 hdhub4u.*##[href] > p:style(color: white! important;)
+hdhub4u.*##+js(rpnt, script, target="_blank", target="_self", condition, ping)
 hdhub4u.*##+js(trusted-click-element, '500, .btn-primary.btn-radius.btn-lg.btn.new-tab', 1500)
 !#if env_mobile
 hdhub4u.*##.recent-movies:style(zoom: 0.75 !important;)
