@@ -924,7 +924,7 @@ down.fast-down.com##[title="Premium Download"]
 ! Psa Final Links
 !*$script,domain=get-to.link,redirect-rule=noopjs
 get-to.link##+js(rmnt, script, fstatic)
-get-to.link##.rev-container, #loading-overlay, #topbnr, [href*="clicknupload."], [href*="usersdrive"], [href*="ddownload"], [href*="nitroflare"], [href*="katfile"]
+get-to.link##.rev-container, #loading-overlay, #topbnr, [href*="clicknupload."], [href*="usersdrive"], [href*="ddownload"], [href*="nitroflare"], [href*="katfile"], [href*="fileserve.com"]
 
 ! Aug 18, 2024 https://1337x.to
 x1337x.cc,1337x.to##li:has-text(/TORRENT DOWN|PLAY NOW/i)
