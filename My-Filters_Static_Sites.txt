@@ -698,6 +698,7 @@ anyrojgar.com##+js(trusted-click-element, #top_nav)
 1cinevood.*,cinevood.*##strong > [href^="https://techtalk.life/"]
 1cinevood.*,cinevood.*##.countdown-box~*
 1cinevood.*,cinevood.*##.footer
+1cinevood.*,cinevood.*##em > strong:has-text(ads free)
 ||/wp-includes/$script,1p,domain=1cinevood.*|cinevood.*
 ! Stream
 streamhls.to##+js(rpnt, script, /([\s\S]*?)(const video[\s\S\n]*false;\s+\})([\s\S]*)([\s\S]*)/, $2)
