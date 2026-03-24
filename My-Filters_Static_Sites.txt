@@ -859,7 +859,8 @@ psa.wf##.col-2cl .container-inner>.main::after, .col-2cl .main-inner:style(paddi
 psa.wf##:matches-path(/tv-show) div.sp-wrap-steelblue.sp-wrap:not(:has(.sp-body > div.sp-wrap-steelblue.sp-wrap)):has-text(/720p|2160p/)
 psa.wf##:matches-path(/movie) .entry-inner > div.sp-wrap-steelblue.sp-wrap > .sp-head:has-text(/720p|2160p/)
 psa.wf##:matches-path(/goto) body:style(height: initial! important;)
-psa.wf##+js(rpnt, script, 4000, 10, condition, redirect)
+psa.wf##:matches-path(/goto) picture
+psa.wf##+js(rpnt, script, /4000|5000/, 10, condition, redirect)
 ! Shortner Gateway
 go2.pics##+js(rpnt, script, 5000);, 10);)
 
