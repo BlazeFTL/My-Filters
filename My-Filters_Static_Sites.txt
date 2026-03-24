@@ -452,6 +452,7 @@ main.circleftp.net##.downloadbtn:style(margin: 0 4px !important;)
 main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; width: 31% !important;)
 !!#endif
 !#endif
+||cineplexbd.net/news_embed.php$xhr,1p
 
 ! https://dailyuploads.net/uqv9dxflkxdk
 dailyuploads.net##.downleft, #news_last, [href="javascript:void(0)"], .sharetabs, footer
