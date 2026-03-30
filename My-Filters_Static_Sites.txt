@@ -1127,6 +1127,12 @@ slurr.my.id###wpsafe-link:style(display: block !important;)
 slurr.my.id###wpsafe-link:others()
 slurr.my.id##+js(trusted-click-element, #wpsafe-link > a, , 1000)
 
+! Mar 25, 2026 https://sulasokvids.net
+sulasokvids.net##+js(trusted-click-element, '1000, .play-button', 6000)
+sulasokvids.net##.col-md-8 > div:nth-of-type(1) > p
+sulasokvids.net##.btn-outline-danger.btn
+sulasokvids.net##a.show_more.btn-dark.btn:has-text(1)
+
 ! 2022-08-15 eroti.ga
 hqporner.com##.container-300x100
 xvideos.com,xnxx.com##.premium-results-line
