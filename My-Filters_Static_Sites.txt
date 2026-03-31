@@ -254,7 +254,7 @@ github.com##li[class^="prc-ActionList-ActionListItem-"]:has-text(/Gists|Enterpri
 github.com##div.BorderGrid-row > .BorderGrid-cell:has-text(Deployment)
 github.com##a.mr-2.d-block.no-underline.Link--secondary:has-text(/Tags|Activity|Custom pro/)
 github.com###actions-tab
-github.com##[id*="-list-view-node-"]:has-text(/Update.*asset|badware|cookie|adcrap|consent|uBOL|breakage|GDPR|adcrap|email tracker|consent/i)
+github.com##:matches-path(/gorhill/uBlock/commits/master) [id*="-list-view-node-"]:has-text(/Update.*asset|badware|cookie|adcrap|consent|uBOL|breakage|GDPR|email tracker|consent/i)
 github.com##.footer
 github.com##div.ActionBar-item:has-text(/italic|list/i)
 github.com##.js-pinned-issues-reorder-list.gutter.pr-md-0.px-3.d-sm-flex.d-block
