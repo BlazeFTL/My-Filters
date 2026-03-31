@@ -455,21 +455,15 @@ main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; widt
 ||cineplexbd.net/news_embed.php$xhr,1p
 
 ! https://dailyuploads.net/uqv9dxflkxdk
-dailyuploads.net##.downleft, #news_last, [href="javascript:void(0)"], .sharetabs, footer
-dailyuploads.net##small > [href^="https://dailyuploads.net/"]
-dailyuploads.net##.downloadbtn:not([disabled]):style(background-color: #28a745 !important; color: white !important;)
-dailyuploads.net##.inner, td:style(padding-top: initial !important;)
-dailyuploads.net##table, .downright:style(margin-left: 11% !important;)
+dailyuploads.net##.sharetabs, footer, .premFeatures
+dailyuploads.net##.downright, .down_holder, table, .downleft:style(margin-left: auto !important; margin-right: auto !important; float: none !important; width: fit-content !important; display: table !important;)
+dailyuploads.net##td, h2, .downright:style(text-align: center !important;)
 dailyuploads.net###commonId:has-text(/Unlock Exclusive Features|Today !/):style(font-size: 0 !important;)
 dailyuploads.net###commonId > a[href*="/premium/"]:style(display: none !important;)
 dailyuploads.net###commonId * :style(font-size: medium !important;)
-dailyuploads.net##+js(rpnt, script, preventDefault)
-dailyuploads.net##+js(aopr, histat)
-! Remove horizontal overflow and force box sizing
-dailyuploads.net##body:style(overflow-x: hidden !important; margin: 0 !important; padding: 0 !important;)
-dailyuploads.net##html:style(overflow-x: hidden !important;)
-dailyuploads.net##.wrapper:style(width: 100% !important; box-sizing: border-box !important; margin: 0 auto !important;)
-||dailyuploads.net/images_mega/bg.png$image
+dailyuploads.net##td:has(> input[value="Premium Download"])
+dailyuploads.net##.smallRes > div > table > tbody > tr > td:has-text(MB/s)
+dailyuploads.net##[style="padding-top:50px;"]:style(padding-top:0px ! important)
 
 ! https://up-4ever.net/r4p6xsjkulb8
 up-4ever.net##.h-100.card > .card-body:has-text(Fast Down)
