@@ -600,6 +600,15 @@ up4load.com##.premium-table-responsive, .footer, .m-2.submit-btn.btn-primary.btn
 up4load.com##.block-tabs.nav-fill.nav > a.nav-link:nth-of-type(3)
 up4load.com##a.nav-link:nth-of-type(2)
 
+! https://rapidgator.net/file/ce47f395943eeb8ce8486417295768e9/FixPlus_v1.56.148_Pro_armeabi-v7a.apk.html
+rapidgator.net##td
+rapidgator.net##th:has(.btn-premium.active.link)
+rapidgator.net##.box-login
+rapidgator.net###smoothmenu1 > ul
+rapidgator.net###right_banner
+rapidgator.net##.footer
+rapidgator.net##.container:style(width: 100% !important; max-width: 100vw !important; padding: 5px !important;)
+
 ! May 22, 2024 dropbox.com
 dropbox.com##[class*="web-interstitial-container"]
 dropbox.com##[class*="nav-link-container"]:has-text(Upgrade)
