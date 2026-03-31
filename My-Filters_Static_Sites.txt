@@ -274,7 +274,7 @@ github.com##.prc-Timeline-TimelineItem-Sd-t-.Timeline-Item:has-text(pull)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="OverviewRepoFiles-module__Box_2__"]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="prc-components-UnderlineItemList-"] > li:has-text(/Action|Security|Insight/)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="PinnedIssues-module__area__"]
-github.com##:matches-path(/uBlockOrigin/uAssets) div[class*="Section-module__SectionContainer__"]:not(:has-text(/Subscribe|Agent|Partici/i))
+github.com##:matches-path(/uBlockOrigin/uAssets) div[class*="Section-module__SectionContainer__"]:not(:has-text(/Subscribe|Labels|Partici/i))
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="IssueCommentComposer-module__ContributorFooter__"]
 github.com##:matches-path(/uBlockOrigin/uAssets) .flex-wrap.d-flex[class*="SearchBarActions-module__gap8__"] > a[class^="prc-Button-ButtonBase-"]:has-text(/Label|Milestone/i)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="NewMarkdownViewer-module__safe-html-box"] > h3:has-text(/Other extensions used|Screenshot|Country|Configuration|Browser name/) + *
