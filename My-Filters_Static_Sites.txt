@@ -267,8 +267,9 @@ github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.width-ful
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) div.width-full.discussion-primer-next-nested-comment-timeline-item.discussion-nested-comment-timeline-item.js-targetable-element.js-nested-comment-container.js-comment-container.TimelineItem:has-text(/off-topi|as spam|been hidden|been minimized/i)
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) .js-comment-container.mx-0.discussion-timeline-item.TimelineItem:has(.email-hidden-toggle)
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .js-comment-container.mx-0.discussion-timeline-item.TimelineItem:has(.email-hidden-toggle)
-github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
-github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
+! Get Load More Button On Top Right Side Fixed
+!github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
+!github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
 ! Uassets
 github.com##.prc-Timeline-TimelineItem-Sd-t-.Timeline-Item:has-text(pull)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="OverviewRepoFiles-module__Box_2__"]
