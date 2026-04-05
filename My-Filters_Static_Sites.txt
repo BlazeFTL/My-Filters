@@ -2407,3 +2407,4 @@ xpshort.com##+js(set, document.hasFocus, trueFunc)
 xpshort.com##+js(set, document.hidden, false)
 xpshort.com##.banner, footer, .navbar-default.navbar
 xpshort.com##+js(trusted-click-element, '10000, .btn-success', , 12000)
+how do you do ?
