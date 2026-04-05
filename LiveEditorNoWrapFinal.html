@@ -521,26 +521,26 @@ function toggleRegex() {
   doFind();
 }
 
-// ── scrollToMatch: scrolls so match appears ~30% from top of
-//    whatever is *actually visible* above the keyboard.
-//    Uses visualViewport so keyboard height is accounted for.
+// ── scrollToMatch: scrolls so the match sits ~25% from top of
+//    the visible space above the keyboard.
 function scrollToMatch(matchIndex) {
   if (!findMatches.length) return;
   const m = findMatches[matchIndex];
   const lineNum = editor.value.substring(0, m.start).split('\n').length;
   const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
 
-  // visualViewport.height shrinks when the keyboard opens
-  const vvH = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
-  // Subtract fixed UI above the editor so we land in the right spot
+  // visualViewport.height = real visible height above the on-screen keyboard
+  const vvH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+  // Subtract fixed UI bars that sit above the scrollable editor
   const aboveEditor = (document.getElementById('topBar').offsetHeight || 0)
                     + (document.getElementById('toolbar').offsetHeight || 0)
                     + (document.getElementById('findBar').offsetHeight || 0);
-  const visibleEditorH = Math.max(100, vvH - aboveEditor);
+  const visibleEditorH = Math.max(80, vvH - aboveEditor);
 
-  // Place the match line 30% from the top of visible editor space
-  const targetTop = (lineNum - 1) * lh - visibleEditorH * 0.30;
-  editor.scrollTop = Math.max(0, targetTop);
+  // Place the match 25% down from the top of the visible editor area
+  const targetScrollTop = (lineNum - 1) * lh - visibleEditorH * 0.25;
+  editor.scrollTop = Math.max(0, targetScrollTop);
   syncScroll();
 }
 
@@ -582,15 +582,11 @@ function doFind() {
 function navFind(dir) {
   if (!findMatches.length) return;
   findIdx = (findIdx + dir + findMatches.length) % findMatches.length;
-  const m = findMatches[findIdx];
-  scrollToMatch(findIdx);
-  // Select the match text in the editor
-  editor.focus();
-  editor.setSelectionRange(m.start, m.start + m.len);
-  syncScroll();
   updateFindCount();
-  // Re-focus find input after a tick so keyboard stays on find bar
-  setTimeout(() => document.getElementById('findInput').focus(), 10);
+  // Never touch editor.focus() or setSelectionRange here — doing so causes
+  // the browser to do its own scroll-into-view which overrides our position.
+  // The highlight layer already shows the match in yellow, so it's visible.
+  scrollToMatch(findIdx);
 }
 
 function updateFindCount() {
