@@ -148,16 +148,17 @@ body{background:var(--bg);color:var(--text);font-family:'Roboto',sans-serif;disp
 <script type="importmap">
 {
   "imports": {
-    "codemirror":            "https://esm.sh/codemirror@6.0.1?bundle",
-    "@codemirror/state":     "https://esm.sh/@codemirror/state@6.4.1?bundle",
-    "@codemirror/view":      "https://esm.sh/@codemirror/view@6.35.3?bundle",
-    "@codemirror/language":  "https://esm.sh/@codemirror/language@6.10.8?bundle",
-    "@codemirror/commands":  "https://esm.sh/@codemirror/commands@6.7.1?bundle",
-    "@codemirror/search":    "https://esm.sh/@codemirror/search@6.5.10?bundle",
-    "@lezer/highlight":      "https://esm.sh/@lezer/highlight@1.2.1?bundle"
+    "codemirror":            "https://esm.sh/codemirror@6.0.1",
+    "@codemirror/state":     "https://esm.sh/@codemirror/state@6.4.1",
+    "@codemirror/view":      "https://esm.sh/@codemirror/view@6.35.3",
+    "@codemirror/language":  "https://esm.sh/@codemirror/language@6.10.8",
+    "@codemirror/commands":  "https://esm.sh/@codemirror/commands@6.7.1",
+    "@codemirror/search":    "https://esm.sh/@codemirror/search@6.5.10",
+    "@lezer/highlight":      "https://esm.sh/@lezer/highlight@1.2.1"
   }
 }
 </script>
+
 
 <script type="module">
 import { EditorView, keymap, lineNumbers, highlightActiveLine,
@@ -320,7 +321,9 @@ function buildState(doc) {
 }
 
 function initEditor(doc) {
-  document.getElementById('loadingOverlay').remove();
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) overlay.remove();
+  
   view = new EditorView({
     state: buildState(doc),
     parent: document.getElementById('editorArea'),
