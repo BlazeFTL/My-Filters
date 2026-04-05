@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Filter Editor — BlazeFTL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #FAFAFA; --surface: #FFFFFF; --surface2: #F5F5F5;
+  --border: #E0E0E0; --border2: #BDBDBD;
+  --primary: #1565C0; --primary-light: #E3F2FD; --primary-dark: #0D47A1;
+  --warn: #F57F17; --danger: #C62828; --success: #2E7D32;
+  --text: #212121; --text2: #757575; --text3: #BDBDBD;
+  --shadow: 0 1px 3px rgba(0,0,0,0.14); --shadow2: 0 2px 8px rgba(0,0,0,0.18);
+  --lh: 21px; --fn: 13px;
+  --c-comment:#6A737D; --c-title:#005CC5; --c-except:#B31D28;
+  --c-network:#005CC5; --c-cosmetic:#22863A; --c-scriptlet:#6F42C1;
+  --c-domain:#E36209; --c-option:#032F62; --c-plain:#24292E;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; }
+body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif; display:flex; flex-direction:column; }
+
+/* TOP BAR */
+#topBar {
+  flex-shrink:0; background:var(--primary); color:white;
+  padding:0 10px 0 14px; height:52px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:var(--shadow2); z-index:100; gap:8px;
+}
+.app-info { flex:1; min-width:0; }
+.app-title { font-size:16px; font-weight:500; }
+.app-file  { font-size:10px; opacity:0.7; font-family:'Roboto Mono',monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.top-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+
+#statusChip {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.18);
+  border-radius:12px; padding:4px 10px; font-size:11px; white-space:nowrap;
+}
+#sDot { width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.35);transition:background 0.3s; }
+#sDot.ok      { background:#69F0AE; }
+#sDot.err     { background:#FF5252; }
+#sDot.loading { background:#FFD740; animation:blink 0.8s infinite; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* PAT button in topbar */
+#patTopBtn {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.15); border:none; color:white;
+  border-radius:8px; padding:5px 10px; font-family:'Roboto',sans-serif;
+  font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap;
+}
+#patTopBtn:active { opacity:0.7; }
+#patDot {
+  width:10px; height:10px; border-radius:50%;
+  background:#FF5252; flex-shrink:0; transition:background 0.3s;
+}
+#patDot.set { background:#69F0AE; }
+
+/* TOOLBAR */
+#toolbar {
+  flex-shrink:0; background:var(--surface);
+  border-bottom:2px solid var(--border);
+  padding:5px 8px; display:flex; gap:4px; flex-wrap:wrap; align-items:center;
+}
+.btn {
+  font-family:'Roboto',sans-serif; font-size:12px; font-weight:500;
+  padding:6px 10px; border-radius:4px; border:none; cursor:pointer;
+  white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
+  transition:background 0.12s; min-height:32px;
+  display:inline-flex; align-items:center; gap:4px;
+}
+.btn:active { opacity:0.75; transform:scale(0.96); }
+.btn-flat   { background:transparent; color:var(--primary); }
+.btn-flat:hover { background:var(--primary-light); }
+.btn-raised { background:var(--primary); color:white; box-shadow:var(--shadow); }
+.btn-green  { background:#388E3C; color:white; box-shadow:var(--shadow); }
+.btn:disabled { opacity:0.3; pointer-events:none; }
+
+#modBadge {
+  display:none; font-size:10px; font-weight:700;
+  background:#FF8F00; color:white;
+  border-radius:10px; padding:2px 8px; letter-spacing:0.5px;
+}
+#modBadge.show { display:inline-block; }
+
+/* FIND BAR */
+#findBar {
+  flex-shrink:0; background:#EFF6FF; border-bottom:1px solid #BBDEFB;
+  padding:6px 8px; display:none; flex-direction:column; gap:5px;
+}
+#findBar.show { display:flex; }
+.find-row { display:flex; gap:5px; align-items:center; }
+.find-input {
+  flex:1; min-width:0;
+  font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:7px 10px; border:1px solid var(--border2); border-radius:4px;
+  background:white; color:var(--text); outline:none;
+}
+.find-input:focus { border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-light); }
+#findCount { font-size:11px; color:var(--text2); white-space:nowrap; min-width:60px; text-align:center; }
+
+/* regex toggle chip */
+#regexToggle {
+  font-family:'Roboto Mono',monospace; font-size:13px; font-weight:700;
+  padding:5px 10px; border:1px solid var(--border2); border-radius:4px;
+  background:white; color:var(--text2); cursor:pointer; white-space:nowrap;
+  user-select:none; transition:all 0.15s;
+}
+#regexToggle.active { background:var(--primary); color:white; border-color:var(--primary); }
+
+/* EDITOR AREA */
+#editorArea { flex:1; display:flex; overflow:hidden; position:relative; }
+
+#lineNums {
+  width:46px; min-width:46px; flex-shrink:0;
+  background:var(--surface2); border-right:1px solid var(--border);
+  overflow:hidden; pointer-events:none; user-select:none; position:relative;
+}
+#lineNumsInner {
+  position:absolute; top:0; left:0; right:0;
+  padding:8px 6px 8px 0; text-align:right;
+  font-family:'Roboto Mono',monospace; font-size:var(--fn); line-height:var(--lh);
+  color:var(--text3); white-space:pre; will-change:transform;
+}
+
+#codeWrap { flex:1; position:relative; overflow:hidden; }
+
+#hlLayer {
+  position:absolute; inset:0;
+  font-family:'Roboto Mono',monospace; font-size:var(--fn); line-height:var(--lh);
+  padding:8px 12px 250px 8px;
+  white-space:pre; word-break:normal;
+  overflow:hidden; pointer-events:none;
+  color:transparent; background:var(--surface); tab-size:2;
+}
+#hlLayer.hl-hidden { visibility:hidden; }
+
+#editor {
+  position:absolute; inset:0;
+  font-family:'Roboto Mono',monospace; font-size:var(--fn); line-height:var(--lh);
+  padding:8px 12px 250px 8px;
+  border:none; outline:none; resize:none; background:transparent;
+  color:transparent; caret-color:var(--primary);
+  overflow-y:scroll; overflow-x:auto;
+  white-space:pre; word-break:normal;
+  -webkit-overflow-scrolling:touch; tab-size:2;
+  -webkit-user-select:text; user-select:text;
+  -webkit-text-fill-color:transparent;
+  will-change:scroll-position;
+}
+#editor.typing { color:var(--c-plain); -webkit-text-fill-color:var(--c-plain); }
+#editor::selection    { background:rgba(21,101,192,0.25); }
+#editor::-moz-selection { background:rgba(21,101,192,0.25); }
+
+.t-comment  { color:var(--c-comment); font-style:italic; }
+.t-title    { color:var(--c-title); font-weight:500; }
+.t-except   { color:var(--c-except); }
+.t-network  { color:var(--c-network); }
+.t-cosmetic { color:var(--c-cosmetic); }
+.t-scriptlet{ color:var(--c-scriptlet); }
+.t-domain   { color:var(--c-domain); }
+.t-option   { color:var(--c-option); }
+.t-plain    { color:var(--c-plain); }
+.t-mark     { background:#FFF176; border-radius:2px; }
+
+/* COMMIT BAR — fixed above keyboard using visualViewport */
+#commitBar {
+  display:none;
+  position:fixed; left:0; right:0;
+  background:var(--surface); border-top:2px solid #388E3C;
+  padding:10px; gap:8px; align-items:center;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.12);
+  z-index:150;
+}
+#commitBar.show { display:flex; }
+#commitMsg {
+  flex:1; font-family:'Roboto',sans-serif; font-size:15px;
+  padding:12px 14px; border:1px solid var(--border2); border-radius:6px;
+  outline:none; color:var(--text); background:var(--surface); min-height:48px;
+}
+#commitMsg:focus { border-color:#388E3C; box-shadow:0 0 0 2px #C8E6C9; }
+
+/* PAT SHEET */
+#patModal {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.45); z-index:200;
+  align-items:flex-end; justify-content:center;
+}
+#patModal.show { display:flex; }
+.modal-sheet {
+  background:white; border-radius:16px 16px 0 0;
+  padding:22px 20px 36px; width:100%; max-width:520px;
+}
+.modal-sheet h2 { font-size:16px; font-weight:500; margin-bottom:6px; }
+.modal-sheet p  { font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+.modal-sheet input {
+  width:100%; font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:10px 12px; border:1px solid var(--border2); border-radius:4px;
+  outline:none; margin-bottom:14px; background:var(--surface2); color:var(--text);
+}
+.modal-sheet input:focus { border-color:var(--primary); }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+/* TOAST */
+#toast {
+  position:fixed; bottom:20px; left:50%;
+  transform:translateX(-50%) translateY(64px);
+  background:#323232; color:white; border-radius:4px;
+  padding:10px 18px; font-size:13px; font-weight:500;
+  transition:transform 0.22s ease; z-index:400;
+  white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
+}
+#toast.show { transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="topBar">
+  <div class="app-info">
+    <div class="app-title">Filter Editor</div>
+    <div class="app-file">My-Filters_Static_Sites.txt</div>
+  </div>
+  <div class="top-right">
+    <div id="statusChip"><div id="sDot"></div><span id="sText">Not loaded</span></div>
+    <button id="patTopBtn" onclick="showPat()">
+      <div id="patDot"></div> PAT
+    </button>
+  </div>
+</div>
+
+<div id="toolbar">
+  <button class="btn btn-raised" onclick="loadFile()">⬇ Load</button>
+  <button class="btn btn-green" id="saveBtn" onclick="showCommit()" disabled>⬆ Save</button>
+  <button class="btn btn-flat" onclick="toggleFind()">🔍 Find</button>
+  <button class="btn btn-flat" onclick="pasteToEditor()">📋 Paste</button>
+  <button class="btn btn-flat" onclick="copySelection()">⎘ Copy</button>
+  <button class="btn btn-flat" onclick="goToLine()"># Line</button>
+  <button class="btn btn-flat" id="wrapBtn" onclick="toggleWrap()">⇥ Wrap: OFF</button>
+  <span id="modBadge">UNSAVED</span>
+</div>
+
+<div id="findBar">
+  <div class="find-row">
+    <input class="find-input" id="findInput" placeholder="Find..." oninput="doFind()" />
+    <span id="regexToggle" title="Toggle Regex" onclick="toggleRegex()">.*</span>
+    <span id="findCount"></span>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="navFind(-1)">▲</button>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="navFind(1)">▼</button>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="toggleFind()">✕</button>
+  </div>
+  <div class="find-row">
+    <input class="find-input" id="replaceInput" placeholder="Replace with..." />
+    <button class="btn btn-flat" onclick="replaceCurrent()">Replace</button>
+    <button class="btn btn-flat" onclick="replaceAll()">All</button>
+  </div>
+</div>
+
+<div id="editorArea">
+  <div id="lineNums"><div id="lineNumsInner">1</div></div>
+  <div id="codeWrap">
+    <div id="hlLayer"></div>
+    <textarea id="editor"
+      spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off"
+      placeholder="Tap Load to fetch your filters..."
+      oninput="onEdit()" onscroll="syncScroll()"
+    ></textarea>
+  </div>
+</div>
+
+<div id="commitBar">
+  <input id="commitMsg" type="text" placeholder="Commit message..." value="Update My-Filters" />
+  <button class="btn btn-green" style="min-height:48px;font-size:14px;padding:10px 16px" onclick="saveFile()">✔ Commit</button>
+  <button class="btn btn-flat" style="min-height:48px;font-size:13px;color:#C62828" onclick="hideCommit()">Cancel ✕</button>
+</div>
+
+<div id="patModal">
+  <div class="modal-sheet">
+    <h2>GitHub Token (PAT)</h2>
+    <p>Required for saving only. Needs <b>repo</b> scope.<br>Stored in your browser — never committed to GitHub.</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <div class="modal-actions">
+      <button class="btn btn-flat" onclick="closePat()">Cancel</button>
+      <button class="btn btn-raised" onclick="savePat()">Save Token</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const OWNER = 'BlazeFTL', REPO = 'My-Filters';
+const FILE  = 'My-Filters_Static_Sites.txt';
+const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/master/${FILE}`;
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+
+const editor  = document.getElementById('editor');
+const hlLayer = document.getElementById('hlLayer');
+const lnInner = document.getElementById('lineNumsInner');
+
+let fileSha = null, originalContent = '', findMatches = [], findIdx = 0, regexMode = false;
+
+// ── SYNTAX HIGHLIGHT ENGINE ───────────────────────────
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlightLine(line) {
+  if (!line.trim()) return '\n';
+  if (/^[!#]/.test(line)) {
+    if (/^!\s*(Title|Version|Last modified|Expires|Description|License|Homepage|Forums):/i.test(line)) {
+      const m = line.match(/^(!\s*[^:]+:)(.*)/);
+      if (m) return `<span class="t-title">${escHtml(m[1])}</span><span class="t-comment">${escHtml(m[2])}</span>\n`;
+    }
+    return `<span class="t-comment">${escHtml(line)}</span>\n`;
+  }
+  if (line.startsWith('@@')) return `<span class="t-except">@@</span>${hlNetRule(line.slice(2))}\n`;
+  if (/^.+##\^/.test(line)) {
+    const i = line.indexOf('##^');
+    return `<span class="t-domain">${escHtml(line.slice(0,i))}</span><span class="t-cosmetic">##^</span><span class="t-scriptlet">${escHtml(line.slice(i+3))}</span>\n`;
+  }
+  if (/^.+#[@+]?#\+js\(/.test(line) || /^.+#\+js\(/.test(line)) {
+    const sep = line.includes('##+js(') ? '##+js(' : line.includes('#@#') ? '#@#' : '#+js(';
+    const i = line.indexOf(sep);
+    return `<span class="t-domain">${escHtml(line.slice(0,i))}</span><span class="t-cosmetic">${escHtml(sep)}</span><span class="t-scriptlet">${escHtml(line.slice(i+sep.length))}</span>\n`;
+  }
+  if (/^.+#@?#/.test(line)) {
+    const sep = line.includes('#@#') ? '#@#' : '##';
+    const i = line.indexOf(sep);
+    return `<span class="t-domain">${escHtml(line.slice(0,i))}</span><span class="t-cosmetic">${escHtml(sep)}${escHtml(line.slice(i+sep.length))}</span>\n`;
+  }
+  if (/^\|\||^\*|^\^/.test(line) || /\$[a-z]/.test(line)) return hlNetRule(line) + '\n';
+  return `<span class="t-plain">${escHtml(line)}</span>\n`;
+}
+
+function hlNetRule(line) {
+  const i = line.lastIndexOf('$');
+  if (i > 0 && !/^https?:\/\//.test(line)) {
+    return `<span class="t-network">${escHtml(line.slice(0,i))}</span><span class="t-option">${escHtml(line.slice(i))}</span>`;
+  }
+  return `<span class="t-network">${escHtml(line)}</span>`;
+}
+
+function renderHighlight(findQuery) {
+  const text = editor.value;
+  const allLines = text.split('\n');
+  const fq = findQuery || '';
+  let html = '';
+
+  if (wrapOn) {
+    // Wrap: render all lines (hlLayer only updates when scroll stops, not during scroll)
+    for (let i = 0; i < allLines.length; i++) html += highlightLine(allLines[i]);
+  } else {
+    // Non-wrap: virtual window — only render visible lines + buffer
+    const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+    const scrollTop = editor.scrollTop;
+    const viewH = editor.clientHeight;
+    const first = Math.max(0, Math.floor(scrollTop / lh) - 40);
+    const last  = Math.min(allLines.length, Math.ceil((scrollTop + viewH) / lh) + 40);
+    for (let i = 0; i < first; i++) html += '\n';
+    for (let i = first; i < last;  i++) html += highlightLine(allLines[i]);
+    for (let i = last; i < allLines.length; i++) html += '\n';
+  }
+
+  if (fq) {
+    try {
+      const re = regexMode
+        ? new RegExp(fq, 'gi')
+        : new RegExp(fq.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+      html = html.replace(re, m => `<mark class="t-mark">${escHtml(m)}</mark>`);
+    } catch(e) {}
+  }
+
+  hlLayer.innerHTML = html;
+}
+
+// ── LINE NUMBERS ──────────────────────────────────────
+let lastLineCount = 0;
+function rebuildLineNums() {
+  const n = editor.value.split('\n').length;
+  if (n === lastLineCount) return; // no change, skip
+  lastLineCount = n;
+  // Build as a single string — much faster than DOM manipulation
+  let s = '';
+  for (let i = 1; i <= n; i++) s += i + '\n';
+  lnInner.textContent = s;
+}
+
+// ── TYPING MODE ───────────────────────────────────────
+// While typing: show plain text in textarea (instant, zero DOM cost),
+// hide hlLayer. After 600ms idle: restore syntax colors.
+let typingTimer = null;
+let isTyping = false;
+
+function enterTypingMode() {
+  if (!isTyping) {
+    isTyping = true;
+    editor.classList.add('typing');
+    hlLayer.classList.add('hl-hidden');
+  }
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(exitTypingMode, 600);
+}
+
+function exitTypingMode() {
+  isTyping = false;
+  // Rebuild highlight FIRST, then show it — no flash of unstyled content
+  rebuildLineNums();
+  renderHighlight(findOpen ? document.getElementById('findInput').value : '');
+  editor.classList.remove('typing');
+  hlLayer.classList.remove('hl-hidden');
+}
+
+function onEdit() {
+  document.getElementById('modBadge').classList.toggle('show', editor.value !== originalContent);
+  enterTypingMode();
+}
+
+// ── SCROLL SYNC ───────────────────────────────────────
+let rafPending  = false;
+let scrollTimer = null;
+
+function syncScroll() {
+  lnInner.style.transform = `translateY(-${editor.scrollTop}px)`;
+  hlLayer.scrollTop = editor.scrollTop;
+  if (!wrapOn) {
+    hlLayer.scrollLeft = editor.scrollLeft;
+    // Non-wrap: rAF gate — at most one re-render per frame
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        if (!isTyping) renderHighlight(findOpen ? document.getElementById('findInput').value : '');
+      });
+    }
+  } else {
+    // Wrap: hlLayer already has all lines rendered. Just keep scrollTop synced.
+    // Re-render only needed if find highlights need updating — do it after scroll stops.
+    if (findOpen) {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        renderHighlight(document.getElementById('findInput').value);
+      }, 150);
+    }
+    // No re-render needed for plain wrap scroll — hlLayer already has everything
+  }
+}
+
+// ── LOAD ──────────────────────────────────────────────
+async function loadFile(force) {
+  if (!force && editor.value !== originalContent && editor.value.trim()) {
+    if (!confirm('You have unsaved changes. Load from GitHub and discard them?')) return;
+  }
+  setStatus('loading','Fetching...');
+  try {
+    const r = await fetch(RAW + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const text = await r.text();
+    editor.value = text;
+    originalContent = text;
+    rebuildLineNums();
+    renderHighlight('');
+    const lc = text.split('\n').length;
+    setStatus('ok', lc + ' lines');
+    document.getElementById('saveBtn').disabled = false;
+    document.getElementById('modBadge').classList.remove('show');
+    fetchSha();
+    toast('Loaded — ' + lc + ' lines');
+    // Scroll to last line
+    requestAnimationFrame(() => {
+      editor.scrollTop = editor.scrollHeight;
+      syncScroll();
+    });
+  } catch(e) {
+    setStatus('err','Load failed');
+    toast('Load failed: ' + e.message);
+  }
+}
+
+async function fetchSha() {
+  const pat = getPat();
+  try {
+    const r = await fetch(API, { headers: pat ? {Authorization:'token '+pat}:{} });
+    const j = await r.json();
+    fileSha = j.sha;
+  } catch(e){}
+}
+
+// ── FIND / REPLACE ────────────────────────────────────
+let findOpen = false;
+
+function toggleFind() {
+  findOpen = !findOpen;
+  document.getElementById('findBar').classList.toggle('show', findOpen);
+  if (findOpen) setTimeout(() => document.getElementById('findInput').focus(), 50);
+  else { findMatches = []; document.getElementById('findCount').textContent = ''; renderHighlight(''); }
+}
+
+function toggleRegex() {
+  regexMode = !regexMode;
+  document.getElementById('regexToggle').classList.toggle('active', regexMode);
+  doFind();
+}
+
+let findJumpTimer = null;
+function doFind() {
+  const q = document.getElementById('findInput').value;
+  findMatches = [];
+  findIdx = 0;
+  renderHighlight(q);
+  if (!q) { document.getElementById('findCount').textContent = ''; return; }
+  try {
+    const re = regexMode
+      ? new RegExp(q, 'gi')
+      : new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+    const text = editor.value;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      findMatches.push({ start: m.index, len: m[0].length });
+      if (re.lastIndex === m.index) re.lastIndex++;
+    }
+  } catch(e) { document.getElementById('findCount').textContent = 'Bad regex'; return; }
+  updateFindCount();
+  // Auto-jump to first match after typing pauses — 400ms feels natural
+  clearTimeout(findJumpTimer);
+  if (findMatches.length) {
+    findJumpTimer = setTimeout(() => {
+      findIdx = 0;
+      const m = findMatches[0];
+      const lineNum = editor.value.substring(0, m.start).split('\n').length;
+      const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+      editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
+      syncScroll();
+      updateFindCount();
+      // Don't steal focus from find input
+    }, 400);
+  }
+}
+
+function navFind(dir) {
+  if (!findMatches.length) return;
+  findIdx = (findIdx + dir + findMatches.length) % findMatches.length;
+  const m = findMatches[findIdx];
+  // Scroll editor to match position without stealing focus from find bar
+  const lineNum = editor.value.substring(0, m.start).split('\n').length;
+  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+  editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
+  // Select the match text in the editor
+  editor.focus();
+  editor.setSelectionRange(m.start, m.start + m.len);
+  syncScroll();
+  updateFindCount();
+  // Re-focus find input after a tick so keyboard stays on find bar
+  setTimeout(() => document.getElementById('findInput').focus(), 10);
+}
+
+function updateFindCount() {
+  document.getElementById('findCount').textContent =
+    findMatches.length ? `${findIdx+1}/${findMatches.length}` : '0 found';
+}
+
+function replaceCurrent() {
+  const q = document.getElementById('findInput').value;
+  const rep = document.getElementById('replaceInput').value;
+  if (!q || !findMatches.length) return;
+  const m = findMatches[findIdx];
+  editor.value = editor.value.substring(0, m.start) + rep + editor.value.substring(m.start + m.len);
+  onEdit(); doFind();
+  toast('Replaced 1 match');
+}
+
+function replaceAll() {
+  const q = document.getElementById('findInput').value;
+  const rep = document.getElementById('replaceInput').value;
+  if (!q) return;
+  const n = findMatches.length;
+  try {
+    const re = regexMode
+      ? new RegExp(q, 'g')
+      : new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g');
+    editor.value = editor.value.replace(re, rep);
+  } catch(e) { toast('Bad regex'); return; }
+  onEdit(); doFind();
+  toast(`Replaced ${n} matches`);
+}
+
+// ── GO TO LINE ────────────────────────────────────────
+function goToLine() {
+  const n = prompt('Go to line:');
+  if (!n || isNaN(n)) return;
+  const lineNum = Math.max(1, parseInt(n));
+  const lines = editor.value.split('\n');
+  let pos = 0;
+  for (let i = 0; i < Math.min(lineNum-1, lines.length-1); i++) pos += lines[i].length + 1;
+  editor.focus();
+  editor.setSelectionRange(pos, pos + (lines[lineNum-1]||'').length);
+  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+  editor.scrollTop = Math.max(0, (lineNum-5)*lh);
+  syncScroll();
+}
+
+// ── COMMIT BAR — tracks keyboard via visualViewport ───
+function showCommit() {
+  if (!getPat()) { showPat(); return; }
+  document.getElementById('commitBar').classList.add('show');
+  positionCommitBar();
+  setTimeout(() => document.getElementById('commitMsg').focus(), 50);
+}
+function hideCommit() { document.getElementById('commitBar').classList.remove('show'); }
+
+function positionCommitBar() {
+  const bar = document.getElementById('commitBar');
+  if (!bar.classList.contains('show')) return;
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    bar.style.bottom = (window.innerHeight - vv.height - vv.offsetTop) + 'px';
+  } else {
+    bar.style.bottom = '0px';
+  }
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', positionCommitBar);
+  window.visualViewport.addEventListener('scroll', positionCommitBar);
+}
+
+// ── SAVE ──────────────────────────────────────────────
+async function saveFile() {
+  const pat = getPat();
+  if (!pat)    { toast('No PAT — tap PAT button'); return; }
+  if (!fileSha){ toast('Load file first'); return; }
+  const msg = document.getElementById('commitMsg').value || 'Update filters';
+  const content = btoa(unescape(encodeURIComponent(editor.value)));
+  setStatus('loading','Saving...');
+  try {
+    const r = await fetch(API, {
+      method:'PUT',
+      headers:{ Authorization:'token '+pat, 'Content-Type':'application/json' },
+      body:JSON.stringify({ message:msg, content, sha:fileSha })
+    });
+    if (!r.ok) { const j=await r.json(); throw new Error(j.message||r.status); }
+    const j = await r.json();
+    fileSha = j.content.sha;
+    originalContent = editor.value;
+    document.getElementById('modBadge').classList.remove('show');
+    setStatus('ok', editor.value.split('\n').length+' lines');
+    hideCommit();
+    toast('Saved to GitHub ✓');
+  } catch(e) {
+    setStatus('err','Save failed');
+    toast('Save failed: '+e.message);
+  }
+}
+
+// ── PAT ───────────────────────────────────────────────
+function getPat()  { return localStorage.getItem('blaze_pat')||''; }
+function updatePatIndicator() {
+  document.getElementById('patDot').className = getPat() ? 'set' : '';
+}
+function showPat() {
+  document.getElementById('patModal').classList.add('show');
+  document.getElementById('patInput').value = getPat();
+}
+function closePat(){ document.getElementById('patModal').classList.remove('show'); }
+function savePat() {
+  const v = document.getElementById('patInput').value.trim();
+  if (v) { localStorage.setItem('blaze_pat',v); toast('Token saved'); }
+  else   { localStorage.removeItem('blaze_pat'); toast('Token cleared'); }
+  updatePatIndicator();
+  closePat();
+}
+
+// ── COPY SELECTION ────────────────────────────────────
+function copySelection() {
+  const s = editor.selectionStart, e2 = editor.selectionEnd;
+  if (s === e2) { toast('No text selected'); return; }
+  const sel = editor.value.substring(s, e2);
+  navigator.clipboard.writeText(sel)
+    .then(()=>toast(`Copied ${sel.split('\n').length} line(s)`))
+    .catch(()=>{ document.execCommand('copy'); toast('Copied'); });
+}
+
+// ── PASTE ─────────────────────────────────────────────
+async function pasteToEditor() {
+  try {
+    const text = await navigator.clipboard.readText();
+    const start = editor.selectionStart;
+    const end   = editor.selectionEnd;
+    editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+    editor.setSelectionRange(start + text.length, start + text.length);
+    onEdit();
+    toast(`Pasted ${text.split('\n').length} line(s)`);
+  } catch(e) {
+    toast('Paste failed — use long-press instead');
+  }
+}
+
+// ── WRAP TOGGLE ───────────────────────────────────────
+let wrapOn = false;
+function toggleWrap() {
+  wrapOn = !wrapOn;
+  editor.style.whiteSpace  = wrapOn ? 'pre-wrap' : 'pre';
+  hlLayer.style.whiteSpace = wrapOn ? 'pre-wrap' : 'pre';
+  editor.style.overflowX   = wrapOn ? 'hidden'   : 'auto';
+  hlLayer.style.overflowX  = wrapOn ? 'hidden'   : 'auto';
+  hlLayer.style.wordBreak  = wrapOn ? 'break-word' : 'normal';
+  editor.style.wordBreak   = wrapOn ? 'break-word' : 'normal';
+  // Hide line numbers in wrap mode — they can't align with wrapped lines
+  document.getElementById('lineNums').style.display = wrapOn ? 'none' : '';
+  if (wrapOn) { editor.scrollLeft = 0; hlLayer.scrollLeft = 0; }
+  const btn = document.getElementById('wrapBtn');
+  btn.textContent = wrapOn ? '⇥ Wrap: ON' : '⇥ Wrap: OFF';
+  btn.style.color = wrapOn ? '#388E3C' : '';
+  // Full render once — in wrap mode this stays static until content changes
+  if (!isTyping) renderHighlight(findOpen ? document.getElementById('findInput').value : '');
+}
+
+// ── STATUS ────────────────────────────────────────────
+function setStatus(state,text) {
+  document.getElementById('sDot').className = state;
+  document.getElementById('sText').textContent = text;
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ── INIT ──────────────────────────────────────────────
+editor.style.webkitUserSelect = 'text';
+editor.style.userSelect = 'text';
+updatePatIndicator();
+rebuildLineNums();
+loadFile(true);
+</script>
+</body>
+</html>
