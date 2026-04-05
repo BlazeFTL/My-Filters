@@ -246,7 +246,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 
 <div id="findBar">
   <div class="find-row">
-    <input class="find-input" id="findInput" placeholder="Find..." oninput="doFind()" />
+    <input class="find-input" id="findInput" placeholder="Find..." oninput="doFind()" onkeydown="findKey(event)" />
     <span id="regexToggle" title="Toggle Regex" onclick="toggleRegex()">.*</span>
     <span id="findCount"></span>
     <button class="btn btn-flat" style="padding:6px 8px" onclick="navFind(-1)">▲</button>
@@ -354,7 +354,6 @@ function renderHighlight(findQuery) {
   if (wrapOn) {
     for (let i = 0; i < allLines.length; i++) html += highlightLine(allLines[i]);
   } else {
-    // Virtual window — only render visible lines + buffer
     const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
     const scrollTop = editor.scrollTop;
     const viewH = editor.clientHeight;
@@ -414,8 +413,6 @@ function rebuildLineNums(force) {
 }
 
 // ── TYPING MODE ───────────────────────────────────────
-// While typing: show plain text in textarea (instant, zero DOM cost),
-// hide hlLayer. After 600ms idle: restore syntax colors.
 let typingTimer = null;
 let isTyping = false;
 
@@ -431,7 +428,6 @@ function enterTypingMode() {
 
 function exitTypingMode() {
   isTyping = false;
-  // Rebuild highlight FIRST, then show it — no flash of unstyled content
   rebuildLineNums(true);
   renderHighlight(findOpen ? document.getElementById('findInput').value : '');
   editor.classList.remove('typing');
@@ -452,7 +448,6 @@ function syncScroll() {
   hlLayer.scrollTop = editor.scrollTop;
   if (!wrapOn) {
     hlLayer.scrollLeft = editor.scrollLeft;
-    // Non-wrap: rAF gate — at most one re-render per frame
     if (!rafPending) {
       rafPending = true;
       requestAnimationFrame(() => {
@@ -491,7 +486,6 @@ async function loadFile(force) {
     document.getElementById('modBadge').classList.remove('show');
     fetchSha();
     toast('Loaded — ' + lc + ' lines');
-    // Scroll to last line
     requestAnimationFrame(() => {
       editor.scrollTop = editor.scrollHeight;
       syncScroll();
@@ -527,7 +521,37 @@ function toggleRegex() {
   doFind();
 }
 
-let findJumpTimer = null;
+// ── scrollToMatch: scrolls so match appears ~30% from top of
+//    whatever is *actually visible* above the keyboard.
+//    Uses visualViewport so keyboard height is accounted for.
+function scrollToMatch(matchIndex) {
+  if (!findMatches.length) return;
+  const m = findMatches[matchIndex];
+  const lineNum = editor.value.substring(0, m.start).split('\n').length;
+  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+
+  // visualViewport.height shrinks when the keyboard opens
+  const vvH = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+  // Subtract fixed UI above the editor so we land in the right spot
+  const aboveEditor = (document.getElementById('topBar').offsetHeight || 0)
+                    + (document.getElementById('toolbar').offsetHeight || 0)
+                    + (document.getElementById('findBar').offsetHeight || 0);
+  const visibleEditorH = Math.max(100, vvH - aboveEditor);
+
+  // Place the match line 30% from the top of visible editor space
+  const targetTop = (lineNum - 1) * lh - visibleEditorH * 0.30;
+  editor.scrollTop = Math.max(0, targetTop);
+  syncScroll();
+}
+
+// Enter = next match, Shift+Enter = previous match
+function findKey(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    e.shiftKey ? navFind(-1) : navFind(1);
+  }
+}
+
 function doFind() {
   const q = document.getElementById('findInput').value;
   findMatches = [];
@@ -545,20 +569,13 @@ function doFind() {
       if (re.lastIndex === m.index) re.lastIndex++;
     }
   } catch(e) { document.getElementById('findCount').textContent = 'Bad regex'; return; }
-  updateFindCount();
-  // Auto-jump to first match after typing pauses — 400ms feels natural
-  clearTimeout(findJumpTimer);
+  // Immediately scroll to first match as user types — no delay
   if (findMatches.length) {
-    findJumpTimer = setTimeout(() => {
-      findIdx = 0;
-      const m = findMatches[0];
-      const lineNum = editor.value.substring(0, m.start).split('\n').length;
-      const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
-      editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
-      syncScroll();
-      updateFindCount();
-      // Don't steal focus from find input
-    }, 400);
+    findIdx = 0;
+    scrollToMatch(0);
+    updateFindCount();
+  } else {
+    updateFindCount();
   }
 }
 
@@ -566,10 +583,7 @@ function navFind(dir) {
   if (!findMatches.length) return;
   findIdx = (findIdx + dir + findMatches.length) % findMatches.length;
   const m = findMatches[findIdx];
-  // Scroll editor to match position without stealing focus from find bar
-  const lineNum = editor.value.substring(0, m.start).split('\n').length;
-  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
-  editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
+  scrollToMatch(findIdx);
   // Select the match text in the editor
   editor.focus();
   editor.setSelectionRange(m.start, m.start + m.len);
@@ -742,7 +756,6 @@ updatePatIndicator();
 rebuildLineNums(true);
 loadFile(true);
 
-// Re-sync line numbers if editor is resized (orientation change, etc.)
 if (window.ResizeObserver) {
   new ResizeObserver(() => rebuildLineNums(true)).observe(editor);
 }
