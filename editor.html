@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Filter Editor — BlazeFTL</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141418;
+    --border: #2a2a35;
+    --accent: #00e5ff;
+    --accent2: #ff6b35;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --success: #00ff88;
+    --danger: #ff3b5c;
+    --line-h: 22px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent2); }
+
+  .file-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* STATUS BAR */
+  #statusBar {
+    padding: 8px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #statusBar .stat { display: flex; align-items: center; gap: 4px; }
+  #statusBar .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  #statusBar .dot.ok { background: var(--success); }
+  #statusBar .dot.err { background: var(--danger); }
+  #statusBar .dot.loading {
+    background: var(--accent);
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* TOOLBAR */
+  .toolbar {
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn.primary { border-color: var(--accent); color: var(--accent); }
+  .btn.danger { border-color: var(--danger); color: var(--danger); }
+  .btn.success { border-color: var(--success); color: var(--success); }
+  .btn:disabled { opacity: 0.3; pointer-events: none; }
+
+  /* SEARCH BAR */
+  .search-row {
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .search-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 8px 40px 8px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  #searchCount {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .search-nav { display: flex; gap: 4px; }
+  .search-nav .btn { padding: 7px 10px; }
+
+  /* MATCH JUMP LIST */
+  #matchList {
+    display: none;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  .match-item {
+    padding: 8px 16px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .match-item:active { background: var(--border); }
+  .match-line {
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 36px;
+    font-size: 10px;
+    padding-top: 1px;
+  }
+  .match-text {
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+  .match-text em {
+    font-style: normal;
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  /* EDITOR */
+  .editor-wrap {
+    position: relative;
+    display: flex;
+  }
+
+  #lineNums {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 8px;
+    text-align: right;
+    font-size: 12px;
+    line-height: var(--line-h);
+    color: var(--muted);
+    min-width: 44px;
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  #editor {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: var(--line-h);
+    padding: 16px 16px 200px 12px;
+    resize: none;
+    outline: none;
+    min-height: calc(100vh - 200px);
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: auto;
+    tab-size: 2;
+  }
+
+  /* PAT MODAL */
+  #patModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #patModal.show { display: flex; }
+
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .modal-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .modal-box p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .modal-box input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  .modal-box input:focus { border-color: var(--accent); }
+
+  .modal-actions { display: flex; gap: 8px; }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+    z-index: 300;
+    white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.ok { border-color: var(--success); color: var(--success); }
+  #toast.err { border-color: var(--danger); color: var(--danger); }
+  #toast.info { border-color: var(--accent); color: var(--accent); }
+
+  /* COMMIT MSG */
+  #commitRow {
+    display: none;
+    padding: 10px 16px;
+    gap: 8px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    position: sticky;
+    bottom: 0;
+  }
+  #commitRow.show { display: flex; }
+
+  #commitMsg {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 8px 12px;
+    outline: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Blaze<span>FTL</span> · Editor</div>
+  <div class="file-label">My-Filters_Static_Sites.txt</div>
+</header>
+
+<div id="statusBar">
+  <div class="stat"><div class="dot" id="connDot"></div><span id="connText">Not loaded</span></div>
+  <div class="stat" id="lineCount" style="display:none">0 lines</div>
+  <div class="stat" id="modStat" style="display:none;color:var(--accent2)">● Unsaved changes</div>
+</div>
+
+<div class="toolbar">
+  <button class="btn primary" onclick="loadFile()">⬇ Load</button>
+  <button class="btn success" id="saveBtn" onclick="showCommit()" disabled>⬆ Save to GitHub</button>
+  <button class="btn" onclick="copyAll()">⎘ Copy All</button>
+  <button class="btn danger" onclick="showPat()">🔑 PAT</button>
+  <button class="btn" onclick="goToLine()">↗ Go to Line</button>
+</div>
+
+<div class="search-row">
+  <div class="search-wrap">
+    <input type="search" id="searchInput" placeholder="Search filters..." oninput="doSearch()" />
+    <span id="searchCount"></span>
+  </div>
+  <div class="search-nav">
+    <button class="btn" onclick="navMatch(-1)">▲</button>
+    <button class="btn" onclick="navMatch(1)">▼</button>
+  </div>
+</div>
+
+<div id="matchList"></div>
+
+<div class="editor-wrap">
+  <div id="lineNums">1</div>
+  <textarea id="editor" spellcheck="false" autocorrect="off" autocapitalize="off"
+    placeholder="Click 'Load' to fetch your filter file..."
+    oninput="onEdit()" onscroll="syncScroll()" onkeyup="updateLineNums()"></textarea>
+</div>
+
+<div id="commitRow">
+  <input id="commitMsg" type="text" placeholder="Commit message..." value="Update filters" />
+  <button class="btn success" onclick="saveFile()">Push</button>
+  <button class="btn" onclick="hideCommit()">✕</button>
+</div>
+
+<div id="patModal">
+  <div class="modal-box">
+    <h2>GitHub Personal Access Token</h2>
+    <p>Required only for saving. Needs <strong>repo</strong> scope.<br>
+    Stored in localStorage — never sent anywhere except GitHub API.</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <div class="modal-actions">
+      <button class="btn primary" onclick="savePat()">Save Token</button>
+      <button class="btn" onclick="closePat()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const OWNER = 'BlazeFTL';
+const REPO  = 'My-Filters';
+const FILE  = 'My-Filters_Static_Sites.txt';
+const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/master/${FILE}`;
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+
+let fileSha = null;
+let originalContent = '';
+let matches = [];
+let matchIndex = 0;
+
+// ── Load ──────────────────────────────────────────────────────────────
+async function loadFile() {
+  setStatus('loading', 'Fetching...');
+  try {
+    const r = await fetch(RAW + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const text = await r.text();
+    editor.value = text;
+    originalContent = text;
+    updateLineNums();
+    setStatus('ok', `Loaded · ${text.split('\n').length} lines`);
+    document.getElementById('lineCount').style.display = '';
+    document.getElementById('lineCount').textContent = text.split('\n').length + ' lines';
+    document.getElementById('modStat').style.display = 'none';
+    document.getElementById('saveBtn').disabled = false;
+    // fetch SHA for saves
+    fetchSha();
+    toast('File loaded', 'ok');
+  } catch(e) {
+    setStatus('err', 'Load failed: ' + e.message);
+    toast('Load failed: ' + e.message, 'err');
+  }
+}
+
+async function fetchSha() {
+  const pat = getPat();
+  const headers = pat ? { Authorization: 'token ' + pat } : {};
+  try {
+    const r = await fetch(API, { headers });
+    const j = await r.json();
+    fileSha = j.sha;
+  } catch(e) {}
+}
+
+// ── Edit ─────────────────────────────────────────────────────────────
+const editor = document.getElementById('editor');
+
+function onEdit() {
+  updateLineNums();
+  const changed = editor.value !== originalContent;
+  document.getElementById('modStat').style.display = changed ? '' : 'none';
+}
+
+function updateLineNums() {
+  const lines = editor.value.split('\n').length;
+  const nums = Array.from({length: lines}, (_,i) => i+1).join('\n');
+  document.getElementById('lineNums').textContent = nums;
+}
+
+function syncScroll() {
+  document.getElementById('lineNums').scrollTop = editor.scrollTop;
+}
+
+// ── Search ────────────────────────────────────────────────────────────
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const list = document.getElementById('matchList');
+  const count = document.getElementById('searchCount');
+  matches = [];
+  list.innerHTML = '';
+
+  if (!q || !editor.value) {
+    list.style.display = 'none';
+    count.textContent = '';
+    return;
+  }
+
+  const lines = editor.value.split('\n');
+  const ql = q.toLowerCase();
+
+  lines.forEach((line, i) => {
+    if (line.toLowerCase().includes(ql)) {
+      matches.push({ line: i+1, text: line });
+    }
+  });
+
+  count.textContent = matches.length ? matches.length : '0';
+  if (!matches.length) { list.style.display = 'none'; return; }
+
+  matches.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'match-item';
+    const hi = m.text.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'),
+      s => `<em>${s}</em>`);
+    div.innerHTML = `<span class="match-line">L${m.line}</span><span class="match-text">${hi}</span>`;
+    div.onclick = () => jumpToLine(m.line);
+    list.appendChild(div);
+  });
+
+  list.style.display = 'block';
+  matchIndex = 0;
+  jumpToLine(matches[0].line);
+}
+
+function navMatch(dir) {
+  if (!matches.length) return;
+  matchIndex = (matchIndex + dir + matches.length) % matches.length;
+  jumpToLine(matches[matchIndex].line);
+}
+
+function jumpToLine(lineNum) {
+  const lines = editor.value.split('\n');
+  let pos = 0;
+  for (let i = 0; i < lineNum - 1; i++) pos += lines[i].length + 1;
+  editor.focus();
+  editor.setSelectionRange(pos, pos + lines[lineNum-1].length);
+  // scroll into view
+  const lineH = parseInt(getComputedStyle(editor).lineHeight);
+  editor.scrollTop = (lineNum - 5) * lineH;
+}
+
+function goToLine() {
+  const n = prompt('Go to line number:');
+  if (n && !isNaN(n)) jumpToLine(parseInt(n));
+}
+
+// ── Save ─────────────────────────────────────────────────────────────
+function showCommit() {
+  const pat = getPat();
+  if (!pat) { showPat(); return; }
+  document.getElementById('commitRow').classList.add('show');
+  document.getElementById('commitMsg').focus();
+}
+
+function hideCommit() {
+  document.getElementById('commitRow').classList.remove('show');
+}
+
+async function saveFile() {
+  const pat = getPat();
+  if (!pat) { toast('No PAT set', 'err'); return; }
+  if (!fileSha) { toast('Load file first', 'err'); return; }
+
+  const msg = document.getElementById('commitMsg').value || 'Update filters';
+  const content = btoa(unescape(encodeURIComponent(editor.value)));
+
+  setStatus('loading', 'Saving...');
+  try {
+    const r = await fetch(API, {
+      method: 'PUT',
+      headers: {
+        Authorization: 'token ' + pat,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: msg, content, sha: fileSha })
+    });
+    if (!r.ok) {
+      const j = await r.json();
+      throw new Error(j.message || r.status);
+    }
+    const j = await r.json();
+    fileSha = j.content.sha;
+    originalContent = editor.value;
+    document.getElementById('modStat').style.display = 'none';
+    setStatus('ok', 'Saved ✓');
+    hideCommit();
+    toast('Saved to GitHub ✓', 'ok');
+  } catch(e) {
+    setStatus('err', 'Save failed');
+    toast('Save failed: ' + e.message, 'err');
+  }
+}
+
+// ── PAT ───────────────────────────────────────────────────────────────
+function getPat() { return localStorage.getItem('blaze_pat') || ''; }
+function showPat() { document.getElementById('patModal').classList.add('show'); document.getElementById('patInput').value = getPat(); }
+function closePat() { document.getElementById('patModal').classList.remove('show'); }
+function savePat() {
+  const v = document.getElementById('patInput').value.trim();
+  if (v) { localStorage.setItem('blaze_pat', v); toast('Token saved', 'ok'); }
+  closePat();
+}
+
+// ── Util ──────────────────────────────────────────────────────────────
+function copyAll() {
+  navigator.clipboard.writeText(editor.value).then(() => toast('Copied!', 'info'));
+}
+
+function setStatus(state, text) {
+  const dot = document.getElementById('connDot');
+  const txt = document.getElementById('connText');
+  dot.className = 'dot ' + state;
+  txt.textContent = text;
+}
+
+function toast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = '', 2500);
+}
+
+// init line nums
+updateLineNums();
+// auto-load on open
+loadFile();
+</script>
+</body>
+</html>
