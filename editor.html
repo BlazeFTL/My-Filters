@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Filter Editor — BlazeFTL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --surface2: #F5F5F5;
+  --border: #E0E0E0;
+  --border2: #BDBDBD;
+  --primary: #1565C0;
+  --primary-light: #E3F2FD;
+  --primary-dark: #0D47A1;
+  --warn: #F57F17;
+  --danger: #C62828;
+  --success: #2E7D32;
+  --text: #212121;
+  --text2: #757575;
+  --text3: #BDBDBD;
+  --shadow: 0 1px 3px rgba(0,0,0,0.14);
+  --shadow2: 0 2px 8px rgba(0,0,0,0.18);
+  --lh: 21px;
+  --fn: 13px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP APP BAR */
+#topBar {
+  flex-shrink: 0;
+  background: var(--primary);
+  color: white;
+  padding: 0 14px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow2);
+  z-index: 100;
+}
+.app-title { font-size: 17px; font-weight: 500; }
+.app-file  { font-size: 10px; opacity: 0.7; font-family: 'Roboto Mono', monospace; margin-top: 1px; }
+
+#statusChip {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 12px; padding: 4px 10px; font-size: 11px;
+}
+#sDot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.4); }
+#sDot.ok      { background:#69F0AE; }
+#sDot.err     { background:#FF5252; }
+#sDot.loading { background:#FFD740; animation:blink 0.8s infinite; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* TOOLBAR */
+#toolbar {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  padding: 5px 8px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px; font-weight: 500;
+  padding: 6px 11px;
+  border-radius: 4px; border: none;
+  cursor: pointer; white-space: nowrap;
+  letter-spacing: 0.3px; text-transform: uppercase;
+  transition: background 0.12s; min-height: 32px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.btn:active { opacity: 0.75; transform: scale(0.96); }
+.btn-flat     { background: transparent; color: var(--primary); }
+.btn-flat:hover { background: var(--primary-light); }
+.btn-raised   { background: var(--primary); color: white; box-shadow: var(--shadow); }
+.btn-raised:hover { background: var(--primary-dark); }
+.btn-green    { background: #388E3C; color: white; box-shadow: var(--shadow); }
+.btn-red      { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+.btn:disabled { opacity: 0.3; pointer-events: none; }
+
+#modBadge {
+  display: none; font-size: 10px; font-weight: 700;
+  background: #FF8F00; color: white;
+  border-radius: 10px; padding: 2px 8px; letter-spacing: 0.5px;
+}
+#modBadge.show { display: inline-block; }
+
+/* FIND BAR */
+#findBar {
+  flex-shrink: 0;
+  background: #EFF6FF;
+  border-bottom: 1px solid #BBDEFB;
+  padding: 6px 8px;
+  display: none; flex-direction: column; gap: 5px;
+}
+#findBar.show { display: flex; }
+
+.find-row { display: flex; gap: 5px; align-items: center; }
+
+.find-input {
+  flex: 1; min-width: 0;
+  font-family: 'Roboto Mono', monospace; font-size: 13px;
+  padding: 7px 10px;
+  border: 1px solid var(--border2); border-radius: 4px;
+  background: white; color: var(--text); outline: none;
+}
+.find-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+
+#findCount { font-size: 11px; color: var(--text2); white-space: nowrap; min-width: 44px; text-align: center; }
+
+/* EDITOR AREA */
+#editorArea {
+  flex: 1; display: flex; overflow: hidden; position: relative;
+  background: var(--surface);
+}
+
+#lineNums {
+  width: 46px; min-width: 46px;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  pointer-events: none; user-select: none; flex-shrink: 0;
+}
+#lineNumsInner {
+  padding: 8px 6px 8px 0;
+  text-align: right;
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--fn);
+  line-height: var(--lh);
+  color: var(--text3);
+  white-space: pre;
+  will-change: transform;
+}
+
+#editor {
+  flex: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--fn); line-height: var(--lh);
+  padding: 8px 12px 250px 8px;
+  border: none; outline: none; resize: none;
+  background: var(--surface); color: var(--text);
+  overflow-y: scroll; overflow-x: auto;
+  white-space: pre; word-break: normal;
+  -webkit-overflow-scrolling: touch;
+  tab-size: 2; caret-color: var(--primary);
+  -webkit-user-select: text; user-select: text;
+}
+
+/* COMMIT BAR */
+#commitBar {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 2px solid #388E3C;
+  padding: 6px 8px;
+  display: none; gap: 6px; align-items: center;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+}
+#commitBar.show { display: flex; }
+
+#commitMsg {
+  flex: 1;
+  font-family: 'Roboto', sans-serif; font-size: 13px;
+  padding: 8px 10px;
+  border: 1px solid var(--border2); border-radius: 4px;
+  outline: none; color: var(--text); background: var(--surface);
+}
+#commitMsg:focus { border-color: #388E3C; }
+
+/* PAT SHEET */
+#patModal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 200;
+  align-items: flex-end; justify-content: center;
+}
+#patModal.show { display: flex; }
+.modal-sheet {
+  background: white; border-radius: 16px 16px 0 0;
+  padding: 22px 20px 36px; width: 100%; max-width: 520px;
+}
+.modal-sheet h2 { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+.modal-sheet p  { font-size: 12px; color: var(--text2); margin-bottom: 14px; line-height: 1.5; }
+.modal-sheet input {
+  width: 100%;
+  font-family: 'Roboto Mono', monospace; font-size: 13px;
+  padding: 10px 12px;
+  border: 1px solid var(--border2); border-radius: 4px;
+  outline: none; margin-bottom: 14px;
+  background: var(--surface2); color: var(--text);
+}
+.modal-sheet input:focus { border-color: var(--primary); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* TOAST */
+#toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(64px);
+  background: #323232; color: white;
+  border-radius: 4px; padding: 10px 18px;
+  font-size: 13px; font-weight: 500;
+  transition: transform 0.22s ease; z-index: 400;
+  white-space: nowrap; box-shadow: var(--shadow2);
+  pointer-events: none;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="topBar">
+  <div>
+    <div class="app-title">Filter Editor</div>
+    <div class="app-file">My-Filters_Static_Sites.txt</div>
+  </div>
+  <div id="statusChip">
+    <div id="sDot"></div>
+    <span id="sText">Not loaded</span>
+  </div>
+</div>
+
+<div id="toolbar">
+  <button class="btn btn-raised" onclick="loadFile()">⬇ Load</button>
+  <button class="btn btn-green" id="saveBtn" onclick="showCommit()" disabled>⬆ Save</button>
+  <button class="btn btn-flat" onclick="toggleFind()">🔍 Find</button>
+  <button class="btn btn-flat" onclick="copyAll()">⎘ Copy</button>
+  <button class="btn btn-flat" onclick="goToLine()"># Line</button>
+  <button class="btn btn-red"  onclick="showPat()">🔑 PAT</button>
+  <span id="modBadge">UNSAVED</span>
+</div>
+
+<div id="findBar">
+  <div class="find-row">
+    <input class="find-input" id="findInput" placeholder="Find..." oninput="doFind()" />
+    <span id="findCount"></span>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="navFind(-1)">▲</button>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="navFind(1)">▼</button>
+    <button class="btn btn-flat" style="padding:6px 8px" onclick="toggleFind()">✕</button>
+  </div>
+  <div class="find-row">
+    <input class="find-input" id="replaceInput" placeholder="Replace with..." />
+    <button class="btn btn-flat" onclick="replaceCurrent()">Replace</button>
+    <button class="btn btn-flat" onclick="replaceAll()">All</button>
+  </div>
+</div>
+
+<div id="editorArea">
+  <div id="lineNums"><div id="lineNumsInner">1</div></div>
+  <textarea id="editor"
+    spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off"
+    placeholder="Tap Load to fetch your filters..."
+    oninput="onEdit()" onscroll="syncScroll()"
+  ></textarea>
+</div>
+
+<div id="commitBar">
+  <input id="commitMsg" type="text" placeholder="Commit message..." value="Update My-Filters" />
+  <button class="btn btn-green" onclick="saveFile()">Push</button>
+  <button class="btn btn-flat" onclick="hideCommit()">✕</button>
+</div>
+
+<div id="patModal">
+  <div class="modal-sheet">
+    <h2>GitHub Token (PAT)</h2>
+    <p>Required for saving only. Needs <b>repo</b> scope.<br>
+    Stored in your browser — never committed to GitHub.</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <div class="modal-actions">
+      <button class="btn btn-flat" onclick="closePat()">Cancel</button>
+      <button class="btn btn-raised" onclick="savePat()">Save Token</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const OWNER = 'BlazeFTL';
+const REPO  = 'My-Filters';
+const FILE  = 'My-Filters_Static_Sites.txt';
+const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/master/${FILE}`;
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+
+const editor   = document.getElementById('editor');
+const lnInner  = document.getElementById('lineNumsInner');
+
+let fileSha = null, originalContent = '', findMatches = [], findIdx = 0;
+
+// ── LOAD ──────────────────────────────────────────────
+async function loadFile() {
+  setStatus('loading', 'Fetching...');
+  try {
+    const r = await fetch(RAW + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const text = await r.text();
+    editor.value = text;
+    originalContent = text;
+    rebuildLineNums();
+    const lc = text.split('\n').length;
+    setStatus('ok', lc + ' lines');
+    document.getElementById('saveBtn').disabled = false;
+    document.getElementById('modBadge').classList.remove('show');
+    fetchSha();
+    toast('Loaded — ' + lc + ' lines');
+  } catch(e) {
+    setStatus('err', 'Load failed');
+    toast('Load failed: ' + e.message);
+  }
+}
+
+async function fetchSha() {
+  const pat = getPat();
+  try {
+    const r = await fetch(API, { headers: pat ? { Authorization:'token '+pat } : {} });
+    const j = await r.json();
+    fileSha = j.sha;
+  } catch(e) {}
+}
+
+// ── EDIT ──────────────────────────────────────────────
+function onEdit() {
+  rebuildLineNums();
+  document.getElementById('modBadge').classList.toggle('show', editor.value !== originalContent);
+}
+
+function rebuildLineNums() {
+  const n = editor.value.split('\n').length;
+  const arr = new Array(n);
+  for (let i = 0; i < n; i++) arr[i] = i + 1;
+  lnInner.textContent = arr.join('\n');
+}
+
+function syncScroll() {
+  // Use translateY for smoother performance than scrollTop on the div
+  lnInner.style.transform = `translateY(-${editor.scrollTop}px)`;
+}
+
+// ── FIND / REPLACE ────────────────────────────────────
+let findOpen = false;
+function toggleFind() {
+  findOpen = !findOpen;
+  document.getElementById('findBar').classList.toggle('show', findOpen);
+  if (findOpen) setTimeout(() => document.getElementById('findInput').focus(), 50);
+  else { findMatches = []; document.getElementById('findCount').textContent = ''; }
+}
+
+function doFind() {
+  const q = document.getElementById('findInput').value;
+  findMatches = [];
+  if (!q) { document.getElementById('findCount').textContent = ''; return; }
+  const tl = editor.value.toLowerCase(), ql = q.toLowerCase();
+  let pos = 0;
+  while ((pos = tl.indexOf(ql, pos)) !== -1) { findMatches.push(pos); pos += ql.length; }
+  if (findMatches.length) { findIdx = 0; highlightFind(0); }
+  updateFindCount();
+}
+
+function navFind(dir) {
+  if (!findMatches.length) return;
+  findIdx = (findIdx + dir + findMatches.length) % findMatches.length;
+  highlightFind(findIdx);
+  updateFindCount();
+}
+
+function highlightFind(idx) {
+  const q = document.getElementById('findInput').value;
+  const pos = findMatches[idx];
+  editor.focus();
+  editor.setSelectionRange(pos, pos + q.length);
+  const lineNum = editor.value.substring(0, pos).split('\n').length;
+  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+  editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
+  syncScroll();
+}
+
+function updateFindCount() {
+  document.getElementById('findCount').textContent =
+    findMatches.length ? `${findIdx+1}/${findMatches.length}` : '0 found';
+}
+
+function replaceCurrent() {
+  const q = document.getElementById('findInput').value;
+  const rep = document.getElementById('replaceInput').value;
+  if (!q || !findMatches.length) return;
+  const pos = findMatches[findIdx];
+  editor.value = editor.value.substring(0, pos) + rep + editor.value.substring(pos + q.length);
+  onEdit(); doFind();
+  toast('Replaced 1 match');
+}
+
+function replaceAll() {
+  const q = document.getElementById('findInput').value;
+  const rep = document.getElementById('replaceInput').value;
+  if (!q) return;
+  const n = findMatches.length;
+  // case-insensitive replace all
+  editor.value = editor.value.split(q).join(rep);
+  onEdit(); doFind();
+  toast(`Replaced ${n} matches`);
+}
+
+// ── GO TO LINE ────────────────────────────────────────
+function goToLine() {
+  const n = prompt('Go to line:');
+  if (!n || isNaN(n)) return;
+  const lineNum = Math.max(1, parseInt(n));
+  const lines = editor.value.split('\n');
+  let pos = 0;
+  for (let i = 0; i < Math.min(lineNum - 1, lines.length - 1); i++) pos += lines[i].length + 1;
+  editor.focus();
+  editor.setSelectionRange(pos, pos + (lines[lineNum-1] || '').length);
+  const lh = parseFloat(getComputedStyle(editor).lineHeight) || 21;
+  editor.scrollTop = Math.max(0, (lineNum - 5) * lh);
+  syncScroll();
+}
+
+// ── SAVE ──────────────────────────────────────────────
+function showCommit() {
+  if (!getPat()) { showPat(); return; }
+  document.getElementById('commitBar').classList.add('show');
+  setTimeout(() => document.getElementById('commitMsg').focus(), 50);
+}
+function hideCommit() { document.getElementById('commitBar').classList.remove('show'); }
+
+async function saveFile() {
+  const pat = getPat();
+  if (!pat)    { toast('No PAT set — tap 🔑 PAT'); return; }
+  if (!fileSha){ toast('Load file first'); return; }
+  const msg = document.getElementById('commitMsg').value || 'Update filters';
+  const content = btoa(unescape(encodeURIComponent(editor.value)));
+  setStatus('loading', 'Saving...');
+  try {
+    const r = await fetch(API, {
+      method: 'PUT',
+      headers: { Authorization:'token '+pat, 'Content-Type':'application/json' },
+      body: JSON.stringify({ message:msg, content, sha:fileSha })
+    });
+    if (!r.ok) { const j = await r.json(); throw new Error(j.message || r.status); }
+    const j = await r.json();
+    fileSha = j.content.sha;
+    originalContent = editor.value;
+    document.getElementById('modBadge').classList.remove('show');
+    setStatus('ok', editor.value.split('\n').length + ' lines');
+    hideCommit();
+    toast('Saved to GitHub ✓');
+  } catch(e) {
+    setStatus('err', 'Save failed');
+    toast('Save failed: ' + e.message);
+  }
+}
+
+// ── PAT ───────────────────────────────────────────────
+function getPat()  { return localStorage.getItem('blaze_pat') || ''; }
+function showPat() { document.getElementById('patModal').classList.add('show'); document.getElementById('patInput').value = getPat(); }
+function closePat(){ document.getElementById('patModal').classList.remove('show'); }
+function savePat() {
+  const v = document.getElementById('patInput').value.trim();
+  if (v) { localStorage.setItem('blaze_pat', v); toast('Token saved'); }
+  closePat();
+}
+
+// ── COPY ALL ──────────────────────────────────────────
+function copyAll() {
+  navigator.clipboard.writeText(editor.value)
+    .then(() => toast('Copied to clipboard'))
+    .catch(() => { editor.select(); document.execCommand('copy'); toast('Copied'); });
+}
+
+// ── STATUS ────────────────────────────────────────────
+function setStatus(state, text) {
+  document.getElementById('sDot').className = state;
+  document.getElementById('sText').textContent = text;
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── ANDROID LONG-PRESS FIX ───────────────────────────
+editor.setAttribute('contenteditable', 'false'); // reset then remove
+editor.removeAttribute('contenteditable');
+editor.style.webkitUserSelect = 'text';
+editor.style.userSelect = 'text';
+
+// ── INIT ──────────────────────────────────────────────
+rebuildLineNums();
+loadFile();
+</script>
+</body>
+</html>
