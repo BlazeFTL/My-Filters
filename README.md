@@ -6,7 +6,7 @@
 
 
 <div align="center">
-  <p><i>"If a site has a anti-adblock, a timer, or an annoying popup, I'm already there."</i></p>
+  <p><i>"Backup for BlazeFTL's uBlockOrigin Filters & UserScript ."</i></p>
 </div>
 
 
