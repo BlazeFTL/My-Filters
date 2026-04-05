@@ -41,8 +41,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   flex-shrink:0; background:var(--primary); color:white;
   padding:0 10px 0 14px; height:52px;
   display:flex; align-items:center; justify-content:space-between;
-  box-shadow:var(--shadow2);
-  z-index:100; gap:8px;
+  box-shadow:var(--shadow2); z-index:100; gap:8px;
 }
 .app-info { flex:1; min-width:0; }
 .app-title { font-size:16px; font-weight:500; }
@@ -64,8 +63,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   display:flex; align-items:center; gap:5px;
   background:rgba(255,255,255,0.15); border:none; color:white;
   border-radius:8px; padding:5px 10px; font-family:'Roboto',sans-serif;
-  font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap;
-}
+  font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap; }
 #patTopBtn:active { opacity:0.7; }
 #patDot { width:10px;height:10px;border-radius:50%;background:#FF5252;flex-shrink:0;transition:background 0.3s; }
 #patDot.set { background:#69F0AE; }
@@ -91,21 +89,16 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 #modBadge {
   display:none; font-size:10px; font-weight:700;
   background:#FF8F00; color:white;
-  border-radius:10px;
-  padding:2px 8px; letter-spacing:0.5px;
-}
+  border-radius:10px; padding:2px 8px; letter-spacing:0.5px; }
 #modBadge.show { display:inline-block; }
 
 /* ── SEARCH PANEL ────────────────────────────────────── */
 #searchPanel {
   display:none; flex-shrink:0;
   background:#FFFFFF;
-  border-bottom:2px solid var(--primary);
-  padding:8px 10px;
+  border-bottom:2px solid var(--primary); padding:8px 10px;
   box-shadow:0 2px 8px rgba(21,101,192,0.12);
-  z-index:90;
-  flex-direction:column; gap:6px;
-}
+  z-index:90; flex-direction:column; gap:6px; }
 #searchPanel.open { display:flex; }
 
 .sp-row { display:flex; gap:6px; align-items:center; }
@@ -115,23 +108,19 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   padding:8px 70px 8px 12px;
   border:1.5px solid var(--border2); border-radius:6px;
   background:var(--surface2); color:var(--text); outline:none;
-  transition:border-color 0.15s, box-shadow 0.15s;
-}
+  transition:border-color 0.15s, box-shadow 0.15s; }
 .sp-field input:focus {
   border-color:var(--primary);
   box-shadow:0 0 0 3px rgba(21,101,192,0.12);
-  background:#fff;
-}
+  background:#fff; }
 .sp-field input::placeholder { color:var(--text3); }
 
 .sp-toggles { display:flex; gap:2px; position:absolute; right:8px; }
 .sp-tog {
   font-family:'Roboto Mono',monospace; font-size:10px; font-weight:700;
   padding:3px 6px; border-radius:3px; border:1px solid var(--border);
-  background:transparent;
-  color:var(--text2); cursor:pointer;
-  transition:all 0.12s; line-height:1;
-}
+  background:transparent; color:var(--text2); cursor:pointer;
+  transition:all 0.12s; line-height:1; }
 .sp-tog.on { background:var(--primary); border-color:var(--primary); color:white; }
 
 .sp-nav-btns { display:flex; gap:4px; flex-shrink:0; }
@@ -140,43 +129,36 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   border-radius:6px; border:1.5px solid var(--border2);
   background:var(--surface2); color:var(--primary); font-size:16px;
   cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition:all 0.12s; font-weight:700;
-}
+  transition:all 0.12s; font-weight:700; }
 .sp-nav-btn:active { background:var(--primary-light); border-color:var(--primary); }
 
 .sp-close-btn {
   width:32px; height:32px; border-radius:6px; border:none;
   background:transparent; color:var(--text2); font-size:18px;
   cursor:pointer; display:flex; align-items:center; justify-content:center;
-  flex-shrink:0;
-}
+  flex-shrink:0; }
 .sp-close-btn:active { background:var(--surface2); }
 
 .sp-replace-row { display:flex; gap:6px; align-items:center; }
 .sp-replace-row input {
   flex:1; font-family:'Roboto Mono',monospace; font-size:13px;
-  padding:8px 12px;
-  border:1.5px solid var(--border2); border-radius:6px;
-  background:var(--surface2);
-  color:var(--text); outline:none;
-  transition:border-color 0.15s;
-}
+  padding:8px 12px; border:1.5px solid var(--border2); border-radius:6px;
+  background:var(--surface2); color:var(--text); outline:none;
+  transition:border-color 0.15s; }
 .sp-replace-row input:focus { border-color:#388E3C; box-shadow:0 0 0 3px rgba(56,142,60,0.12); background:#fff; }
 .sp-rep-btn {
   font-family:'Roboto',sans-serif; font-size:11px; font-weight:500;
   padding:6px 10px; border-radius:6px; border:1.5px solid var(--border2);
   background:var(--surface2); color:#388E3C; cursor:pointer;
   white-space:nowrap; text-transform:uppercase; letter-spacing:0.3px;
-  transition:all 0.12s;
-}
+  transition:all 0.12s; }
 .sp-rep-btn:active { background:#E8F5E9; border-color:#388E3C; }
 
 #spToggleReplace {
   font-size:11px; font-weight:500; color:var(--text2);
   background:none; border:none; cursor:pointer; padding:0 4px;
   white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
-  font-family:'Roboto',sans-serif;
-}
+  font-family:'Roboto',sans-serif; }
 #spToggleReplace:active { color:var(--primary); }
 
 /* ── EDITOR AREA ─────────────────────────────────────── */
@@ -212,21 +194,18 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   display:none; position:fixed; left:0; right:0;
   background:var(--surface); border-top:2px solid #388E3C;
   padding:10px; gap:8px; align-items:center;
-  box-shadow:0 -2px 8px rgba(0,0,0,0.12); z-index:150;
-}
+  box-shadow:0 -2px 8px rgba(0,0,0,0.12); z-index:150; }
 #commitBar.show { display:flex; }
 #commitMsg {
   flex:1; font-family:'Roboto',sans-serif; font-size:15px;
   padding:12px 14px; border:1px solid var(--border2); border-radius:6px;
-  outline:none; color:var(--text); background:var(--surface); min-height:48px;
-}
+  outline:none; color:var(--text); background:var(--surface); min-height:48px; }
 #commitMsg:focus { border-color:#388E3C; box-shadow:0 0 0 2px #C8E6C9; }
 
 #patModal {
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,0.45); z-index:200;
-  align-items:flex-end; justify-content:center;
-}
+  align-items:flex-end; justify-content:center; }
 #patModal.show { display:flex; }
 .modal-sheet { background:white; border-radius:16px 16px 0 0; padding:22px 20px 36px; width:100%; max-width:520px; }
 .modal-sheet h2 { font-size:16px; font-weight:500; margin-bottom:6px; }
@@ -234,8 +213,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 .modal-sheet input {
   width:100%; font-family:'Roboto Mono',monospace; font-size:13px;
   padding:10px 12px; border:1px solid var(--border2); border-radius:4px;
-  outline:none; margin-bottom:14px; background:var(--surface2); color:var(--text);
-}
+  outline:none; margin-bottom:14px; background:var(--surface2); color:var(--text); }
 .modal-sheet input:focus { border-color:var(--primary); }
 .modal-actions { display:flex; gap:8px; justify-content:flex-end; }
 
@@ -245,8 +223,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   background:#323232; color:white; border-radius:4px;
   padding:10px 18px; font-size:13px; font-weight:500;
   transition:transform 0.22s ease; z-index:400;
-  white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
-}
+  white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none; }
 #toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -380,7 +357,6 @@ const uboHighlighter = ViewPlugin.fromClass(
   },
   { decorations: v => v.decorations }
 );
-
 function buildDecos(view) {
   const builder = [];
   const { from: vpFrom, to: vpTo } = view.viewport;
@@ -462,7 +438,6 @@ const updateListener = EditorView.updateListener.of(u => {
     if (document.getElementById('searchPanel').classList.contains('open')) { updateMatchCount(); }
   }
 });
-
 const view = new EditorView({
   state: EditorState.create({
     doc: '',
@@ -508,7 +483,6 @@ window._view = view;
 
 // ── Search Panel Logic ────────────────────────────────
 let spState = { caseSensitive: false, wholeWord: false, regexp: false, replaceVisible: false };
-
 window.openSearchPanel = function(withReplace = false) {
   const panel = document.getElementById('searchPanel');
   panel.classList.add('open');
@@ -578,8 +552,16 @@ window.spSearch = function() {
   try {
     const query = buildSearchQuery(q);
     view.dispatch({ effects: setSearchQuery.of(query) });
-    // This jumps to the result as you type
-    findNext(view); 
+    
+    [span_2](start_span)// MODIFIED: Center the viewport on match while typing[span_2](end_span)
+    const cursor = query.getCursor(view.state.doc);
+    const first = cursor.next();
+    if (!first.done) {
+        view.dispatch({
+            selection: { anchor: first.value.from, head: first.value.to },
+            effects: EditorView.scrollIntoView(first.value.from, { y: 'center' }),
+        });
+    }
     updateMatchCount();
   } catch(e) {}
 };
@@ -589,6 +571,9 @@ window.spNext = function() {
   if (!q) return;
   view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
   findNext(view);
+  [span_3](start_span)// Re-center on next manually[span_3](end_span)
+  const sel = view.state.selection.main;
+  view.dispatch({ effects: EditorView.scrollIntoView(sel.from, { y: 'center' }) });
   view.focus();
   setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
 };
@@ -598,6 +583,9 @@ window.spPrev = function() {
   if (!q) return;
   view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
   findPrevious(view);
+  [span_4](start_span)// Re-center on prev manually[span_4](end_span)
+  const sel = view.state.selection.main;
+  view.dispatch({ effects: EditorView.scrollIntoView(sel.from, { y: 'center' }) });
   view.focus();
   setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
 };
@@ -625,6 +613,7 @@ window.spKey = function(e) {
   if (e.key === 'Enter') { e.shiftKey ? spPrev() : spNext(); e.preventDefault(); }
   if (e.key === 'Escape') { closeSearchPanel(); e.preventDefault(); }
 };
+
 window.spRepKey = function(e) {
   if (e.key === 'Enter') { spReplaceOne(); e.preventDefault(); }
   if (e.key === 'Escape') { closeSearchPanel(); e.preventDefault(); }
