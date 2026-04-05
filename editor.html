@@ -148,13 +148,13 @@ body{background:var(--bg);color:var(--text);font-family:'Roboto',sans-serif;disp
 <script type="importmap">
 {
   "imports": {
-    "codemirror":            "https://esm.sh/codemirror@6.0.1",
-    "@codemirror/state":     "https://esm.sh/@codemirror/state@6.4.1",
-    "@codemirror/view":      "https://esm.sh/@codemirror/view@6.35.3",
-    "@codemirror/language":  "https://esm.sh/@codemirror/language@6.10.8",
-    "@codemirror/commands":  "https://esm.sh/@codemirror/commands@6.7.1",
-    "@codemirror/search":    "https://esm.sh/@codemirror/search@6.5.10",
-    "@lezer/highlight":      "https://esm.sh/@lezer/highlight@1.2.1"
+    "codemirror":            "https://cdn.jsdelivr.net/npm/codemirror@6.0.1/+esm",
+    "@codemirror/state":     "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/+esm",
+    "@codemirror/view":      "https://cdn.jsdelivr.net/npm/@codemirror/view@6.35.3/+esm",
+    "@codemirror/language":  "https://cdn.jsdelivr.net/npm/@codemirror/language@6.10.8/+esm",
+    "@codemirror/commands":  "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.7.1/+esm",
+    "@codemirror/search":    "https://cdn.jsdelivr.net/npm/@codemirror/search@6.5.10/+esm",
+    "@lezer/highlight":      "https://cdn.jsdelivr.net/npm/@lezer/highlight@1.2.1/+esm"
   }
 }
 </script>
@@ -322,8 +322,15 @@ function buildState(doc) {
 
 function initEditor(doc) {
   const overlay = document.getElementById('loadingOverlay');
-  if (overlay) overlay.remove();
+  if (overlay) {
+    overlay.remove();
+  }
   
+  // Prevent duplicate editor initialization
+  if (view) {
+    view.destroy(); 
+  }
+
   view = new EditorView({
     state: buildState(doc),
     parent: document.getElementById('editorArea'),
