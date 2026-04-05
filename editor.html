@@ -31,18 +31,22 @@
   }
 
   /* HEADER */
-  header {
+    header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .sticky-top {
     position: sticky;
     top: 0;
     z-index: 100;
+    background: var(--bg); /* Prevents text from bleeding through */
   }
-
+  
   .logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -341,10 +345,40 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">Blaze<span>FTL</span> · Editor</div>
-  <div class="file-label">My-Filters_Static_Sites.txt</div>
-</header>
+<div class="sticky-top">
+  
+  <header>
+    <div class="logo">Blaze<span>FTL</span> · Editor</div>
+    <div class="file-label">My-Filters_Static_Sites.txt</div>
+  </header>
+
+  <div id="statusBar">
+    <div class="stat"><div class="dot" id="connDot"></div><span id="connText">Not loaded</span></div>
+    <div class="stat" id="lineCount" style="display:none">0 lines</div>
+    <div class="stat" id="modStat" style="display:none;color:var(--accent2)">● Unsaved changes</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" onclick="loadFile()">⬇ Load</button>
+    <button class="btn success" id="saveBtn" onclick="showCommit()" disabled>⬆ Save to GitHub</button>
+    <button class="btn" onclick="copyAll()">⎘ Copy All</button>
+    <button class="btn danger" onclick="showPat()">🔑 PAT</button>
+    <button class="btn" onclick="goToLine()">↗ Go to Line</button>
+  </div>
+
+  <div class="search-row">
+    <div class="search-wrap">
+      <input type="search" id="searchInput" placeholder="Search filters..." oninput="doSearch()" />
+      <span id="searchCount"></span>
+    </div>
+    <div class="search-nav">
+      <button class="btn" onclick="navMatch(-1)">▲</button>
+      <button class="btn" onclick="navMatch(1)">▼</button>
+    </div>
+  </div>
+
+</div> <div id="matchList"></div>
+
 
 <div id="statusBar">
   <div class="stat"><div class="dot" id="connDot"></div><span id="connText">Not loaded</span></div>
