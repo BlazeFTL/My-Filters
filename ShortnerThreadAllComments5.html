@@ -366,8 +366,9 @@ mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; pad
   </div>
 
   <div id="appBarCache">
+    <button class="bar-cache-btn" onclick="clearAndFetch()">↺ Refresh>
     <span id="appBarCacheText" style="font-size:11px;opacity:0.8;"></span>
-    <button class="bar-cache-btn" onclick="clearAndFetch()">↺ Refresh</button>
+    </button>
     <button class="bar-cache-btn" onclick="saveToGithub()">💾 Save</button>
     <button class="bar-cache-btn" onclick="clearCache()">✕ Clear</button>
   </div>
