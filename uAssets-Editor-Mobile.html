@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>uAssets Editor</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2128;
+  --bg4: #21262d;
+  --border: #30363d;
+  --txt: #e6edf3;
+  --txt2: #8b949e;
+  --txt3: #6e7681;
+  --blue: #388bfd;
+  --green: #3fb950;
+  --orange: #d29922;
+  --red: #f85149;
+  --purple: #bc8cff;
+  --bar-h: 48px;
+  --top-h: 46px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--txt); font-family: 'Inter', sans-serif; }
+
+/* ── Top Bar ── */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--top-h);
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 10px; gap: 6px;
+  z-index: 200;
+}
+.logo-mark {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  width: 22px; height: 22px; flex-shrink: 0;
+}
+.logo-mark span {
+  border-radius: 2px;
+}
+.logo-mark span:nth-child(1){background:var(--blue);}
+.logo-mark span:nth-child(2){background:var(--green);}
+.logo-mark span:nth-child(3){background:var(--orange);}
+.logo-mark span:nth-child(4){background:var(--purple);}
+
+#current-file-btn {
+  flex: 1; min-width: 0;
+  background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 10px;
+  display: flex; align-items: center; gap: 6px;
+  cursor: pointer; touch-action: manipulation;
+  transition: border-color .15s;
+}
+#current-file-btn:active { border-color: var(--blue); }
+#current-file-btn .cf-name {
+  font-size: 13px; font-family: 'JetBrains Mono', monospace;
+  color: var(--txt); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 1; min-width: 0;
+}
+#current-file-btn .cf-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--txt3); flex-shrink: 0;
+}
+#current-file-btn.modified .cf-dot { background: var(--orange); }
+#current-file-btn .cf-arrow { color: var(--txt3); font-size: 10px; flex-shrink: 0; }
+
+.tb-icon-btn {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: var(--bg4); border: 1px solid var(--border);
+  color: var(--txt2); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; touch-action: manipulation;
+  transition: background .15s, border-color .15s, color .15s;
+  font-size: 16px;
+}
+.tb-icon-btn:active { background: var(--bg3); border-color: var(--blue); color: var(--txt); }
+
+/* ── Editor ── */
+#editor-wrap {
+  position: fixed;
+  top: var(--top-h); left: 0; right: 0;
+  bottom: var(--bar-h);
+  overflow: hidden;
+}
+#cm-host { width: 100%; height: 100%; }
+#cm-host .cm-editor { height: 100%; }
+#cm-host .cm-scroller {
+  overflow: auto !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 13px !important;
+  -webkit-overflow-scrolling: touch;
+}
+#cm-host .cm-scroller::-webkit-scrollbar { display: none; }
+
+/* Empty state */
+#empty-state {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; background: var(--bg);
+  color: var(--txt3); font-size: 13px;
+  z-index: 5;
+}
+#empty-state .es-icon { font-size: 40px; opacity: .4; }
+#empty-state h3 { color: var(--txt2); font-size: 15px; font-weight: 500; }
+#empty-state p { font-size: 12px; text-align: center; padding: 0 30px; }
+.es-hint {
+  margin-top: 8px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 16px;
+  font-size: 12px; color: var(--txt2); text-align: center;
+}
+
+/* ── Bottom Bar ── */
+#bottombar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: var(--bar-h);
+  background: var(--bg2); border-top: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 8px; gap: 4px;
+  z-index: 200;
+}
+.bb-btn {
+  height: 34px; padding: 0 10px; border-radius: 7px;
+  background: var(--bg4); border: 1px solid var(--border);
+  color: var(--txt2); font-size: 12px; font-family: 'Inter', sans-serif;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
+  white-space: nowrap; touch-action: manipulation;
+  transition: background .15s, border-color .15s, color .15s;
+  flex-shrink: 0;
+}
+.bb-btn:active { background: var(--bg3); border-color: var(--blue); color: var(--txt); }
+.bb-btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+.bb-btn.primary:active { background: #4a95ff; }
+.bb-btn svg { flex-shrink: 0; }
+#sb-pos { margin-left: auto; font-size: 11px; color: var(--txt3); font-family: 'JetBrains Mono', monospace; white-space: nowrap; flex-shrink: 0; }
+
+/* ── Find Bar ── */
+#find-bar {
+  position: fixed; top: var(--top-h); left: 0; right: 0;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 8px 10px; z-index: 190;
+  display: none; flex-direction: column; gap: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+}
+#find-bar.open { display: flex; }
+.find-row { display: flex; align-items: center; gap: 6px; }
+.find-inp {
+  flex: 1; background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 7px; color: var(--txt); font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; padding: 7px 10px; outline: none;
+  transition: border-color .15s;
+}
+.find-inp:focus { border-color: var(--blue); }
+.find-btn {
+  width: 34px; height: 34px; border-radius: 7px;
+  background: var(--bg4); border: 1px solid var(--border);
+  color: var(--txt2); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px; flex-shrink: 0;
+  touch-action: manipulation;
+}
+.find-btn:active { background: var(--bg3); border-color: var(--blue); color: var(--txt); }
+#find-count { font-size: 11px; color: var(--txt3); min-width: 70px; font-family: 'JetBrains Mono', monospace; }
+.scope-pills { display: flex; gap: 4px; }
+.scope-pill {
+  padding: 3px 10px; border-radius: 20px; font-size: 11px;
+  background: var(--bg4); border: 1px solid var(--border);
+  color: var(--txt2); cursor: pointer; touch-action: manipulation;
+}
+.scope-pill.active { background: rgba(56,139,253,.15); border-color: var(--blue); color: var(--blue); }
+
+/* ── Overlay backdrop ── */
+.overlay-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  z-index: 300; display: none;
+}
+.overlay-backdrop.open { display: block; }
+
+/* ── Sheet (bottom sheet popup) ── */
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  z-index: 400; display: none;
+  flex-direction: column;
+  max-height: 80vh;
+  transform: translateY(100%);
+  transition: transform .25s cubic-bezier(.32,1,.23,1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.5);
+}
+.sheet.open { display: flex; transform: translateY(0); }
+.sheet-handle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: var(--border); margin: 10px auto 4px;
+  flex-shrink: 0;
+}
+.sheet-title {
+  font-size: 13px; font-weight: 600; color: var(--txt2);
+  text-transform: uppercase; letter-spacing: .06em;
+  padding: 6px 16px 8px; flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+}
+.sheet-search {
+  margin: 0 12px 8px; background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 10px;
+  color: var(--txt); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  outline: none; flex-shrink: 0;
+  transition: border-color .15s;
+}
+.sheet-search:focus { border-color: var(--blue); }
+.sheet-list { overflow-y: auto; flex: 1; padding-bottom: 16px; }
+.sheet-list::-webkit-scrollbar { display: none; }
+
+/* File item */
+.file-item {
+  display: flex; align-items: center;
+  padding: 11px 16px; gap: 10px;
+  cursor: pointer; touch-action: manipulation;
+  transition: background .1s;
+  border-bottom: 1px solid rgba(48,54,61,.4);
+}
+.file-item:active { background: var(--bg3); }
+.file-item.active { background: rgba(56,139,253,.08); }
+.fi-icon { font-size: 15px; flex-shrink: 0; }
+.fi-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; color: var(--txt);
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.file-item.active .fi-name { color: var(--blue); }
+.fi-meta { font-size: 10px; color: var(--txt3); flex-shrink: 0; }
+.fi-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--txt3); flex-shrink: 0;
+}
+.fi-dot.modified { background: var(--orange); }
+.fi-dot.loaded { background: var(--green); opacity: .6; }
+.fi-close {
+  font-size: 18px; color: var(--txt3); padding: 2px 4px;
+  border-radius: 4px; flex-shrink: 0;
+}
+.fi-close:active { color: var(--red); background: rgba(248,81,73,.15); }
+
+/* Section label in sheet */
+.sheet-section {
+  padding: 8px 16px 4px;
+  font-size: 10px; font-weight: 600; color: var(--txt3);
+  text-transform: uppercase; letter-spacing: .08em;
+  flex-shrink: 0;
+}
+
+/* ── Search Results Sheet ── */
+#search-sheet { max-height: 85vh; }
+.sr-file-group { border-bottom: 1px solid rgba(48,54,61,.5); }
+.sr-file-hdr {
+  padding: 8px 16px; font-size: 12px; font-weight: 600;
+  color: var(--blue); font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(56,139,253,.05);
+  cursor: pointer;
+}
+.sr-file-hdr:active { background: rgba(56,139,253,.12); }
+.sr-count {
+  margin-left: auto; background: var(--blue); color: #fff;
+  border-radius: 10px; padding: 1px 7px; font-size: 10px;
+}
+.sr-match {
+  padding: 7px 16px 7px 28px;
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+  color: var(--txt2); cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(48,54,61,.3);
+}
+.sr-match:active { background: var(--bg3); }
+.sr-ln { color: var(--txt3); min-width: 36px; font-size: 10px; flex-shrink: 0; }
+.sr-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.sr-text mark { background: rgba(210,153,34,.35); color: var(--orange); border-radius: 2px; font-style: normal; }
+
+/* ── More Menu ── */
+#more-sheet .menu-item {
+  display: flex; align-items: center; padding: 13px 18px; gap: 12px;
+  cursor: pointer; border-bottom: 1px solid rgba(48,54,61,.4);
+  touch-action: manipulation;
+}
+#more-sheet .menu-item:active { background: var(--bg3); }
+#more-sheet .menu-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+#more-sheet .menu-label { font-size: 14px; color: var(--txt); }
+#more-sheet .menu-kbd {
+  margin-left: auto; font-size: 11px; color: var(--txt3);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 6px;
+}
+
+/* ── Loading spinner ── */
+.mini-spin {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid var(--border); border-top-color: var(--blue);
+  border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Toast ── */
+#toast {
+  position: fixed; bottom: calc(var(--bar-h) + 10px); left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 9px 16px;
+  font-size: 13px; color: var(--txt);
+  box-shadow: 0 6px 24px rgba(0,0,0,.5);
+  opacity: 0; transition: all .2s;
+  z-index: 9999; pointer-events: none;
+  white-space: nowrap; max-width: calc(100vw - 40px);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.ok { border-color: var(--green); }
+#toast.err { border-color: var(--red); }
+#toast.warn { border-color: var(--orange); }
+
+/* ── Find bar pushes editor ── */
+#editor-wrap { transition: top .2s; }
+#editor-wrap.find-open { top: calc(var(--top-h) + 90px); }
+#editor-wrap.find-open-replace { top: calc(var(--top-h) + 132px); }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div id="topbar">
+  <div class="logo-mark">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div id="current-file-btn" onclick="openFileSheet()">
+    <span class="cf-dot"></span>
+    <span class="cf-name" id="cf-name">Open a file…</span>
+    <span class="cf-arrow">▾</span>
+  </div>
+  <div class="tb-icon-btn" onclick="openFindBar()" title="Find">
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7.5" cy="7.5" r="5"/><path d="m12 12 3 3"/></svg>
+  </div>
+  <div class="tb-icon-btn" onclick="openMoreMenu()" title="More">
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor"><circle cx="3" cy="8.5" r="1.5"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="14" cy="8.5" r="1.5"/></svg>
+  </div>
+</div>
+
+<!-- Editor -->
+<div id="editor-wrap">
+  <div id="cm-host">
+    <div id="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>uAssets Filter Editor</h3>
+      <p>Tap the file selector above to open a filter list</p>
+      <div class="es-hint">22 filter files from uBlockOrigin/uAssets</div>
+    </div>
+  </div>
+</div>
+
+<!-- Find Bar -->
+<div id="find-bar">
+  <div class="find-row">
+    <input class="find-inp" id="find-input" placeholder="Find…" oninput="onFindInput()" onkeydown="onFindKey(event)" autocomplete="off" spellcheck="false">
+    <div id="find-count"></div>
+    <div class="find-btn" onclick="findPrev()">↑</div>
+    <div class="find-btn" onclick="findNext()">↓</div>
+    <div class="find-btn" onclick="closeFindBar()">✕</div>
+  </div>
+  <div class="find-row" id="replace-row" style="display:none">
+    <input class="find-inp" id="replace-input" placeholder="Replace…" onkeydown="onReplaceKey(event)" autocomplete="off">
+    <div class="find-btn" onclick="doReplace()" style="width:auto;padding:0 8px;font-size:12px">Rep</div>
+    <div class="find-btn" onclick="doReplaceAll()" style="width:auto;padding:0 8px;font-size:12px">All</div>
+  </div>
+  <div class="find-row">
+    <div class="scope-pills">
+      <div class="scope-pill active" id="pill-cur" onclick="setFindScope('current')">Current</div>
+      <div class="scope-pill" id="pill-all" onclick="setFindScope('all')">All Files</div>
+    </div>
+    <div class="find-btn" id="replace-toggle" onclick="toggleReplace()" style="width:auto;padding:0 8px;font-size:12px;margin-left:4px">Replace</div>
+  </div>
+</div>
+
+<!-- Bottom Bar -->
+<div id="bottombar">
+  <div class="bb-btn" onclick="saveCurrentFile()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h8l2 2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2z"/><path d="M4 2v4h5V2M5 8v4"/></svg>
+    Save
+  </div>
+  <div class="bb-btn" onclick="downloadFile()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v7M4 6l3 3 3-3M2 11h10"/></svg>
+    DL
+  </div>
+  <div class="bb-btn" onclick="toggleComment()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h8M3 7h5M3 10h6"/></svg>
+    ! Comment
+  </div>
+  <span id="sb-pos">—</span>
+</div>
+
+<!-- Backdrop -->
+<div class="overlay-backdrop" id="backdrop" onclick="closeAllSheets()"></div>
+
+<!-- File Sheet -->
+<div class="sheet" id="file-sheet">
+  <div class="sheet-handle" onclick="closeAllSheets()"></div>
+  <div class="sheet-title">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#8b949e" stroke-width="1.5"><path d="M2 2h4l1.5 2H12v8H2z"/></svg>
+    Open File
+  </div>
+  <input class="sheet-search" id="file-search" placeholder="Filter files…" oninput="filterFileList()" autocomplete="off" spellcheck="false">
+  <div class="sheet-list" id="file-list"></div>
+</div>
+
+<!-- Search Results Sheet -->
+<div class="sheet" id="search-sheet">
+  <div class="sheet-handle" onclick="closeAllSheets()"></div>
+  <div class="sheet-title">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#8b949e" stroke-width="1.5"><circle cx="6" cy="6" r="4"/><path d="m10 10 2.5 2.5"/></svg>
+    <span id="sr-title">Search Results</span>
+  </div>
+  <div class="sheet-list" id="sr-list"></div>
+</div>
+
+<!-- More Menu Sheet -->
+<div class="sheet" id="more-sheet">
+  <div class="sheet-handle" onclick="closeAllSheets()"></div>
+  <div class="sheet-title">Actions</div>
+  <div class="sheet-list">
+    <div class="menu-item" onclick="saveCurrentFile();closeAllSheets()">
+      <span class="menu-icon">💾</span><span class="menu-label">Save File</span><span class="menu-kbd">Ctrl+S</span>
+    </div>
+    <div class="menu-item" onclick="downloadFile();closeAllSheets()">
+      <span class="menu-icon">⬇️</span><span class="menu-label">Download File</span>
+    </div>
+    <div class="menu-item" onclick="toggleComment();closeAllSheets()">
+      <span class="menu-icon">💬</span><span class="menu-label">Toggle ! Comment</span>
+    </div>
+    <div class="menu-item" onclick="openFindBar();closeAllSheets()">
+      <span class="menu-icon">🔍</span><span class="menu-label">Find in File</span><span class="menu-kbd">Ctrl+F</span>
+    </div>
+    <div class="menu-item" onclick="openFindBar();setFindScope('all');closeAllSheets()">
+      <span class="menu-icon">🌐</span><span class="menu-label">Search All Files</span>
+    </div>
+    <div class="menu-item" onclick="closeCurrentFile();closeAllSheets()">
+      <span class="menu-icon">✕</span><span class="menu-label" style="color:var(--red)">Close Current File</span>
+    </div>
+    <div id="open-files-section"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script type="module">
+import { EditorState } from 'https://esm.sh/@codemirror/state@6';
+import { EditorView, keymap, lineNumbers, highlightActiveLineGutter, highlightSpecialChars, drawSelection, highlightActiveLine } from 'https://esm.sh/@codemirror/view@6';
+import { defaultKeymap, history, historyKeymap } from 'https://esm.sh/@codemirror/commands@6';
+import { foldGutter, indentOnInput, syntaxHighlighting, HighlightStyle, bracketMatching } from 'https://esm.sh/@codemirror/language@6';
+import { StreamLanguage } from 'https://esm.sh/@codemirror/language@6';
+import { tags as t } from 'https://esm.sh/@lezer/highlight@1';
+
+// ── uBlock Syntax ──────────────────────────────────────────────────────────
+const uBlockLang = StreamLanguage.define({
+  name: 'ublock',
+  startState: () => ({}),
+  token(stream) {
+    if (stream.sol()) {
+      if (stream.match(/^!\s*#(if|else|endif|include)\b/)) return 'keyword';
+      if (stream.match(/^[!#]/)) { stream.skipToEnd(); return 'comment'; }
+    }
+    if (stream.match(/^@@/)) return 'string';
+    if (stream.match(/^(##|#@#|#\?#|#\$#)/)) return 'atom';
+    if (stream.match(/^\+js\(/)) return 'builtin';
+    if (stream.match(/^\|\|/)) return 'keyword';
+    if (stream.match(/^\^/)) return 'operator';
+    if (stream.match(/^\$/)) return 'meta';
+    if (stream.match(/^[a-zA-Z0-9\-_.~*]+/)) return 'variableName';
+    stream.next(); return null;
+  }
+});
+
+const uHL = HighlightStyle.define([
+  { tag: t.comment,      color: '#6e7681', fontStyle: 'italic' },
+  { tag: t.keyword,      color: '#bc8cff', fontWeight: '500' },
+  { tag: t.operator,     color: '#ff7b72' },
+  { tag: t.string,       color: '#3fb950', fontWeight: '500' },
+  { tag: t.atom,         color: '#56d364' },
+  { tag: t.builtin,      color: '#d2a8ff' },
+  { tag: t.variableName, color: '#79c0ff' },
+  { tag: t.meta,         color: '#ffa657' },
+]);
+
+const uTheme = EditorView.theme({
+  '&':                         { background: '#0d1117', color: '#e6edf3', height: '100%' },
+  '.cm-content':               { caretColor: '#58a6ff', paddingBottom: '60px' },
+  '.cm-cursor':                { borderLeftColor: '#58a6ff', borderLeftWidth: '2px' },
+  '.cm-activeLine':            { backgroundColor: 'rgba(56,139,253,.06)' },
+  '.cm-activeLineGutter':      { backgroundColor: 'rgba(56,139,253,.08)', color: '#e6edf3' },
+  '.cm-gutters':               { background: '#0d1117', color: '#4e5a65', borderRight: '1px solid #21262d', userSelect: 'none' },
+  '.cm-lineNumbers .cm-gutterElement': { padding: '0 10px 0 4px', minWidth: '36px', fontSize: '11px' },
+  '.cm-selectionBackground':   { backgroundColor: 'rgba(56,139,253,.25)!important' },
+  '&.cm-focused .cm-selectionBackground': { backgroundColor: 'rgba(56,139,253,.3)!important' },
+  '.cm-searchMatch':           { background: 'rgba(210,153,34,.28)', outline: '1px solid rgba(210,153,34,.6)', borderRadius: '2px' },
+  '.cm-searchMatch-selected':  { background: 'rgba(210,153,34,.55)', outline: '1px solid #d29922' },
+  '.cm-matchingBracket':       { background: 'rgba(56,139,253,.2)', borderRadius: '2px' },
+  '.cm-tooltip':               { background: '#1c2128', border: '1px solid #30363d', borderRadius: '6px', color: '#e6edf3', fontSize: '12px' },
+}, { dark: true });
+
+// ── State ──────────────────────────────────────────────────────────────────
+const FILES = [
+  'filters.txt','filters-2020.txt','filters-2021.txt','filters-2022.txt',
+  'filters-2023.txt','filters-2024.txt','badware.txt','privacy.txt',
+  'resource-abuse.txt','unbreak.txt','annoyances-cookies.txt',
+  'annoyances-others.txt','annoyances-social.txt','annoyances-overlays.txt',
+  'annoyances-widgets.txt','badlists.txt','experimental.txt','lan-block.txt',
+  'mobile-app-ads.txt','quick-fixes.txt','ubo-link-shorteners.txt','ublock-filters.txt'
+];
+const RAW = 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/';
+
+let openFiles = {};   // name → { content, modified, lines }
+let activeFile = null;
+let editorView = null;
+let findScope = 'current';
+let curMatches = [];
+let curMatchIdx = 0;
+let replaceOpen = false;
+
+// ── Editor init ────────────────────────────────────────────────────────────
+function initEditor() {
+  editorView = new EditorView({
+    extensions: [
+      lineNumbers(),
+      highlightActiveLineGutter(),
+      highlightSpecialChars(),
+      history(),
+      foldGutter(),
+      drawSelection(),
+      indentOnInput(),
+      syntaxHighlighting(uHL),
+      bracketMatching(),
+      highlightActiveLine(),
+      keymap.of([
+        ...defaultKeymap,
+        ...historyKeymap,
+        { key: 'Ctrl-s', run: () => { saveCurrentFile(); return true; } },
+        { key: 'Ctrl-f', run: () => { openFindBar(); return true; } },
+        { key: 'Ctrl-Shift-f', run: () => { openFindBar(); setFindScope('all'); return true; } },
+        { key: 'Ctrl-/', run: () => { toggleComment(); return true; } },
+        { key: 'Escape', run: () => { closeFindBar(); return true; } },
+      ]),
+      uBlockLang,
+      uTheme,
+      EditorView.updateListener.of(upd => {
+        if (upd.docChanged && activeFile && openFiles[activeFile]) {
+          openFiles[activeFile].content = upd.state.doc.toString();
+          openFiles[activeFile].lines   = upd.state.doc.lines;
+          if (!openFiles[activeFile].modified) {
+            openFiles[activeFile].modified = true;
+            refreshFilePill();
+          }
+        }
+        if (upd.selectionSet) {
+          const { head } = upd.state.selection.main;
+          const ln = upd.state.doc.lineAt(head);
+          document.getElementById('sb-pos').textContent =
+            `${ln.number}:${head - ln.from + 1}`;
+        }
+      }),
+    ],
+    parent: document.getElementById('cm-host'),
+  });
+  // style
+  const el = document.getElementById('cm-host').querySelector('.cm-editor');
+  el.style.cssText = 'position:absolute;inset:0;';
+}
+
+function loadContent(text) {
+  editorView.dispatch({ changes: { from: 0, to: editorView.state.doc.length, insert: text } });
+  editorView.dispatch({ selection: { anchor: 0 } });
+  editorView.scrollDOM.scrollTop = 0;
+}
+
+// ── Open / Switch ──────────────────────────────────────────────────────────
+window.openFile = async function(name) {
+  closeAllSheets();
+  if (openFiles[name]) { switchTo(name); return; }
+  showLoading(name);
+  try {
+    const r = await fetch(RAW + name);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const text = await r.text();
+    openFiles[name] = { content: text, modified: false, lines: text.split('\n').length };
+    switchTo(name);
+    toast(`${name} — ${openFiles[name].lines.toLocaleString()} lines`, 'ok');
+  } catch(e) {
+    toast(`Failed: ${e.message}`, 'err');
+  } finally {
+    hideLoading();
+  }
+};
+
+function switchTo(name) {
+  activeFile = name;
+  document.getElementById('empty-state').style.display = 'none';
+  loadContent(openFiles[name].content);
+  refreshFilePill();
+  buildFileList();
+}
+
+function refreshFilePill() {
+  const btn = document.getElementById('current-file-btn');
+  document.getElementById('cf-name').textContent = activeFile || 'Open a file…';
+  btn.classList.toggle('modified', !!(activeFile && openFiles[activeFile]?.modified));
+}
+
+// ── Close file ─────────────────────────────────────────────────────────────
+window.closeCurrentFile = function() {
+  if (!activeFile) return;
+  delete openFiles[activeFile];
+  activeFile = null;
+  document.getElementById('empty-state').style.display = 'flex';
+  loadContent('');
+  refreshFilePill();
+  buildFileList();
+  toast('File closed');
+};
+
+// ── Save / Download ────────────────────────────────────────────────────────
+window.saveCurrentFile = function() {
+  if (!activeFile) { toast('No file open', 'warn'); return; }
+  openFiles[activeFile].modified = false;
+  refreshFilePill();
+  toast(`Saved ${activeFile}`, 'ok');
+};
+
+window.downloadFile = function() {
+  if (!activeFile) { toast('No file open', 'warn'); return; }
+  const blob = new Blob([openFiles[activeFile].content], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = activeFile; a.click();
+  toast(`Downloaded ${activeFile}`, 'ok');
+};
+
+// ── Comment toggle ─────────────────────────────────────────────────────────
+window.toggleComment = function() {
+  if (!editorView) return;
+  const { from, to } = editorView.state.selection.main;
+  const s = editorView.state, d = s.doc;
+  const s1 = d.lineAt(from).number, e1 = d.lineAt(to).number;
+  const changes = [];
+  for (let l = s1; l <= e1; l++) {
+    const line = d.line(l);
+    if (line.text.startsWith('! ')) changes.push({ from: line.from, to: line.from+2, insert:'' });
+    else if (line.text.startsWith('!')) changes.push({ from: line.from, to: line.from+1, insert:'' });
+    else changes.push({ from: line.from, insert: '! ' });
+  }
+  editorView.dispatch({ changes });
+};
+
+// ── File Sheet ─────────────────────────────────────────────────────────────
+window.openFileSheet = function() {
+  buildFileList();
+  document.getElementById('file-search').value = '';
+  openSheet('file-sheet');
+  setTimeout(() => document.getElementById('file-search').focus(), 300);
+};
+
+window.filterFileList = function() {
+  buildFileList(document.getElementById('file-search').value);
+};
+
+function buildFileList(q = '') {
+  const list = document.getElementById('file-list');
+  list.innerHTML = '';
+  const lq = q.toLowerCase();
+  // Open files section
+  const loaded = FILES.filter(f => openFiles[f] && (!lq || f.includes(lq)));
+  if (loaded.length) {
+    const sec = document.createElement('div');
+    sec.className = 'sheet-section'; sec.textContent = 'Open';
+    list.appendChild(sec);
+    loaded.forEach(f => list.appendChild(makeFileItem(f, true)));
+  }
+  // All files section
+  const all = FILES.filter(f => !openFiles[f] && (!lq || f.includes(lq)));
+  if (all.length) {
+    const sec = document.createElement('div');
+    sec.className = 'sheet-section'; sec.textContent = 'All Files';
+    list.appendChild(sec);
+    all.forEach(f => list.appendChild(makeFileItem(f, false)));
+  }
+}
+
+function makeFileItem(name, isOpen) {
+  const item = document.createElement('div');
+  item.className = 'file-item' + (name === activeFile ? ' active' : '');
+  const dot = `<span class="fi-dot ${isOpen ? (openFiles[name]?.modified ? 'modified' : 'loaded') : ''}"></span>`;
+  const meta = isOpen ? `<span class="fi-meta">${openFiles[name].lines.toLocaleString()}L</span>` : '';
+  const closeBtn = isOpen ? `<span class="fi-close" id="fc-${name}">×</span>` : '';
+  item.innerHTML = `${dot}<span class="fi-name">${name}</span>${meta}${closeBtn}`;
+  item.querySelector('.fi-name').addEventListener('click', () => openFile(name));
+  const cb = item.querySelector(`#fc-${name}`);
+  if (cb) cb.addEventListener('click', e => {
+    e.stopPropagation();
+    delete openFiles[name];
+    if (activeFile === name) {
+      activeFile = null;
+      document.getElementById('empty-state').style.display = 'flex';
+      loadContent('');
+      refreshFilePill();
+    }
+    buildFileList(document.getElementById('file-search').value);
+    toast(`Closed ${name}`);
+  });
+  return item;
+}
+
+// ── More Menu ──────────────────────────────────────────────────────────────
+window.openMoreMenu = function() {
+  // Inject open-files quick-switch into more menu
+  const sec = document.getElementById('open-files-section');
+  sec.innerHTML = '';
+  if (Object.keys(openFiles).length > 1) {
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'padding:8px 18px 4px;font-size:10px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;border-top:1px solid var(--border);';
+    lbl.textContent = 'Switch File';
+    sec.appendChild(lbl);
+    Object.keys(openFiles).forEach(f => {
+      const item = document.createElement('div');
+      item.className = 'menu-item';
+      item.innerHTML = `<span class="menu-icon">${f === activeFile ? '▶' : '📄'}</span>
+        <span class="menu-label" style="${f===activeFile?'color:var(--blue)':''}">${f}</span>
+        <span class="menu-kbd" style="color:var(--txt3)">${openFiles[f].lines.toLocaleString()}L</span>`;
+      item.onclick = () => { switchTo(f); closeAllSheets(); };
+      sec.appendChild(item);
+    });
+  }
+  openSheet('more-sheet');
+};
+
+// ── Find ───────────────────────────────────────────────────────────────────
+window.openFindBar = function() {
+  document.getElementById('find-bar').classList.add('open');
+  updateEditorTop();
+  setTimeout(() => document.getElementById('find-input').focus(), 100);
+};
+
+window.closeFindBar = function() {
+  document.getElementById('find-bar').classList.remove('open');
+  document.getElementById('search-sheet').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
+  updateEditorTop();
+  if (editorView) editorView.focus();
+};
+
+function updateEditorTop() {
+  const wrap = document.getElementById('editor-wrap');
+  const open = document.getElementById('find-bar').classList.contains('open');
+  wrap.classList.toggle('find-open', open && !replaceOpen);
+  wrap.classList.toggle('find-open-replace', open && replaceOpen);
+}
+
+window.setFindScope = function(scope) {
+  findScope = scope;
+  document.getElementById('pill-cur').classList.toggle('active', scope === 'current');
+  document.getElementById('pill-all').classList.toggle('active', scope === 'all');
+  document.getElementById('replace-toggle').style.display = scope === 'current' ? '' : 'none';
+  if (scope === 'all' && replaceOpen) {
+    replaceOpen = false;
+    document.getElementById('replace-row').style.display = 'none';
+    updateEditorTop();
+  }
+  const q = document.getElementById('find-input').value;
+  if (q) scope === 'current' ? performFind() : performGlobalSearch();
+};
+
+window.onFindInput = function() {
+  findScope === 'current' ? performFind() : performGlobalSearch();
+};
+
+window.onFindKey = function(e) {
+  if (e.key === 'Enter') { e.shiftKey ? findPrev() : findNext(); }
+  if (e.key === 'Escape') closeFindBar();
+};
+
+window.onReplaceKey = function(e) {
+  if (e.key === 'Enter') doReplace();
+};
+
+window.toggleReplace = function() {
+  replaceOpen = !replaceOpen;
+  document.getElementById('replace-row').style.display = replaceOpen ? '' : 'none';
+  if (replaceOpen) document.getElementById('replace-input').focus();
+  updateEditorTop();
+};
+
+function performFind() {
+  if (!editorView || !activeFile) return;
+  const q = document.getElementById('find-input').value;
+  if (!q) { document.getElementById('find-count').textContent = ''; curMatches = []; return; }
+  const text = editorView.state.doc.toString();
+  const rx = new RegExp(escRx(q), 'gi');
+  curMatches = [...text.matchAll(rx)].map(m => m.index);
+  const c = curMatches.length;
+  document.getElementById('find-count').textContent = c ? `${c}` : 'None';
+  curMatchIdx = 0;
+  if (c) jump(curMatches[0]);
+}
+
+window.findNext = function() {
+  if (!curMatches.length || findScope !== 'current') { if (findScope === 'all') { performGlobalSearch(); openSheet('search-sheet'); } return; }
+  curMatchIdx = (curMatchIdx + 1) % curMatches.length;
+  jump(curMatches[curMatchIdx]);
+  document.getElementById('find-count').textContent = `${curMatchIdx+1}/${curMatches.length}`;
+};
+
+window.findPrev = function() {
+  if (!curMatches.length || findScope !== 'current') return;
+  curMatchIdx = (curMatchIdx - 1 + curMatches.length) % curMatches.length;
+  jump(curMatches[curMatchIdx]);
+  document.getElementById('find-count').textContent = `${curMatchIdx+1}/${curMatches.length}`;
+};
+
+function jump(pos) {
+  if (!editorView) return;
+  editorView.dispatch({ selection: { anchor: pos }, scrollIntoView: true });
+}
+
+window.doReplace = function() {
+  if (!editorView || !activeFile) return;
+  const q = document.getElementById('find-input').value;
+  const r = document.getElementById('replace-input').value;
+  if (!q) return;
+  const text = editorView.state.doc.toString();
+  const idx = text.indexOf(q);
+  if (idx < 0) { toast('No match', 'warn'); return; }
+  editorView.dispatch({ changes: { from: idx, to: idx + q.length, insert: r } });
+  performFind();
+};
+
+window.doReplaceAll = function() {
+  if (!editorView || !activeFile) return;
+  const q = document.getElementById('find-input').value;
+  const r = document.getElementById('replace-input').value;
+  if (!q) return;
+  const text = editorView.state.doc.toString();
+  const count = text.split(q).length - 1;
+  editorView.dispatch({ changes: { from: 0, to: editorView.state.doc.length, insert: text.split(q).join(r) } });
+  toast(`Replaced ${count}×`, 'ok');
+  performFind();
+};
+
+// ── Global Search ──────────────────────────────────────────────────────────
+async function performGlobalSearch() {
+  const q = document.getElementById('find-input').value.trim();
+  if (!q) return;
+  // search loaded files instantly
+  let results = {};
+  let total = 0;
+  for (const [name, data] of Object.entries(openFiles)) {
+    const ms = searchInText(data.content, q);
+    if (ms.length) { results[name] = ms; total += ms.length; }
+  }
+  renderSR(q, results, total, true);
+  openSheet('search-sheet');
+  document.getElementById('backdrop').classList.add('open');
+  // fetch unloaded
+  const unloaded = FILES.filter(f => !openFiles[f]);
+  for (let i = 0; i < unloaded.length; i += 5) {
+    const chunk = unloaded.slice(i, i+5);
+    await Promise.all(chunk.map(async name => {
+      try {
+        const r = await fetch(RAW + name);
+        if (!r.ok) return;
+        const text = await r.text();
+        const ms = searchInText(text, q);
+        if (ms.length) { results[name] = ms; total += ms.length; renderSR(q, results, total, true); }
+      } catch {}
+    }));
+  }
+  renderSR(q, results, total, false);
+}
+
+function searchInText(text, q) {
+  const lines = text.split('\n');
+  const rx = new RegExp(escRx(q), 'i');
+  const out = [];
+  lines.forEach((line, i) => { if (rx.test(line)) out.push({ n: i+1, t: line.trim() }); });
+  return out;
+}
+
+function renderSR(q, results, total, loading) {
+  document.getElementById('sr-title').textContent =
+    `${total} match${total!==1?'es':''} in ${Object.keys(results).length} file${Object.keys(results).length!==1?'s':''}${loading?' …':''}`;
+  const list = document.getElementById('sr-list');
+  list.innerHTML = '';
+  for (const [name, ms] of Object.entries(results)) {
+    const grp = document.createElement('div');
+    grp.className = 'sr-file-group';
+    const hdr = document.createElement('div');
+    hdr.className = 'sr-file-hdr';
+    hdr.innerHTML = `${name}<span class="sr-count">${ms.length}</span>`;
+    hdr.onclick = () => { openFile(name); };
+    grp.appendChild(hdr);
+    ms.slice(0, 40).forEach(m => {
+      const row = document.createElement('div');
+      row.className = 'sr-match';
+      const hi = escH(m.t).replace(new RegExp(escRx(escH(q)), 'gi'), s => `<mark>${s}</mark>`);
+      row.innerHTML = `<span class="sr-ln">:${m.n}</span><span class="sr-text">${hi}</span>`;
+      row.onclick = () => jumpToLine(name, m.n);
+      grp.appendChild(row);
+    });
+    if (ms.length > 40) {
+      const more = document.createElement('div');
+      more.className = 'sr-match'; more.style.color = 'var(--txt3)';
+      more.textContent = `+${ms.length-40} more`;
+      grp.appendChild(more);
+    }
+    list.appendChild(grp);
+  }
+  if (!Object.keys(results).length && !loading) {
+    list.innerHTML = `<div style="padding:24px;text-align:center;color:var(--txt3);font-size:13px">No matches found</div>`;
+  }
+}
+
+async function jumpToLine(name, lineNum) {
+  closeAllSheets();
+  if (!openFiles[name]) await openFile(name); else switchTo(name);
+  if (editorView && openFiles[name]) {
+    const doc = editorView.state.doc;
+    if (lineNum <= doc.lines) {
+      const ln = doc.line(lineNum);
+      editorView.dispatch({ selection: { anchor: ln.from }, scrollIntoView: true });
+      editorView.focus();
+    }
+  }
+}
+
+// ── Sheet helpers ──────────────────────────────────────────────────────────
+function openSheet(id) {
+  document.getElementById(id).classList.add('open');
+  document.getElementById('backdrop').classList.add('open');
+}
+
+window.closeAllSheets = function() {
+  ['file-sheet','search-sheet','more-sheet'].forEach(id => {
+    document.getElementById(id).classList.remove('open');
+  });
+  document.getElementById('backdrop').classList.remove('open');
+};
+
+// Swipe-to-close sheets
+['file-sheet','search-sheet','more-sheet'].forEach(id => {
+  const el = document.getElementById(id);
+  let startY = 0, startScrollTop = 0;
+  el.addEventListener('touchstart', e => { startY = e.touches[0].clientY; startScrollTop = el.querySelector('.sheet-list')?.scrollTop || 0; }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0 && startScrollTop <= 0) {
+      el.style.transform = `translateY(${dy}px)`;
+    }
+  }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - startY;
+    el.style.transform = '';
+    if (dy > 80) closeAllSheets();
+  });
+});
+
+// ── Loading ────────────────────────────────────────────────────────────────
+let loadingToastId;
+function showLoading(name) {
+  toast(`Loading ${name}…`, '', 60000);
+}
+function hideLoading() {
+  document.getElementById('toast').classList.remove('show');
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function escRx(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function escH(s)  { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+let toastT;
+window.toast = function(msg, type='', dur=3000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast show${type?' '+type:''}`;
+  clearTimeout(toastT);
+  if (dur < 60000) toastT = setTimeout(() => el.classList.remove('show'), dur);
+};
+
+// ── Init ───────────────────────────────────────────────────────────────────
+initEditor();
+</script>
+</body>
+</html>
