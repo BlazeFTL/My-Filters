@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Discussion Search — BlazeFTL</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+:root {
+--bg:#F5F5F5; --surface:#FFFFFF; --surface2:#FAFAFA;
+--card:#FFFFFF; --border:#E0E0E0; --border2:#BDBDBD;
+--primary:#1565C0; --primary-light:#E3F2FD; --primary-dark:#0D47A1;
+--accent2:#E65100; --text:#212121; --text2:#757575; --text3:#BDBDBD;
+--success:#2E7D32; --warn:#F57F17; --danger:#C62828;
+--shadow:0 1px 3px rgba(0,0,0,0.12); --shadow2:0 2px 8px rgba(0,0,0,0.16);
+--code-bg:#F6F8FA; --code-border:#E1E4E8;
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body {
+background:var(--bg); color:var(--text);
+font-family:'Roboto',sans-serif; min-height:100vh;
+}
+/* ── APP BAR ──────────────────────────────────────────── */
+#appBar {
+background:var(--primary); color:white;
+padding:6px 12px; min-height:56px;
+display:flex; align-items:center; justify-content:space-between;
+box-shadow:var(--shadow2); position:sticky; top:0; z-index:200;
+gap:8px;
+}
+.bar-left { display:flex; flex-direction:column; flex-shrink:1; min-width:0; gap:2px; }
+.bar-title { font-size:17px; font-weight:500; letter-spacing:0.3px; white-space:nowrap; }
+.bar-sub-row { display:flex; align-items:center; gap:6px; }
+.bar-sub { font-size:11px; opacity:0.75; white-space:nowrap; }
+#appBarCache {
+display:none; align-items:center; gap:6px; flex-shrink:0;
+}
+#appBarCache.show { display:flex; }
+.bar-cache-btn {
+background:rgba(255,255,255,0.18); color:white;
+border:1px solid rgba(255,255,255,0.35);
+border-radius:5px; font-size:11px; font-weight:500;
+padding:5px 9px; cursor:pointer; white-space:nowrap;
+font-family:'Roboto',sans-serif; letter-spacing:0.2px;
+transition:background 0.15s;
+}
+.bar-cache-btn:active { background:rgba(255,255,255,0.3); }
+#barStats {
+font-size:13px; font-weight:600; opacity:1;
+text-align:right; white-space:nowrap; flex-shrink:0;
+background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+border-radius:6px; padding:4px 8px; letter-spacing:0.3px;
+}
+#patPill {
+display:inline-flex; align-items:center; gap:4px;
+background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+border-radius:20px; padding:2px 7px; cursor:pointer;
+transition:background 0.15s; user-select:none;
+}
+#patPill:active { background:rgba(255,255,255,0.28); }
+#patPillDot { width:7px; height:7px; border-radius:50%; flex-shrink:0; background:#f44336; transition:background 0.2s; }
+#patPill.pat-set #patPillDot { background:#4caf50; }
+#patPillText { font-size:10px; font-weight:700; color:white; letter-spacing:0.4px; }
+/* ── SEARCH BAR ─────────────────────────────────────────── */
+#searchBar {
+background:var(--surface); border-bottom:1px solid var(--border);
+padding:8px 12px; position:sticky; top:56px; z-index:190;
+box-shadow:var(--shadow);
+}
+.search-wrap { position:relative; }
+#searchInput {
+width:100%; background:var(--surface2); border:1.5px solid var(--border);
+border-radius:8px; color:var(--text); font-family:'Roboto',sans-serif;
+font-size:15px; padding:10px 50px 10px 40px; outline:none;
+transition:border-color 0.15s, box-shadow 0.15s;
+}
+#searchInput:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); background:#fff; }
+#searchInput:disabled { opacity:0.4; }
+#searchInput::placeholder { color:var(--text3); }
+.search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:16px; color:var(--text3); pointer-events:none; }
+#resultCount { position:absolute; right:38px; top:50%; transform:translateY(-50%); font-size:11px; font-weight:700; color:var(--primary); }
+#searchClear {
+position:absolute; right:10px; top:50%; transform:translateY(-50%);
+width:22px; height:22px; border-radius:50%; border:none;
+background:var(--border2); color:var(--text2);
+font-size:13px; line-height:1; cursor:pointer;
+display:none; align-items:center; justify-content:center;
+padding:0; font-family:'Roboto',sans-serif; transition:background 0.15s;
+}
+#searchClear.show { display:flex; }
+#searchClear:active { background:var(--text3); }
+/* ── FILTER CHIPS ───────────────────────────────────────── */
+#filterRow {
+display:none; background:var(--surface); border-bottom:1px solid var(--border);
+padding:8px 12px; gap:6px; flex-wrap:wrap; align-items:center; overflow-x:auto;
+}
+#filterRow.show { display:flex; }
+.chip {
+font-size:12px; font-weight:500; padding:5px 12px;
+border-radius:16px; border:1.5px solid var(--border);
+background:transparent; color:var(--text2);
+cursor:pointer; transition:all 0.15s; white-space:nowrap;
+font-family:'Roboto',sans-serif; letter-spacing:0.2px;
+}
+.chip.active { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
+/* ── FETCH PANEL ────────────────────────────────────────── */
+#fetchPanel {
+background:var(--surface); border-bottom:1px solid var(--border);
+padding:16px;
+}
+.fetch-info {
+font-size:13px; color:var(--text2); margin-bottom:12px; line-height:1.6;
+}
+.fetch-info a { color:var(--primary); text-decoration:none; }
+.fetch-info strong { color:var(--text); }
+.fetch-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.btn {
+font-family:'Roboto',sans-serif; font-size:13px; font-weight:500;
+padding:8px 16px; border-radius:6px; cursor:pointer;
+display:inline-flex; align-items:center; gap:6px;
+transition:all 0.15s; white-space:nowrap; letter-spacing:0.3px;
+text-transform:uppercase;
+}
+.btn:active { transform:scale(0.96); opacity:0.85; }
+.btn-primary { background:var(--primary); color:white; border:none; box-shadow:var(--shadow); }
+.btn-outline { background:transparent; color:var(--primary); border:1.5px solid var(--primary); }
+.btn-outline-warn { background:transparent; color:var(--warn); border:1.5px solid var(--warn); }
+.btn-outline-muted { background:transparent; color:var(--text2); border:1.5px solid var(--border2); }
+.btn:disabled { opacity:0.35; pointer-events:none; }
+#patRow {
+display:none; margin-top:12px; gap:8px; align-items:center; flex-wrap:wrap;
+}
+#patRow.show { display:flex; }
+#patInput {
+flex:1; min-width:180px; font-family:'Roboto Mono',monospace; font-size:13px;
+padding:8px 10px; border:1.5px solid var(--border2); border-radius:6px;
+outline:none; background:var(--surface2); color:var(--text);
+}
+#patInput:focus { border-color:var(--primary); }
+#patStatus { font-size:11px; font-weight:600; }
+#patStatus.set { color:var(--success); }
+#patStatus.unset { color:var(--text3); }
+/* ── PROGRESS ───────────────────────────────────────────── */
+#progressWrap {
+display:none; background:var(--surface); border-bottom:1px solid var(--border);
+padding:12px 16px;
+}
+#progressLabel { font-size:12px; color:var(--text2); margin-bottom:8px; font-weight:500; }
+#progressBar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+#progressFill { height:100%; background:var(--primary); width:0%; transition:width 0.3s; border-radius:2px; }
+/* ── RESULTS ────────────────────────────────────────────── */
+#results { padding:8px 0 100px; }
+.no-results {
+padding:48px 16px; text-align:center; color:var(--text2); font-size:14px;
+}
+.no-results strong { color:var(--primary); }
+.no-results .hint { font-size:12px; color:var(--text3); margin-top:8px; display:block; }
+/* ── Thread group wrapper ───────────────────────────────── */
+.thread-group {
+margin:12px 12px 20px;
+border-radius:10px;
+border:1px solid var(--border);
+overflow:hidden;
+box-shadow:var(--shadow);
+}
+.thread-group .result-card {
+margin:0; border:none; border-radius:0; box-shadow:none;
+}
+.thread-group .result-card.is-reply {
+border-top:1px solid var(--border);
+background:#FAFBFF; position:relative;
+border-left: 6px solid #e74c3c !important;
+}
+.thread-group .result-card.is-reply::before { display:none; }
+.thread-group .result-card.is-reply .card-header,
+.thread-group .result-card.is-reply .card-body,
+.thread-group .result-card.is-reply .card-footer { padding-left:20px; }
+/* Standalone cards */
+.result-card {
+background:var(--card); margin:8px 12px;
+border-radius:8px; border:1px solid var(--border);
+box-shadow:var(--shadow); overflow:hidden; transition:box-shadow 0.15s;
+}
+.result-card:hover { box-shadow:var(--shadow2); }
+.card-header {
+display:flex; align-items:center; gap:8px;
+padding:10px 14px 8px; border-bottom:1px solid var(--border);
+background:var(--surface2);
+}
+.avatar { width:28px; height:28px; border-radius:50%; background:var(--border); overflow:hidden; flex-shrink:0; }
+.avatar img { width:100%; height:100%; }
+.author { font-size:13px; font-weight:500; color:var(--primary); }
+.author.blaze { color:var(--accent2); font-weight:700; }
+.card-badges { display:flex; gap:4px; margin-left:auto; align-items:center; }
+.badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; letter-spacing:0.4px; text-transform:uppercase; }
+.badge-reply { background:#FFF3E0; color:#E65100; border:1px solid #FFE0B2; }
+.badge-blaze { background:#FBE9E7; color:#BF360C; border:1px solid #FFCCBC; }
+.card-date { font-size:11px; color:var(--text3); }
+.card-body { padding:12px 14px; font-size:13px; line-height:1.7; color:var(--text); word-break:break-word; overflow-x:auto; }
+.card-body h1,.card-body h2,.card-body h3 { font-weight:600; margin:12px 0 6px; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:4px; }
+.card-body h1 { font-size:16px; } .card-body h2 { font-size:15px; } .card-body h3 { font-size:14px; }
+.card-body p { margin:6px 0; }
+.card-body ul,.card-body ol { padding-left:20px; margin:6px 0; }
+.card-body li { margin:2px 0; }
+.card-body a { color:var(--primary); word-break:break-all; }
+.card-body code { background:var(--code-bg); border:1px solid var(--code-border); border-radius:3px; font-family:'Roboto Mono',monospace; font-size:12px; padding:1px 5px; }
+.card-body pre { background:var(--code-bg); border:1px solid var(--code-border); border-radius:6px; padding:10px 12px; overflow-x:auto; margin:8px 0; line-height:1.5; }
+.card-body pre code { background:none; border:none; padding:0; font-size:12px; white-space:pre; display:block; }
+.card-body blockquote { border-left:3px solid var(--border2); margin:8px 0; padding:4px 12px; color:var(--text2); font-style:italic; }
+.card-body table { border-collapse:collapse; width:100%; margin:8px 0; font-size:12px; }
+.card-body th,.card-body td { border:1px solid var(--border); padding:6px 10px; }
+.card-body th { background:var(--surface2); font-weight:600; }
+.card-body img { max-width:100%; border-radius:4px; }
+.card-body hr { border:none; border-top:1px solid var(--border); margin:10px 0; }
+.card-body .gh-alert { border-radius:6px; padding:10px 14px; margin:8px 0; border-left:4px solid; font-size:13px; }
+.card-body .gh-alert-tip { background:#F0FFF4; border-color:#2E7D32; }
+.card-body .gh-alert-note { background:#E3F2FD; border-color:#1565C0; }
+.card-body .gh-alert-warning { background:#FFF8E1; border-color:#F57F17; }
+.card-body .gh-alert-important{ background:#EDE7F6; border-color:#6A1B9A; }
+.card-body .gh-alert-caution { background:#FFEBEE; border-color:#C62828; }
+.card-body .gh-alert-title { font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+.card-body details { margin:8px 0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.card-body summary { padding:8px 12px; cursor:pointer; font-weight:500; font-size:13px; background:var(--surface2); user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
+.card-body summary::before { content:'▶'; font-size:10px; transition:transform 0.2s; }
+.card-body details[open] summary::before { transform:rotate(90deg); }
+.card-body details > *:not(summary) { padding:10px 12px; }
+mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; padding:0 1px; }
+.card-footer { padding:6px 14px 8px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.card-link { font-size:11px; color:var(--text3); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+.card-link:hover { color:var(--primary); }
+/* ── Scroll Top + Bottom buttons ────────────────────────── */
+#scrollTop, #scrollBottom {
+position:fixed; width:44px; height:44px;
+background:var(--primary); color:white; border:none; border-radius:50%;
+font-size:20px; cursor:pointer; display:none; align-items:center;
+justify-content:center; box-shadow:var(--shadow2); z-index:200;
+}
+#scrollTop { bottom:76px; right:16px; }
+#scrollBottom { bottom:24px; right:16px; }
+#scrollTop.show { display:flex; }
+#scrollBottom.show { display:flex; }
+/* ── TOAST ──────────────────────────────────────────────── */
+#toast {
+position:fixed; bottom:24px; left:50%;
+transform:translateX(-50%) translateY(64px);
+background:#323232; color:white; border-radius:6px;
+padding:10px 20px; font-size:13px; font-weight:500;
+transition:transform 0.22s ease; z-index:500;
+white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
+max-width:calc(100vw - 40px); text-align:center;
+}
+#toast.show { transform:translateX(-50%) translateY(0); }
+#toast.ok { background:var(--success); }
+#toast.err { background:var(--danger); }
+#toast.info { background:var(--primary); }
+</style>
+</head>
+<body>
+<!-- APP BAR -->
+<div id="appBar">
+<div class="bar-left">
+<div class="bar-title">Discussion Search</div>
+<div class="bar-sub-row">
+<span class="bar-sub">uAssets · #27472</span>
+<div id="patPill" onclick="togglePat()" title="Tap to manage PAT">
+<span id="patPillDot"></span>
+<span id="patPillText">PAT</span>
+</div>
+</div>
+</div>
+<div id="appBarCache">
+<span id="appBarCacheText" style="font-size:11px;opacity:0.8;"></span>
+<button class="bar-cache-btn" onclick="clearAndFetch()">↺ Refresh</button>
+<button class="bar-cache-btn" onclick="saveToGithub()">💾 Save</button>
+<button class="bar-cache-btn" onclick="clearCache()">✕ Clear</button>
+</div>
+<div id="barStats">Not loaded</div>
+</div>
+
+<!-- SEARCH -->
+<div id="searchBar">
+<div class="search-wrap">
+<span class="search-icon">🔍</span>
+<input type="search" id="searchInput" placeholder="Search comments & replies…"
+oninput="onSearchInput()" disabled autocorrect="off" autocapitalize="off" />
+<span id="resultCount"></span>
+<button id="searchClear" onclick="clearSearch()" title="Clear search">✕</button>
+</div>
+</div>
+
+<!-- FILTER CHIPS -->
+<div id="filterRow">
+<div class="chip active" onclick="setFilter('all',this)">All</div>
+<div class="chip" onclick="setFilter('blazeftl',this)">BlazeFTL only</div>
+<div class="chip" onclick="setFilter('code',this)">Has filter rule</div>
+<div class="chip" onclick="setFilter('replies',this)">Replies only</div>
+<div class="chip" onclick="setFilter('comments',this)">Top-level only</div>
+</div>
+
+<!-- FETCH PANEL -->
+<div id="fetchPanel">
+<p class="fetch-info">
+Fetches all comments from
+<a href="https://github.com/uBlockOrigin/uAssets/discussions/27472" target="_blank">uAssets Discussion #27472</a>
+via GitHub GraphQL API. A <strong>Personal Access Token (PAT)</strong> is required for GraphQL.<br>
+<strong>Cache:</strong> results can be saved to your GitHub repo so future loads are instant.
+</p>
+<div class="fetch-btns">
+<button class="btn btn-primary" id="fetchBtn" onclick="startFetch()">⬇ Load All Comments</button>
+<button class="btn btn-outline-muted" onclick="togglePat()">🔑 PAT</button>
+</div>
+<div id="patRow">
+<input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+<button class="btn btn-primary" onclick="savePat()" style="text-transform:none;font-size:12px;padding:7px 12px">Save</button>
+<button class="btn btn-outline-muted" onclick="clearPat()" style="text-transform:none;font-size:12px;padding:7px 12px">Clear</button>
+<span id="patStatus" class="unset">Not set</span>
+</div>
+</div>
+
+<!-- PROGRESS -->
+<div id="progressWrap">
+<div id="progressLabel">Loading…</div>
+<div id="progressBar"><div id="progressFill"></div></div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+<div class="no-results">
+Tap <strong>Load All Comments</strong> to begin.
+<span class="hint">First load uses GitHub GraphQL API (PAT required).<br>
+After loading, save to GitHub cache for instant future loads.</span>
+</div>
+</div>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button id="scrollBottom" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">↓</button>
+<div id="toast"></div>
+
+<script>
+// ── Config ──────────────────────────────────────────────
+const GQL_OWNER = 'uBlockOrigin';
+const GQL_REPO = 'uAssets';
+const DISC_NUM = 27472;
+const CACHE_KEY = 'blaze_disc_27472_v2';
+const CACHE_OWNER = 'BlazeFTL';
+const CACHE_REPO = 'My-Filters';
+const CACHE_FILE = 'disc_27472_cache.json';
+const CACHE_API = `https://api.github.com/repos/${CACHE_OWNER}/${CACHE_REPO}/contents/${CACHE_FILE}`;
+const CACHE_RAW = `https://raw.githubusercontent.com/${CACHE_OWNER}/${CACHE_REPO}/refs/heads/master/${CACHE_FILE}`;
+
+let allItems = [];
+let currentFilter = 'all';
+let currentQuery = '';
+
+// ── PAT ─────────────────────────────────────────────────
+function getPat() { return localStorage.getItem('blaze_pat') || ''; }
+function updatePatUI() {
+  const p = getPat();
+  document.getElementById('patStatus').textContent = p ? '✓ Set' : 'Not set';
+  document.getElementById('patStatus').className = p ? 'set' : 'unset';
+  if (p) document.getElementById('patInput').value = p;
+  const pill = document.getElementById('patPill');
+  pill.classList.toggle('pat-set', !!p);
+  document.getElementById('patPillText').textContent = p ? 'PAT ✓' : 'PAT ✗';
+}
+window.togglePat = function() {
+  const row = document.getElementById('patRow');
+  const show = !row.classList.contains('show');
+  row.classList.toggle('show', show);
+  if (show) document.getElementById('patInput').focus();
+};
+window.savePat = function() {
+  const v = document.getElementById('patInput').value.trim();
+  if (v) { localStorage.setItem('blaze_pat', v); toast('PAT saved', 'ok'); }
+  updatePatUI();
+  document.getElementById('patRow').classList.remove('show');
+};
+window.clearPat = function() {
+  localStorage.removeItem('blaze_pat');
+  document.getElementById('patInput').value = '';
+  updatePatUI();
+  toast('PAT cleared');
+};
+
+// ── GraphQL Fetch ────────────────────────────────────────
+const GQL_ENDPOINT = 'https://api.github.com/graphql';
+function gqlFetch(query, variables) {
+  const pat = getPat();
+  if (!pat) throw new Error('PAT required for GraphQL. Tap the PAT button to set one.');
+  return fetch(GQL_ENDPOINT, {
+    method: 'POST',
+    headers: { Authorization: `bearer ${pat}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(j => {
+    if (j.errors) throw new Error(j.errors[0].message);
+    return j.data;
+  });
+}
+
+const COMMENTS_QUERY = `
+query($owner:String!,$repo:String!,$num:Int!,$after:String){
+  repository(owner:$owner,name:$repo){
+    discussion(number:$num){
+      comments(first:100,after:$after){
+        totalCount
+        pageInfo{ hasNextPage endCursor }
+        nodes{
+          id databaseId author{ login avatarUrl }
+          body createdAt url
+          replies(first:100){
+            totalCount
+            nodes{
+              id databaseId author{ login avatarUrl }
+              body createdAt url
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
+async function fetchAllGql() {
+  setProgress(5, 'Connecting to GitHub GraphQL…');
+  const vars = { owner: GQL_OWNER, repo: GQL_REPO, num: DISC_NUM };
+  const d1 = await gqlFetch(COMMENTS_QUERY, vars);
+  const disc = d1.repository.discussion;
+  const total = disc.comments.totalCount;
+  let nodes = [...disc.comments.nodes];
+  let cursor = disc.comments.pageInfo.endCursor;
+  let hasNext = disc.comments.pageInfo.hasNextPage;
+  setProgress(20, `Got ${nodes.length} / ${total} comments…`);
+  while (hasNext) {
+    const d = await gqlFetch(COMMENTS_QUERY, { ...vars, after: cursor });
+    const c = d.repository.discussion.comments;
+    nodes.push(...c.nodes);
+    cursor = c.pageInfo.endCursor;
+    hasNext = c.pageInfo.hasNextPage;
+    const pct = 20 + Math.round((nodes.length / total) * 70);
+    setProgress(pct, `Got ${nodes.length} / ${total} comments…`);
+  }
+  setProgress(92, 'Processing items…');
+  const items = [];
+  for (const c of nodes) {
+    items.push({
+      type:'comment', id:c.databaseId,
+      author:c.author?.login || 'ghost',
+      avatarUrl:c.author?.avatarUrl || '',
+      body:c.body || '', createdAt:c.createdAt,
+      url:c.url, isReply:false, parentId:null
+    });
+    for (const r of (c.replies?.nodes || [])) {
+      items.push({
+        type:'reply', id:r.databaseId,
+        author:r.author?.login || 'ghost',
+        avatarUrl:r.author?.avatarUrl || '',
+        body:r.body || '', createdAt:r.createdAt,
+        url:r.url, isReply:true, parentId:c.databaseId
+      });
+    }
+  }
+  return items;
+}
+
+window.startFetch = async function() {
+  if (!getPat()) {
+    document.getElementById('patRow').classList.add('show');
+    toast('Set your PAT first', 'err');
+    return;
+  }
+  document.getElementById('fetchBtn').disabled = true;
+  document.getElementById('progressWrap').style.display = 'block';
+  try {
+    const items = await fetchAllGql();
+    setProgress(100, 'Done!');
+    saveLocalCache(items);
+    loadFromData(items, false);
+    toast(`Loaded ${items.length} items`, 'ok');
+  } catch(e) {
+    document.getElementById('progressWrap').style.display = 'none';
+    document.getElementById('fetchBtn').disabled = false;
+    toast('Fetch failed: ' + e.message, 'err');
+    console.error(e);
+  }
+};
+
+window.clearAndFetch = function() {
+  localStorage.removeItem(CACHE_KEY);
+  allItems = [];
+  document.getElementById('fetchBtn').disabled = false;
+  document.getElementById('appBarCache').classList.remove('show');
+  document.getElementById('filterRow').classList.remove('show');
+  document.getElementById('fetchPanel').style.display = 'block';
+  document.getElementById('searchInput').disabled = true;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('resultCount').textContent = '';
+  document.getElementById('searchClear').classList.remove('show');
+  document.getElementById('barStats').textContent = 'Not loaded';
+  document.getElementById('results').innerHTML =
+    '<div class="no-results">Tap <strong>Load All Comments</strong> to begin.</div>';
+  startFetch();
+};
+
+window.clearCache = function() {
+  if (!confirm('Clear local cache?')) return;
+  localStorage.removeItem(CACHE_KEY);
+  location.reload();
+};
+
+// ── GitHub cache ─────────────────────────────────────────
+window.saveToGithub = async function() {
+  const pat = getPat();
+  if (!pat) { toast('PAT required', 'err'); return; }
+  if (!allItems.length) { toast('Nothing to save', 'err'); return; }
+  toast('Saving cache to GitHub…', 'info');
+  try {
+    let sha = null;
+    try {
+      const r = await fetch(CACHE_API, { headers: { Authorization: `token ${pat}` } });
+      if (r.ok) { const j = await r.json(); sha = j.sha; }
+    } catch(e) {}
+    const payload = { ts: Date.now(), items: allItems };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const body = { message: 'Update discussion cache', content };
+    if (sha) body.sha = sha;
+    const r = await fetch(CACHE_API, {
+      method: 'PUT',
+      headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!r.ok) { const j = await r.json(); throw new Error(j.message || r.status); }
+    toast('Saved to GitHub ✓', 'ok');
+  } catch(e) {
+    toast('Save failed: ' + e.message, 'err');
+  }
+};
+
+async function loadRemoteCache() {
+  try {
+    const r = await fetch(CACHE_RAW + '?t=' + Date.now());
+    if (!r.ok) return null;
+    const j = await r.json();
+    if (j && j.items && j.items.length) return j;
+  } catch(e) {}
+  return null;
+}
+
+function saveLocalCache(items) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), items })); }
+  catch(e) { console.warn('localStorage full'); }
+}
+
+function loadLocalCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+// ── Load data ────────────────────────────────────────────
+function loadFromData(items, fromCache, scrollToBottom) {
+  allItems = items;
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('fetchPanel').style.display = 'none';
+  document.getElementById('filterRow').classList.add('show');
+  document.getElementById('searchInput').disabled = false;
+  const comments = items.filter(i => !i.isReply).length;
+  const replies = items.filter(i => i.isReply).length;
+  document.getElementById('barStats').innerHTML = `${comments} ✉ · ${replies} ↩`;
+  if (fromCache) {
+    document.getElementById('appBarCache').classList.add('show');
+    const age = Math.round((Date.now() - (loadLocalCache()?.ts || Date.now())) / 60000);
+    document.getElementById('appBarCacheText').textContent =
+      age < 2 ? 'Fresh' : (age < 60 ? age + 'm ago' : Math.round(age/60) + 'h ago');
+  } else {
+    document.getElementById('appBarCache').classList.add('show');
+    document.getElementById('appBarCacheText').textContent = 'Just loaded';
+  }
+  renderResults(allItems, '', scrollToBottom);
+}
+
+// ── Search & filter ──────────────────────────────────────
+window.onSearchInput = function() {
+  currentQuery = document.getElementById('searchInput').value.trim();
+  document.getElementById('searchClear').classList.toggle('show', currentQuery.length > 0);
+  applyFilterAndSearch();
+};
+
+window.clearSearch = function() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('show');
+  currentQuery = '';
+  applyFilterAndSearch();
+  document.getElementById('searchInput').focus();
+};
+
+window.doSearch = window.onSearchInput;
+
+window.setFilter = function(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilterAndSearch();
+};
+
+function itemMatchesFilter(item, filter) {
+  if (filter === 'blazeftl') return item.author.toLowerCase() === 'blazeftl';
+  if (filter === 'code') return item.body.includes('```') || item.body.includes('##+js') || item.body.includes('||') || item.body.includes('##');
+  if (filter === 'replies') return item.isReply;
+  if (filter === 'comments') return !item.isReply;
+  return true; // 'all'
+}
+
+function itemMatchesQuery(item, q) {
+  if (!q) return true;
+  return item.body.toLowerCase().includes(q) || item.author.toLowerCase().includes(q);
+}
+
+function applyFilterAndSearch() {
+  const q = currentQuery.toLowerCase();
+  const filter = currentFilter;
+
+  // Build all thread groups from allItems first
+  const allGroups = buildGroups(allItems);
+
+  let matchedGroups;
+
+  if (!q && filter === 'all') {
+    // No search, no filter: show everything
+    matchedGroups = allGroups;
+  } else if (q) {
+    // THREAD-LEVEL SEARCH: include entire thread if ANY item in thread matches query
+    // Also apply filter on top if not 'all'
+    matchedGroups = allGroups.filter(group => {
+      // Gather all items in this thread
+      const threadItems = [];
+      if (group.parent) threadItems.push(group.parent);
+      threadItems.push(...group.replies);
+
+      // Apply filter: at least one item in thread must pass filter
+      const filterPass = filter === 'all'
+        ? true
+        : threadItems.some(i => itemMatchesFilter(i, filter));
+
+      if (!filterPass) return false;
+
+      // Search: at least one item in thread matches the query
+      return threadItems.some(i => itemMatchesQuery(i, q));
+    });
+  } else {
+    // Filter only, no search query: filter individual items but keep thread structure
+    // Include thread if parent matches filter OR any reply matches filter
+    matchedGroups = allGroups.filter(group => {
+      const threadItems = [];
+      if (group.parent) threadItems.push(group.parent);
+      threadItems.push(...group.replies);
+      return threadItems.some(i => itemMatchesFilter(i, filter));
+    });
+  }
+
+  const countEl = document.getElementById('resultCount');
+  countEl.textContent = (q || filter !== 'all')
+    ? (matchedGroups.length + ' thread' + (matchedGroups.length !== 1 ? 's' : '')) : '';
+
+  renderResultsFromGroups(matchedGroups, q);
+}
+
+// ── Render ───────────────────────────────────────────────
+const PAGE_SIZE = 50;
+let renderedGroups = [];
+let renderedCount = 0;
+let _pendingScrollBottom = false;
+
+function buildGroups(items) {
+  const parentMap = new Map();
+  const replyMap = new Map();
+  const standalone = [];
+  for (const item of items) {
+    if (!item.isReply) {
+      parentMap.set(item.id, item);
+    }
+  }
+  for (const [id] of parentMap) replyMap.set(id, []);
+  for (const item of items) {
+    if (item.isReply) {
+      if (replyMap.has(item.parentId)) {
+        replyMap.get(item.parentId).push(item);
+      } else {
+        standalone.push(item);
+      }
+    }
+  }
+  const groups = [];
+  for (const [id, parent] of parentMap) {
+    groups.push({ parent, replies: replyMap.get(id) || [] });
+  }
+  for (const item of standalone) {
+    groups.push({ parent: null, replies: [item] });
+  }
+  return groups;
+}
+
+function renderResults(items, query, scrollToBottom) {
+  const groups = buildGroups(items);
+  renderResultsFromGroups(groups, query, scrollToBottom);
+}
+
+function renderResultsFromGroups(groups, query, scrollToBottom) {
+  const container = document.getElementById('results');
+  renderedCount = 0;
+  _pendingScrollBottom = !!scrollToBottom;
+  if (!groups.length) {
+    container.innerHTML = '<div class="no-results">No results found.</div>';
+    return;
+  }
+  container.innerHTML = '';
+  renderedGroups = groups;
+  renderBatch(query, container);
+}
+
+function renderBatch(query, container) {
+  if (_pendingScrollBottom) {
+    const frag = document.createDocumentFragment();
+    for (let i = renderedCount; i < renderedGroups.length; i++) {
+      frag.appendChild(buildGroupEl(renderedGroups[i], query));
+    }
+    renderedCount = renderedGroups.length;
+    container.appendChild(frag);
+    _pendingScrollBottom = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }));
+    return;
+  }
+  const end = Math.min(renderedCount + PAGE_SIZE, renderedGroups.length);
+  const frag = document.createDocumentFragment();
+  for (let i = renderedCount; i < end; i++) {
+    frag.appendChild(buildGroupEl(renderedGroups[i], query));
+  }
+  renderedCount = end;
+  container.appendChild(frag);
+  if (renderedCount < renderedGroups.length) {
+    const sentinel = document.createElement('div');
+    sentinel.id = 'loadMoreSentinel';
+    sentinel.style.height = '1px';
+    container.appendChild(sentinel);
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        obs.disconnect();
+        sentinel.remove();
+        renderBatch(query, container);
+      }
+    }, { rootMargin: '400px' });
+    obs.observe(sentinel);
+  }
+}
+
+function buildGroupEl(group, query) {
+  if (group.parent && group.replies.length > 0) {
+    const wrap = document.createElement('div');
+    wrap.className = 'thread-group';
+    wrap.appendChild(buildCard(group.parent, query, false));
+    for (const r of group.replies) wrap.appendChild(buildCard(r, query, true));
+    return wrap;
+  }
+  if (group.parent) {
+    const wrap = document.createElement('div');
+    wrap.className = 'thread-group';
+    wrap.appendChild(buildCard(group.parent, query, false));
+    return wrap;
+  }
+  return buildCard(group.replies[0], query, true);
+}
+
+function buildCard(item, query, asReply) {
+  const div = document.createElement('div');
+  div.className = 'result-card' + (asReply ? ' is-reply' : '');
+  const isBlaze = item.author.toLowerCase() === 'blazeftl';
+  const date = item.createdAt
+    ? new Date(item.createdAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+    : '';
+  const bodyHtml = renderMarkdown(item.body, query);
+  div.innerHTML = `
+    <div class="card-header">
+      <div class="avatar"><img src="${escH(item.avatarUrl)}" loading="lazy" onerror="this.style.display='none'"></div>
+      <span class="author ${isBlaze ? 'blaze' : ''}">${escH(item.author)}</span>
+      <div class="card-badges">
+        ${item.isReply ? '<span class="badge badge-reply">Reply</span>' : ''}
+        ${isBlaze ? '<span class="badge badge-blaze">BlazeFTL</span>' : ''}
+      </div>
+      <span class="card-date">${date}</span>
+    </div>
+    <div class="card-body">${bodyHtml}</div>
+    <div class="card-footer">
+      <a class="card-link" href="${escH(item.url)}" target="_blank">↗ View on GitHub</a>
+    </div>`;
+  return div;
+}
+
+// ── Markdown renderer ─────────────────────────────────────
+function renderMarkdown(raw, query) {
+  let text = raw;
+  text = text.replace(/^>\s*\[!(TIP|NOTE|WARNING|IMPORTANT|CAUTION)\]\s*\n((?:>.*\n?)*)/gim,
+    (_, type, body) => {
+      const cls = type.toLowerCase();
+      const inner = body.replace(/^>\s?/gm, '').trim();
+      const icons = { tip:'💡', note:'ℹ️', warning:'⚠️', important:'🔔', caution:'🔴' };
+      return `<div class="gh-alert gh-alert-${cls}"><div class="gh-alert-title">${icons[cls]||''} ${type}</div>${marked.parse(inner)}</div>\n`;
+    }
+  );
+  let html;
+  try {
+    html = marked.parse(text, { breaks: true, gfm: true });
+  } catch(e) {
+    html = escH(raw).replace(/\n/g, '<br>');
+  }
+  if (query) {
+    try {
+      const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      html = html.replace(new RegExp(`(?![^<]*>)(${esc})`, 'gi'), '<mark>$1</mark>');
+    } catch(e) {}
+  }
+  return html;
+}
+
+function escH(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Progress ─────────────────────────────────────────────
+function setProgress(pct, label) {
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = label;
+}
+
+// ── Toast ─────────────────────────────────────────────────
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = '', 3000);
+}
+
+// ── Scroll buttons ────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const atTop = window.scrollY < 400;
+  const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 400;
+  document.getElementById('scrollTop').classList.toggle('show', !atTop);
+  document.getElementById('scrollBottom').classList.toggle('show', !atBottom && window.scrollY > 100);
+});
+
+// ── Init ──────────────────────────────────────────────────
+(async function init() {
+  updatePatUI();
+  const local = loadLocalCache();
+  if (local && local.items && local.items.length) {
+    const age = Math.round((Date.now() - local.ts) / 60000);
+    loadFromData(local.items, true, true);
+    document.getElementById('appBarCacheText').textContent =
+      age < 2 ? 'Fresh' : (age < 60 ? age + 'm ago' : Math.round(age/60) + 'h ago');
+    toast('Loaded from local cache', 'info');
+    return;
+  }
+  setProgress(10, 'Checking GitHub cache…');
+  document.getElementById('progressWrap').style.display = 'block';
+  const remote = await loadRemoteCache();
+  document.getElementById('progressWrap').style.display = 'none';
+  if (remote && remote.items && remote.items.length) {
+    saveLocalCache(remote.items);
+    const age = Math.round((Date.now() - remote.ts) / 60000);
+    loadFromData(remote.items, true, true);
+    document.getElementById('appBarCacheText').textContent =
+      age < 2 ? 'Fresh' : (age < 60 ? age + 'm ago' : Math.round(age/60) + 'h ago');
+    toast('Loaded from GitHub cache', 'info');
+  }
+})();
+</script>
+</body>
+</html>
