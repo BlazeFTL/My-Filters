@@ -710,7 +710,7 @@ streamhls.to##+js(rpnt, script, /([\s\S]*?)(const video[\s\S\n]*false;\s+\})([\s
 streamhls.to##+js(nowoif)
 streamhls.to##+js(set, adbon, 0)
 ! Remove Any PopUps
-vidnest.io##+js(acs, EventTarget.prototype.addEventListener, open)
+bigwarp.*,vidnest.io##+js(acs, EventTarget.prototype.addEventListener, open)
 ! Downloads
 techtalk.life###showlink, #soralink-human-verif-main:style(display: block !important;)
 techtalk.life###showlink, #soralink-human-verif-main:remove-attr(disabled)
@@ -1193,11 +1193,11 @@ streamtape.com##.text-center.col-12 > div > div:nth-of-type(3)
 streamtape.com##div.row:nth-of-type(4)
 
 ! VidNest - Force Mobile Responsiveness
-vidnest.*###video-content:style(width: 100% !important; max-width: 100% !important; float: none !important;)
-vidnest.*##.main_container:style(min-height: initial! important;)
-vidnest.*##.footer > .container
+bigwarp.*,vidnest.*###video-content:style(width: 100% !important; max-width: 100% !important; float: none !important;)
+bigwarp.*,vidnest.*##.main_container:style(min-height: initial! important;)
+bigwarp.*,vidnest.*##.footer > .container
 !vidnest.io##.section
-vidnest.*##.footer
+bigwarp.*,vidnest.*##.footer
 !vidnest.io###undervideo
 !vidnest.io##p > [href] > [src]
 !vidnest.io###video-content > [href]
