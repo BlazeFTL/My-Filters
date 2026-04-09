@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>uAssets Filter Editor</title>
+
+<script type="importmap">
+{
+  "imports": {
+    "@codemirror/state":    "https://esm.sh/@codemirror/state@6.4.1?bundle",
+    "@codemirror/view":     "https://esm.sh/@codemirror/view@6.26.3?bundle&external=@codemirror/state",
+    "@codemirror/commands": "https://esm.sh/@codemirror/commands@6.3.3?bundle&external=@codemirror/state,@codemirror/view",
+    "@codemirror/search":   "https://esm.sh/@codemirror/search@6.5.6?bundle&external=@codemirror/state,@codemirror/view,@codemirror/commands",
+    "@codemirror/language": "https://esm.sh/@codemirror/language@6.10.1?bundle&external=@codemirror/state,@codemirror/view"
+  }
+}
+</script>
+
+<!-- Non-module script: PAT modal works instantly, before ES module loads -->
+<script>
+(function(){
+  var PAT_KEY = 'uassets_pat';
+  function getPat(){ return localStorage.getItem(PAT_KEY)||''; }
+  function setDot(){ var d=document.getElementById('patDot'); if(d) d.className=getPat()?'set':''; }
+  function open(){
+    document.getElementById('patModal').style.display='flex';
+    var i=document.getElementById('patInput'); i.value=getPat();
+    setTimeout(function(){i.focus();i.select();},80);
+  }
+  function close(){ document.getElementById('patModal').style.display='none'; }
+  function save(){
+    var v=document.getElementById('patInput').value.trim();
+    if(v) localStorage.setItem(PAT_KEY,v); else localStorage.removeItem(PAT_KEY);
+    setDot(); close();
+    document.dispatchEvent(new CustomEvent('pat-saved'));
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    setDot();
+    document.getElementById('patTopBtn').addEventListener('click',open);
+    document.getElementById('patCloseBtn').addEventListener('click',close);
+    document.getElementById('patSaveBtn').addEventListener('click',save);
+    document.getElementById('patInput').addEventListener('keydown',function(e){
+      if(e.key==='Enter') save();
+      if(e.key==='Escape') close();
+    });
+    document.getElementById('patModal').addEventListener('click',function(e){
+      if(e.target===this) close();
+    });
+  });
+})();
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+:root {
+  --bg:#FAFAFA; --surface:#FFF; --surface2:#F5F5F5;
+  --border:#E0E0E0; --border2:#BDBDBD;
+  --primary:#1565C0; --primary-light:#E3F2FD; --primary-dark:#0D47A1;
+  --text:#212121; --text2:#757575; --text3:#BDBDBD;
+  --shadow:0 1px 3px rgba(0,0,0,.14); --shadow2:0 2px 8px rgba(0,0,0,.18);
+  --fn:13px;
+  --cc:#6A737D; --ct:#005CC5; --ce:#B31D28; --cn:#005CC5;
+  --co:#22863A; --cs:#6F42C1; --cd:#E36209; --cop:#032F62; --cp:#24292E;
+  --sw:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Roboto',sans-serif;display:flex;flex-direction:column;}
+
+/* TOP BAR */
+#topBar{flex-shrink:0;background:var(--primary);color:#fff;padding:0 10px 0 14px;height:52px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow2);z-index:100;}
+.app-info{flex:1;min-width:0;}
+.app-title{font-size:16px;font-weight:500;}
+.app-file{font-size:10px;opacity:.7;font-family:'Roboto Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+#statusChip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border-radius:12px;padding:4px 10px;font-size:11px;white-space:nowrap;}
+#sDot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);transition:background .3s;}
+#sDot.ok{background:#69F0AE;}#sDot.err{background:#FF5252;}
+#sDot.loading{background:#FFD740;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+#patTopBtn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 14px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:500;cursor:pointer;min-height:36px;}
+#patTopBtn:active{opacity:.7;}
+#patDot{width:10px;height:10px;border-radius:50%;background:#FF5252;flex-shrink:0;transition:background .3s;}
+#patDot.set{background:#69F0AE;}
+
+/* TOOLBAR */
+#toolbar{flex-shrink:0;background:var(--surface);border-bottom:2px solid var(--border);padding:5px 8px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+.btn{font-family:'Roboto',sans-serif;font-size:12px;font-weight:500;padding:6px 10px;border-radius:4px;border:none;cursor:pointer;white-space:nowrap;letter-spacing:.3px;text-transform:uppercase;min-height:32px;display:inline-flex;align-items:center;gap:4px;transition:background .12s;}
+.btn:active{opacity:.75;transform:scale(.96);}
+.btn-flat{background:transparent;color:var(--primary);}
+.btn-flat:hover{background:var(--primary-light);}
+.btn-raised{background:var(--primary);color:#fff;box-shadow:var(--shadow);}
+.btn-green{background:#388E3C;color:#fff;box-shadow:var(--shadow);}
+.btn:disabled{opacity:.3;pointer-events:none;}
+#modBadge{display:none;font-size:10px;font-weight:700;background:#FF8F00;color:#fff;border-radius:10px;padding:2px 8px;letter-spacing:.5px;}
+#modBadge.show{display:inline-block;}
+
+/* PER-FILE SEARCH */
+#searchPanel{display:none;flex-shrink:0;background:#fff;border-bottom:2px solid var(--primary);padding:8px 10px;box-shadow:0 2px 8px rgba(21,101,192,.12);z-index:90;flex-direction:column;gap:6px;}
+#searchPanel.open{display:flex;}
+.sp-row{display:flex;gap:6px;align-items:center;}
+.sp-field{flex:1;position:relative;}
+.sp-field input{width:100%;font-family:'Roboto Mono',monospace;font-size:13px;padding:8px 78px 8px 12px;border:1.5px solid var(--border2);border-radius:6px;background:var(--surface2);color:var(--text);outline:none;}
+.sp-field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,101,192,.12);background:#fff;}
+.sp-field input::placeholder{color:var(--text3);}
+.sp-toggles{display:flex;gap:2px;position:absolute;right:6px;top:50%;transform:translateY(-50%);}
+.sp-tog{font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;padding:3px 6px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;line-height:1;}
+.sp-tog.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+.sp-nav-btns{display:flex;gap:4px;flex-shrink:0;}
+.sp-nav-btn{width:32px;height:32px;border-radius:6px;border:1.5px solid var(--border2);background:var(--surface2);color:var(--primary);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.sp-nav-btn:active{background:var(--primary-light);}
+.sp-close-btn{width:32px;height:32px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sp-close-btn:active{background:var(--surface2);}
+#spToggleReplace{font-size:11px;font-weight:500;color:var(--text2);background:none;border:none;cursor:pointer;padding:0 4px;white-space:nowrap;text-transform:uppercase;font-family:'Roboto',sans-serif;}
+.sp-replace-row{display:flex;gap:6px;align-items:center;}
+.sp-replace-row input{flex:1;font-family:'Roboto Mono',monospace;font-size:13px;padding:8px 12px;border:1.5px solid var(--border2);border-radius:6px;background:var(--surface2);color:var(--text);outline:none;}
+.sp-replace-row input:focus{border-color:#388E3C;background:#fff;}
+.sp-rep-btn{font-family:'Roboto',sans-serif;font-size:11px;font-weight:500;padding:6px 10px;border-radius:6px;border:1.5px solid var(--border2);background:var(--surface2);color:#388E3C;cursor:pointer;white-space:nowrap;text-transform:uppercase;}
+.sp-rep-btn:active{background:#E8F5E9;border-color:#388E3C;}
+
+/* LAYOUT */
+#mainLayout{flex:1;display:flex;overflow:hidden;}
+
+/* SIDEBAR */
+#sidebar{width:var(--sw);min-width:var(--sw);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .2s,min-width .2s;flex-shrink:0;}
+#sidebar.collapsed{width:0;min-width:0;border-right:none;}
+#sidebarHeader{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface2);border-bottom:1px solid var(--border);flex-shrink:0;}
+#sidebarHeader span{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text2);}
+#refreshTreeBtn{background:none;border:none;cursor:pointer;color:var(--primary);font-size:17px;padding:2px 6px;border-radius:4px;line-height:1;}
+#refreshTreeBtn:active{background:var(--primary-light);}
+#fileTree{flex:1;overflow-y:auto;overflow-x:hidden;}
+#fileTree::-webkit-scrollbar{width:4px;}
+#fileTree::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* Tree nodes */
+.tree-folder{user-select:none;}
+.tree-folder-label{display:flex;align-items:center;gap:6px;padding:8px 10px;font-size:12px;font-weight:500;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);background:var(--surface2);}
+.tree-folder-label:active{background:var(--primary-light);}
+.tree-arrow{font-size:9px;color:var(--text2);transition:transform .15s;flex-shrink:0;display:inline-block;}
+.tree-folder.open > .tree-folder-label .tree-arrow{transform:rotate(90deg);}
+.tree-kids{display:none;}
+.tree-folder.open > .tree-kids{display:block;}
+.tree-file{display:flex;align-items:center;gap:6px;font-size:12px;font-family:'Roboto Mono',monospace;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 8px 8px 10px;}
+.tree-file:active{background:var(--primary-light);}
+.tree-file.active{background:var(--primary-light);color:var(--primary);font-weight:500;}
+.tree-msg{padding:14px;font-size:12px;color:var(--text2);line-height:1.7;}
+.tree-msg b{color:var(--primary);}
+.tree-loading{padding:8px 14px;font-size:11px;color:var(--text2);font-style:italic;}
+.tree-err{padding:10px 12px;font-size:11px;color:#C62828;background:#FFF3F3;border-left:3px solid #C62828;margin:6px;border-radius:3px;line-height:1.5;}
+
+/* EDITOR */
+#editorArea{flex:1;overflow:hidden;}
+#cmHost{width:100%;height:100%;}
+.cm-editor{height:100%;background:var(--surface) !important;font-family:'Roboto Mono',monospace !important;font-size:var(--fn) !important;}
+.cm-editor.cm-focused{outline:none !important;}
+.cm-scroller{overflow:auto !important;}
+.cm-content{padding:8px 12px 250px 8px !important;}
+.cm-lineNumbers .cm-gutterElement{font-family:'Roboto Mono',monospace;font-size:var(--fn);color:var(--text3);padding:0 6px 0 8px;min-width:40px;}
+.cm-gutters{background:var(--surface2) !important;border-right:1px solid var(--border) !important;}
+.cm-activeLine{background:rgba(21,101,192,.05) !important;}
+.cm-activeLineGutter{background:rgba(21,101,192,.08) !important;}
+.cm-selectionBackground,.cm-focused .cm-selectionBackground{background:rgba(21,101,192,.2) !important;}
+.cm-cursor{border-left-color:var(--primary) !important;}
+.cm-searchMatch{background:#FFF176 !important;border-radius:2px;}
+.cm-searchMatch-selected{background:#FFD740 !important;outline:2px solid #F57F17;}
+.cm-search{display:none !important;}
+.ub-comment{color:var(--cc);font-style:italic;}
+.ub-title{color:var(--ct);font-weight:500;}
+.ub-except{color:var(--ce);}
+.ub-network{color:var(--cn);}
+.ub-cosmetic{color:var(--co);}
+.ub-scriptlet{color:var(--cs);}
+.ub-domain{color:var(--cd);}
+.ub-option{color:var(--cop);}
+.ub-plain{color:var(--cp);}
+
+/* COMMIT BAR */
+#commitBar{display:none;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:2px solid #388E3C;padding:10px;gap:8px;align-items:center;box-shadow:0 -2px 8px rgba(0,0,0,.12);z-index:150;}
+#commitBar.show{display:flex;}
+#commitMsg{flex:1;font-family:'Roboto',sans-serif;font-size:15px;padding:12px 14px;border:1px solid var(--border2);border-radius:6px;outline:none;color:var(--text);background:var(--surface);min-height:48px;}
+#commitMsg:focus{border-color:#388E3C;}
+
+/* PAT MODAL */
+#patModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-end;justify-content:center;}
+.pat-sheet{background:#fff;border-radius:16px 16px 0 0;padding:24px 20px 44px;width:100%;max-width:520px;}
+.pat-sheet h2{font-size:17px;font-weight:500;margin-bottom:8px;}
+.pat-sheet p{font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.65;}
+.pat-sheet input{width:100%;font-family:'Roboto Mono',monospace;font-size:14px;padding:12px 14px;border:1.5px solid var(--border2);border-radius:6px;outline:none;margin-bottom:16px;background:var(--surface2);color:var(--text);}
+.pat-sheet input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,101,192,.12);background:#fff;}
+.pat-actions{display:flex;gap:10px;justify-content:flex-end;}
+
+/* GLOBAL SEARCH */
+#globalOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:flex-start;justify-content:center;padding-top:54px;}
+#globalOverlay.show{display:flex;}
+#globalPanel{background:#fff;border-radius:12px;width:calc(100% - 20px);max-width:620px;max-height:calc(100vh - 80px);display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.22);overflow:hidden;}
+#gsHeader{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:2px solid var(--primary);flex-shrink:0;background:var(--primary-light);}
+#gsHeader strong{font-size:13px;color:var(--primary);white-space:nowrap;}
+#gsInput{flex:1;font-family:'Roboto Mono',monospace;font-size:14px;padding:8px 12px;border:1.5px solid var(--border2);border-radius:6px;outline:none;}
+#gsInput:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,101,192,.12);}
+#gsSearchBtn{background:var(--primary);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;}
+#gsSearchBtn:active{background:var(--primary-dark);}
+#gsXBtn{background:none;border:none;cursor:pointer;font-size:22px;color:var(--text2);width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;}
+#gsXBtn:active{background:var(--border);}
+#gsOpts{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.gs-tog{font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;line-height:1.4;}
+.gs-tog.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+#gsStatus{flex:1;font-size:11px;color:var(--text2);text-align:right;font-family:'Roboto Mono',monospace;}
+#gsBar{display:none;flex-direction:column;gap:6px;padding:14px 16px;flex-shrink:0;}
+#gsBarTrack{width:100%;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+#gsBarFill{height:100%;background:var(--primary);border-radius:2px;transition:width .1s;width:0;}
+#gsBarLabel{font-size:11px;color:var(--text2);font-family:'Roboto Mono',monospace;text-align:center;}
+#gsResults{flex:1;overflow-y:auto;overflow-x:hidden;}
+#gsResults::-webkit-scrollbar{width:4px;}
+#gsResults::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.gs-empty{padding:32px 16px;text-align:center;color:var(--text2);font-size:13px;}
+.gs-group{border-bottom:1px solid var(--border);}
+.gs-fhdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface2);font-size:11px;font-family:'Roboto Mono',monospace;font-weight:600;color:var(--primary);cursor:pointer;position:sticky;top:0;z-index:2;}
+.gs-fhdr:active{background:var(--primary-light);}
+.gs-badge{background:var(--primary);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:auto;}
+.gs-row{display:flex;align-items:flex-start;gap:8px;padding:6px 14px 6px 22px;font-family:'Roboto Mono',monospace;font-size:12px;border-bottom:1px solid var(--border);cursor:pointer;line-height:1.5;}
+.gs-row:active{background:var(--primary-light);}
+.gs-lnum{color:var(--text3);font-size:11px;flex-shrink:0;min-width:36px;text-align:right;padding-top:1px;}
+.gs-ltext{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
+.gs-hl{background:#FFF176;border-radius:2px;padding:0 1px;color:#B71C1C;font-weight:600;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(64px);background:#323232;color:#fff;border-radius:4px;padding:10px 18px;font-size:13px;font-weight:500;transition:transform .22s;z-index:99999;white-space:nowrap;box-shadow:var(--shadow2);pointer-events:none;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="topBar">
+  <div class="app-info">
+    <div class="app-title">uAssets Filter Editor</div>
+    <div class="app-file" id="appFileLabel">No file open</div>
+  </div>
+  <div class="top-right">
+    <div id="statusChip"><div id="sDot"></div><span id="sText">–</span></div>
+    <button id="patTopBtn"><div id="patDot"></div>PAT</button>
+  </div>
+</div>
+
+<div id="toolbar">
+  <button class="btn btn-flat"  id="btnSidebar">☰ Files</button>
+  <button class="btn btn-raised" id="btnLoad" disabled>⬇ Load</button>
+  <button class="btn btn-flat"  id="btnFind">🔍 Find</button>
+  <button class="btn btn-flat"  id="btnGlobal">🌐 All Files</button>
+  <button class="btn btn-flat"  id="btnPaste">📋 Paste</button>
+  <button class="btn btn-flat"  id="btnCopy">⎘ Copy</button>
+  <button class="btn btn-flat"  id="btnGoto"># Line</button>
+  <button class="btn btn-green" id="btnSave" disabled>⬆ Save</button>
+  <span id="modBadge">UNSAVED</span>
+</div>
+
+<div id="searchPanel">
+  <div class="sp-row">
+    <div class="sp-field">
+      <input id="spFind" type="text" placeholder="Find in this file…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="sp-toggles">
+        <button class="sp-tog" id="spCase">Aa</button>
+        <button class="sp-tog" id="spWord">W</button>
+        <button class="sp-tog" id="spRe">.*</button>
+      </div>
+    </div>
+    <div class="sp-nav-btns">
+      <button class="sp-nav-btn" id="spPrev">↑</button>
+      <button class="sp-nav-btn" id="spNext">↓</button>
+    </div>
+    <span id="spCount" style="font-size:11px;font-weight:600;color:var(--primary);white-space:nowrap;min-width:60px;text-align:right"></span>
+    <button id="spToggleReplace">Replace</button>
+    <button class="sp-close-btn" id="spClose">✕</button>
+  </div>
+  <div class="sp-replace-row" id="spReplaceRow" style="display:none">
+    <input id="spReplace" type="text" placeholder="Replace with…" autocomplete="off" spellcheck="false">
+    <button class="sp-rep-btn" id="spRepOne">Replace</button>
+    <button class="sp-rep-btn" id="spRepAll">All</button>
+  </div>
+</div>
+
+<div id="mainLayout">
+  <div id="sidebar">
+    <div id="sidebarHeader">
+      <span>uAssets / filters</span>
+      <button id="refreshTreeBtn" title="Refresh">↻</button>
+    </div>
+    <div id="fileTree">
+      <div class="tree-msg">
+        <b>Enter your PAT</b> to load the file list.<br>
+        Tap <b>PAT</b> in the top-right corner.
+      </div>
+    </div>
+  </div>
+  <div id="editorArea"><div id="cmHost"></div></div>
+</div>
+
+<div id="commitBar">
+  <input id="commitMsg" type="text" placeholder="Commit message…">
+  <button class="btn btn-green" id="btnCommit" style="min-height:48px;padding:10px 16px;font-size:14px">✔ Commit</button>
+  <button class="btn btn-flat"  id="btnCancelCommit" style="min-height:48px;font-size:13px;color:#C62828">Cancel ✕</button>
+</div>
+
+<div id="patModal">
+  <div class="pat-sheet">
+    <h2>GitHub Token (PAT)</h2>
+    <p>Required to load the file list and save edits.<br>
+       Needs <b>public_repo</b> (or <b>repo</b>) scope.<br>
+       Stored in <b>localStorage</b> — persists until you clear site data.</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    <div class="pat-actions">
+      <button class="btn btn-flat"   id="patCloseBtn">Cancel</button>
+      <button class="btn btn-raised" id="patSaveBtn">Save Token</button>
+    </div>
+  </div>
+</div>
+
+<div id="globalOverlay">
+  <div id="globalPanel">
+    <div id="gsHeader">
+      <strong>🌐 Search All Files</strong>
+      <input id="gsInput" type="text" placeholder="Search across all filter files…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button id="gsSearchBtn">Search</button>
+      <button id="gsXBtn">✕</button>
+    </div>
+    <div id="gsOpts">
+      <button class="gs-tog" id="gsCase">Aa Case</button>
+      <button class="gs-tog" id="gsWord">W Word</button>
+      <button class="gs-tog" id="gsRe">.* Regex</button>
+      <span id="gsStatus"></span>
+    </div>
+    <div id="gsBar">
+      <div id="gsBarTrack"><div id="gsBarFill"></div></div>
+      <div id="gsBarLabel">Searching…</div>
+    </div>
+    <div id="gsResults"><div class="gs-empty">Enter a term and tap Search.</div></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { EditorState } from '@codemirror/state';
+import {
+  EditorView, lineNumbers, highlightActiveLine, highlightActiveLineGutter,
+  drawSelection, keymap, ViewPlugin, Decoration,
+  rectangularSelection, crosshairCursor, highlightSpecialChars, dropCursor
+} from '@codemirror/view';
+import {
+  defaultKeymap, history, historyKeymap, indentWithTab,
+  deleteLine, moveLineUp, moveLineDown, copyLineUp, copyLineDown,
+  selectNextOccurrence
+} from '@codemirror/commands';
+import {
+  search, searchKeymap, SearchQuery, setSearchQuery,
+  findNext, findPrevious, replaceNext, replaceAll as cmReplaceAll
+} from '@codemirror/search';
+
+// ── Config ────────────────────────────────────────────
+const OWNER  = 'uBlockOrigin';
+const REPO   = 'uAssets';
+const BRANCH = 'master';
+const FPATH  = 'filters';
+const API    = `https://api.github.com/repos/${OWNER}/${REPO}`;
+const RAW    = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}`;
+
+let curFile = null;
+let origDoc = '';
+let allFiles = [];
+
+const getPat = () => localStorage.getItem('uassets_pat') || '';
+const hdrs   = () => {
+  const h = { 'Accept': 'application/vnd.github.v3+json' };
+  const p = getPat();
+  if (p) h['Authorization'] = 'token ' + p;
+  return h;
+};
+
+// ── Utilities ─────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function toast(msg, dur=2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), dur);
+}
+function setStatus(s, txt) {
+  document.getElementById('sDot').className = s;
+  document.getElementById('sText').textContent = txt;
+}
+
+// ── PAT event ─────────────────────────────────────────
+document.addEventListener('pat-saved', () => {
+  if (getPat()) {
+    toast('Token saved ✓ — loading files…');
+    loadFileTree();
+  } else {
+    toast('Token cleared');
+    document.getElementById('fileTree').innerHTML =
+      '<div class="tree-msg"><b>PAT cleared.</b> Tap PAT to re-enter.</div>';
+  }
+});
+
+// ── Sidebar toggle ────────────────────────────────────
+document.getElementById('btnSidebar').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+});
+
+// ── File tree via Contents API ────────────────────────
+// We fetch one directory at a time (Contents API, not recursive trees).
+// This is reliable even for large repos.
+
+async function fetchDir(path) {
+  const url = `${API}/contents/${path}?ref=${BRANCH}`;
+  const r = await fetch(url, { headers: hdrs() });
+  if (!r.ok) {
+    const txt = await r.text().catch(()=>'');
+    throw new Error(`HTTP ${r.status} — ${txt.slice(0,120)}`);
+  }
+  return r.json(); // array of {name, path, type, sha, download_url}
+}
+
+async function loadFileTree() {
+  allFiles = [];
+  const el = document.getElementById('fileTree');
+  el.innerHTML = '<div class="tree-loading">⏳ Loading filters/…</div>';
+  try {
+    const items = await fetchDir(FPATH);
+    el.innerHTML = '';
+    // Sort: dirs first, then files
+    items.sort((a,b) => {
+      if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+    for (const item of items) {
+      if (item.type === 'dir') {
+        el.appendChild(makeFolderNode(item, 0));
+      } else if (item.type === 'file') {
+        allFiles.push({ path: item.path, name: item.name });
+        el.appendChild(makeFileNode(item, 0));
+      }
+    }
+    toast(`✓ ${allFiles.length} files listed`);
+    if (allFiles.length === 0) {
+      el.innerHTML = '<div class="tree-msg">No files found in filters/</div>';
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="tree-err">Failed to load: ${esc(e.message)}</div>`;
+    toast('Tree load failed: ' + e.message, 4000);
+  }
+}
+
+function makeFileNode(item, depth) {
+  const d = document.createElement('div');
+  d.className = 'tree-file';
+  d.dataset.path = item.path;
+  d.style.paddingLeft = (10 + depth * 14) + 'px';
+  d.innerHTML = `<span style="flex-shrink:0;color:var(--text3);font-size:11px">📄</span><span style="overflow:hidden;text-overflow:ellipsis">${esc(item.name)}</span>`;
+  d.addEventListener('click', () => selectFile(item.path, item.name));
+  return d;
+}
+
+function makeFolderNode(item, depth) {
+  const folder = document.createElement('div');
+  folder.className = 'tree-folder';
+
+  const label = document.createElement('div');
+  label.className = 'tree-folder-label';
+  label.style.paddingLeft = (10 + depth * 14) + 'px';
+  label.innerHTML = `<span class="tree-arrow">▶</span><span style="flex-shrink:0">📁</span><span style="overflow:hidden;text-overflow:ellipsis">${esc(item.name)}</span>`;
+
+  const kids = document.createElement('div');
+  kids.className = 'tree-kids';
+
+  let loaded = false;
+  label.addEventListener('click', async () => {
+    folder.classList.toggle('open');
+    if (folder.classList.contains('open') && !loaded) {
+      loaded = true;
+      kids.innerHTML = '<div class="tree-loading">⏳ Loading…</div>';
+      try {
+        const children = await fetchDir(item.path);
+        kids.innerHTML = '';
+        children.sort((a,b) => {
+          if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
+          return a.name.localeCompare(b.name);
+        });
+        for (const child of children) {
+          if (child.type === 'dir') {
+            kids.appendChild(makeFolderNode(child, depth + 1));
+          } else if (child.type === 'file') {
+            allFiles.push({ path: child.path, name: child.name });
+            kids.appendChild(makeFileNode(child, depth + 1));
+          }
+        }
+        if (!children.length) kids.innerHTML = '<div class="tree-loading">Empty folder</div>';
+      } catch(e) {
+        kids.innerHTML = `<div class="tree-err">${esc(e.message)}</div>`;
+      }
+    }
+  });
+
+  folder.appendChild(label);
+  folder.appendChild(kids);
+  return folder;
+}
+
+document.getElementById('refreshTreeBtn').addEventListener('click', () => {
+  if (!getPat()) { document.getElementById('patTopBtn').click(); return; }
+  loadFileTree();
+});
+
+// ── Select & load file ────────────────────────────────
+async function selectFile(path, name) {
+  // Mark active in sidebar
+  document.querySelectorAll('.tree-file').forEach(el =>
+    el.classList.toggle('active', el.dataset.path === path)
+  );
+  curFile = { path, name, sha: null };
+  document.getElementById('appFileLabel').textContent = path;
+  document.getElementById('commitMsg').value = `Update ${name}`;
+  document.getElementById('btnLoad').disabled = false;
+  await loadFile();
+}
+
+async function loadFile() {
+  if (!curFile) { toast('Select a file first'); return; }
+  const cur = view.state.doc.toString();
+  if (cur !== origDoc && cur.trim() && origDoc) {
+    if (!confirm('Discard unsaved changes?')) return;
+  }
+  setStatus('loading', 'Fetching…');
+  // Use raw URL — no auth needed for public repo content
+  const url = `${RAW}/${curFile.path}?t=${Date.now()}`;
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const txt = await r.text();
+    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: txt } });
+    origDoc = txt;
+    document.getElementById('modBadge').classList.remove('show');
+    const lc = txt.split('\n').length;
+    setStatus('ok', lc + ' lines');
+    document.getElementById('btnSave').disabled = false;
+    toast(`✓ Loaded ${curFile.name} — ${lc} lines`);
+    fetchSha(); // background, for saving later
+    requestAnimationFrame(() =>
+      view.dispatch({ effects: EditorView.scrollIntoView(0) })
+    );
+  } catch(e) {
+    setStatus('err', 'Load failed');
+    toast('Load failed: ' + e.message, 4000);
+  }
+}
+
+async function fetchSha() {
+  if (!curFile || !getPat()) return;
+  try {
+    const r = await fetch(`${API}/contents/${curFile.path}?ref=${BRANCH}`, { headers: hdrs() });
+    if (r.ok) { const j = await r.json(); curFile.sha = j.sha; }
+  } catch(e) {}
+}
+
+document.getElementById('btnLoad').addEventListener('click', loadFile);
+
+// ── Save ──────────────────────────────────────────────
+function showCommit() {
+  if (!curFile) { toast('No file open'); return; }
+  if (!getPat()) { document.getElementById('patTopBtn').click(); return; }
+  document.getElementById('commitBar').classList.add('show');
+  posBar();
+  setTimeout(() => document.getElementById('commitMsg').focus(), 50);
+}
+function hideCommit() { document.getElementById('commitBar').classList.remove('show'); }
+function posBar() {
+  const bar = document.getElementById('commitBar');
+  if (!bar.classList.contains('show')) return;
+  bar.style.bottom = window.visualViewport
+    ? (window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop) + 'px'
+    : '0px';
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', posBar);
+  window.visualViewport.addEventListener('scroll', posBar);
+}
+async function doSave() {
+  const pat = getPat();
+  if (!pat) { toast('No PAT set'); return; }
+  if (!curFile) { toast('No file open'); return; }
+  if (!curFile.sha) {
+    toast('Fetching SHA first…');
+    await fetchSha();
+    if (!curFile.sha) { toast('Could not get SHA — check PAT scope'); return; }
+  }
+  const msg = document.getElementById('commitMsg').value || `Update ${curFile.name}`;
+  const content = btoa(unescape(encodeURIComponent(view.state.doc.toString())));
+  setStatus('loading', 'Saving…');
+  try {
+    const r = await fetch(`${API}/contents/${curFile.path}`, {
+      method: 'PUT',
+      headers: { ...hdrs(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, content, sha: curFile.sha, branch: BRANCH })
+    });
+    if (!r.ok) { const j = await r.json(); throw new Error(j.message || r.status); }
+    const j = await r.json();
+    curFile.sha = j.content.sha;
+    origDoc = view.state.doc.toString();
+    document.getElementById('modBadge').classList.remove('show');
+    setStatus('ok', view.state.doc.lines + ' lines');
+    hideCommit();
+    toast('Saved to GitHub ✓');
+  } catch(e) {
+    setStatus('err', 'Save failed');
+    toast('Save failed: ' + e.message, 4000);
+  }
+}
+document.getElementById('btnSave').addEventListener('click', showCommit);
+document.getElementById('btnCommit').addEventListener('click', doSave);
+document.getElementById('btnCancelCommit').addEventListener('click', hideCommit);
+
+// ── uBO Syntax Highlighter ────────────────────────────
+const uboHL = ViewPlugin.fromClass(
+  class {
+    constructor(v) { this.decorations = buildDecos(v); }
+    update(u) { if (u.docChanged || u.viewportChanged) this.decorations = buildDecos(u.view); }
+  },
+  { decorations: v => v.decorations }
+);
+function buildDecos(view) {
+  const b = [], { from, to } = view.viewport, doc = view.state.doc;
+  for (let p = from; p <= to;) {
+    const l = doc.lineAt(p); addLine(b, l.from, l.text); p = l.to + 1;
+  }
+  b.sort((a,c) => a.from - c.from || a.startSide - c.startSide);
+  return Decoration.set(b, true);
+}
+const mk = c => Decoration.mark({ class: c });
+function sp(b, f, t, c) { if (f < t) b.push(mk(c).range(f, t)); }
+function addLine(b, base, text) {
+  if (!text.trim()) return;
+  if (/^[!#]/.test(text)) {
+    const m = text.match(/^(!\s*(Title|Version|Last modified|Expires|Description|License|Homepage|Forums)\s*:)(.*)/i);
+    if (m) { sp(b,base,base+m[1].length,'ub-title'); sp(b,base+m[1].length,base+text.length,'ub-comment'); }
+    else sp(b, base, base+text.length, 'ub-comment');
+    return;
+  }
+  if (text.startsWith('@@')) { sp(b,base,base+2,'ub-except'); addNet(b,base+2,text.slice(2)); return; }
+  const hi = text.indexOf('##^');
+  if (hi > 0) { sp(b,base,base+hi,'ub-domain'); sp(b,base+hi,base+hi+3,'ub-cosmetic'); sp(b,base+hi+3,base+text.length,'ub-scriptlet'); return; }
+  const sm = text.match(/^(.+?)(#[@+]?#\+js\(|#\+js\()(.*)/);
+  if (sm) { sp(b,base,base+sm[1].length,'ub-domain'); sp(b,base+sm[1].length,base+sm[1].length+sm[2].length,'ub-cosmetic'); sp(b,base+sm[1].length+sm[2].length,base+text.length,'ub-scriptlet'); return; }
+  const cm = text.match(/^(.+?)(#@?#)(.*)/);
+  if (cm) { sp(b,base,base+cm[1].length,'ub-domain'); sp(b,base+cm[1].length,base+text.length,'ub-cosmetic'); return; }
+  if (/^\|\||^\*|^\^/.test(text) || /\$[a-z]/.test(text)) { addNet(b,base,text); return; }
+  sp(b, base, base+text.length, 'ub-plain');
+}
+function addNet(b, base, text) {
+  const i = text.lastIndexOf('$');
+  if (i > 0 && !/^https?:\/\//.test(text)) { sp(b,base,base+i,'ub-network'); sp(b,base+i,base+text.length,'ub-option'); }
+  else sp(b, base, base+text.length, 'ub-network');
+}
+
+// ── Editor ────────────────────────────────────────────
+const updL = EditorView.updateListener.of(u => {
+  if (u.docChanged) {
+    document.getElementById('modBadge').classList.toggle('show', u.state.doc.toString() !== origDoc);
+    if (document.getElementById('searchPanel').classList.contains('open')) cntMatches();
+  }
+});
+
+const view = new EditorView({
+  state: EditorState.create({
+    doc: '',
+    extensions: [
+      lineNumbers(), highlightActiveLine(), highlightActiveLineGutter(),
+      highlightSpecialChars(), drawSelection(), dropCursor(),
+      rectangularSelection(), crosshairCursor(), history(),
+      search({ top: true }),
+      keymap.of([
+        ...defaultKeymap, ...historyKeymap, ...searchKeymap, indentWithTab,
+        { key:'Mod-d', run:selectNextOccurrence },
+        { key:'Alt-ArrowUp', run:moveLineUp },
+        { key:'Alt-ArrowDown', run:moveLineDown },
+        { key:'Shift-Alt-ArrowUp', run:copyLineUp },
+        { key:'Shift-Alt-ArrowDown', run:copyLineDown },
+        { key:'Mod-Shift-k', run:deleteLine },
+        { key:'Escape', run:()=>{ closeSearch(); return false; } },
+        { key:'Mod-f', run:()=>{ openSearch(); return true; } },
+        { key:'Mod-h', run:()=>{ openSearch(true); return true; } },
+      ]),
+      EditorView.lineWrapping, uboHL, updL,
+      EditorView.theme({
+        '&': { height:'100%', background:'var(--surface)' },
+        '.cm-scroller': { fontFamily:"'Roboto Mono',monospace", fontSize:'var(--fn)' },
+      }),
+    ]
+  }),
+  parent: document.getElementById('cmHost')
+});
+
+// ── Per-file search ───────────────────────────────────
+const SP = { cs:false, ww:false, re:false, rv:false };
+function mkQ(s, r='') {
+  return new SearchQuery({ search:s, replace:r, caseSensitive:SP.cs, wholeWord:SP.ww, regexp:SP.re });
+}
+function cntMatches() {
+  const q = document.getElementById('spFind').value;
+  if (!q) { document.getElementById('spCount').textContent=''; return; }
+  try {
+    const qo = mkQ(q); if (!qo.valid) { document.getElementById('spCount').textContent='⚠'; return; }
+    const cur = qo.getCursor(view.state.doc); let n=0; while(!cur.next().done) n++;
+    document.getElementById('spCount').textContent = n ? n+' match'+(n>1?'es':'') : 'No matches';
+  } catch(e) { document.getElementById('spCount').textContent=''; }
+}
+function doSearch() {
+  const q = document.getElementById('spFind').value;
+  if (!q) { document.getElementById('spCount').textContent=''; view.dispatch({effects:setSearchQuery.of(mkQ(''))}); return; }
+  try { view.dispatch({effects:setSearchQuery.of(mkQ(q))}); cntMatches(); } catch(e){}
+}
+function openSearch(rv=false) {
+  document.getElementById('searchPanel').classList.add('open');
+  if (rv) { SP.rv=true; document.getElementById('spReplaceRow').style.display='flex'; }
+  const sel = view.state.sliceDoc(view.state.selection.main.from, view.state.selection.main.to);
+  const el = document.getElementById('spFind');
+  if (sel && sel.length < 200 && !sel.includes('\n')) el.value = sel;
+  setTimeout(()=>{ el.focus(); el.select(); }, 30);
+  doSearch();
+}
+function closeSearch() {
+  document.getElementById('searchPanel').classList.remove('open');
+  document.getElementById('spCount').textContent = '';
+  view.dispatch({effects:setSearchQuery.of(mkQ(''))});
+  view.focus();
+}
+function togSP(t) {
+  if(t==='cs') SP.cs=!SP.cs;
+  if(t==='ww') SP.ww=!SP.ww;
+  if(t==='re') SP.re=!SP.re;
+  document.getElementById('spCase').classList.toggle('on',SP.cs);
+  document.getElementById('spWord').classList.toggle('on',SP.ww);
+  document.getElementById('spRe').classList.toggle('on',SP.re);
+  doSearch();
+}
+
+document.getElementById('btnFind').addEventListener('click', ()=>openSearch());
+document.getElementById('spClose').addEventListener('click', closeSearch);
+document.getElementById('spFind').addEventListener('input', doSearch);
+document.getElementById('spFind').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.shiftKey ? document.getElementById('spPrev').click() : document.getElementById('spNext').click(); e.preventDefault(); }
+  if(e.key==='Escape'){ closeSearch(); e.preventDefault(); }
+});
+document.getElementById('spPrev').addEventListener('click', ()=>{
+  const q=document.getElementById('spFind').value; if(!q) return;
+  view.dispatch({effects:setSearchQuery.of(mkQ(q))}); findPrevious(view);
+  setTimeout(()=>document.getElementById('spFind').focus(), 30);
+});
+document.getElementById('spNext').addEventListener('click', ()=>{
+  const q=document.getElementById('spFind').value; if(!q) return;
+  view.dispatch({effects:setSearchQuery.of(mkQ(q))}); findNext(view);
+  setTimeout(()=>document.getElementById('spFind').focus(), 30);
+});
+document.getElementById('spCase').addEventListener('click', ()=>togSP('cs'));
+document.getElementById('spWord').addEventListener('click', ()=>togSP('ww'));
+document.getElementById('spRe').addEventListener('click',   ()=>togSP('re'));
+document.getElementById('spToggleReplace').addEventListener('click', ()=>{
+  SP.rv=!SP.rv; document.getElementById('spReplaceRow').style.display=SP.rv?'flex':'none';
+  if(SP.rv) document.getElementById('spReplace').focus();
+});
+document.getElementById('spRepOne').addEventListener('click', ()=>{
+  const q=document.getElementById('spFind').value, r=document.getElementById('spReplace').value;
+  if(!q) return; view.dispatch({effects:setSearchQuery.of(mkQ(q,r))}); replaceNext(view); cntMatches();
+});
+document.getElementById('spRepAll').addEventListener('click', ()=>{
+  const q=document.getElementById('spFind').value, r=document.getElementById('spReplace').value;
+  if(!q) return; view.dispatch({effects:setSearchQuery.of(mkQ(q,r))});
+  if(cmReplaceAll(view)) toast('Replaced all occurrences');
+  cntMatches();
+});
+document.getElementById('spReplace').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ document.getElementById('spRepOne').click(); e.preventDefault(); }
+  if(e.key==='Escape'){ closeSearch(); e.preventDefault(); }
+});
+
+// ── Global search ─────────────────────────────────────
+const GS = { cs:false, ww:false, re:false };
+let gsCtl = null;
+
+function openGlobal() {
+  document.getElementById('globalOverlay').classList.add('show');
+  const sel = view.state.sliceDoc(view.state.selection.main.from, view.state.selection.main.to);
+  const inp = document.getElementById('gsInput');
+  if (sel && sel.length < 200 && !sel.includes('\n')) inp.value = sel;
+  setTimeout(()=>{ inp.focus(); inp.select(); }, 60);
+}
+function closeGlobal() {
+  document.getElementById('globalOverlay').classList.remove('show');
+  if (gsCtl) { gsCtl.abort(); gsCtl=null; }
+}
+document.getElementById('btnGlobal').addEventListener('click', openGlobal);
+document.getElementById('gsXBtn').addEventListener('click', closeGlobal);
+document.getElementById('globalOverlay').addEventListener('click', e=>{
+  if(e.target===e.currentTarget) closeGlobal();
+});
+document.getElementById('gsInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ doGlobal(); e.preventDefault(); }
+  if(e.key==='Escape'){ closeGlobal(); e.preventDefault(); }
+});
+document.getElementById('gsSearchBtn').addEventListener('click', doGlobal);
+[['gsCase','cs'],['gsWord','ww'],['gsRe','re']].forEach(([id,k])=>{
+  document.getElementById(id).addEventListener('click', ()=>{
+    GS[k]=!GS[k]; document.getElementById(id).classList.toggle('on', GS[k]);
+  });
+});
+
+async function doGlobal() {
+  const term = document.getElementById('gsInput').value.trim();
+  if (!term) { toast('Enter a search term'); return; }
+  if (!allFiles.length) {
+    document.getElementById('gsResults').innerHTML='<div class="gs-empty">File list is empty — expand folders in the sidebar first, or wait for the tree to load.</div>';
+    return;
+  }
+  if (gsCtl) gsCtl.abort();
+  gsCtl = new AbortController();
+  const sig = gsCtl.signal;
+  const rEl=document.getElementById('gsResults'), bar=document.getElementById('gsBar'),
+        fill=document.getElementById('gsBarFill'), lbl=document.getElementById('gsBarLabel'),
+        stat=document.getElementById('gsStatus');
+  rEl.innerHTML=''; bar.style.display='flex'; fill.style.width='0%'; stat.textContent='';
+
+  let matcher;
+  try {
+    if (GS.re) {
+      const re = new RegExp(term, GS.cs?'g':'gi');
+      matcher = line => {
+        re.lastIndex=0; const h=[]; let m;
+        while((m=re.exec(line))!==null) h.push({index:m.index,length:m[0].length});
+        return h;
+      };
+    } else {
+      const nd = GS.cs ? term : term.toLowerCase();
+      matcher = line => {
+        const hay = GS.cs ? line : line.toLowerCase(), h=[]; let i=hay.indexOf(nd);
+        while(i!==-1) {
+          if(GS.ww){ const b=i>0?hay[i-1]:' ', a=i+nd.length<hay.length?hay[i+nd.length]:' '; if(/\w/.test(b)||/\w/.test(a)){i=hay.indexOf(nd,i+1);continue;} }
+          h.push({index:i,length:nd.length}); i=hay.indexOf(nd,i+1);
+        }
+        return h;
+      };
+    }
+  } catch(e) {
+    bar.style.display='none';
+    rEl.innerHTML=`<div class="gs-empty">Invalid regex: ${esc(e.message)}</div>`;
+    return;
+  }
+
+  let total=0, fcount=0;
+  const BATCH=6;
+  for(let i=0; i<allFiles.length; i+=BATCH) {
+    if(sig.aborted) break;
+    fill.style.width = Math.round(i/allFiles.length*100)+'%';
+    lbl.textContent  = `${i+1}–${Math.min(i+BATCH,allFiles.length)} of ${allFiles.length}…`;
+    await Promise.all(allFiles.slice(i,i+BATCH).map(async f => {
+      if(sig.aborted) return;
+      try {
+        const r = await fetch(`${RAW}/${f.path}?t=${Date.now()}`, {signal:sig});
+        if(!r.ok) return;
+        const txt=await r.text(), lines=txt.split('\n'), ms=[];
+        for(let ln=0; ln<lines.length; ln++) {
+          const h=matcher(lines[ln]); if(h.length) ms.push({lineNum:ln+1,text:lines[ln],hits:h});
+        }
+        if(ms.length){ total+=ms.reduce((s,m)=>s+m.hits.length,0); fcount++; renderGroup(f,ms,rEl); }
+      } catch(e){ if(e.name!=='AbortError'){} }
+    }));
+  }
+  bar.style.display='none';
+  if(!sig.aborted){
+    stat.textContent = total ? `${total} matches in ${fcount} files` : '';
+    if(!total) rEl.innerHTML=`<div class="gs-empty">No matches found in ${allFiles.length} files.</div>`;
+  }
+}
+
+function renderGroup(file, matches, container) {
+  const g=document.createElement('div'); g.className='gs-group';
+  const h=document.createElement('div'); h.className='gs-fhdr';
+  const cnt=matches.reduce((s,m)=>s+m.hits.length,0);
+  h.innerHTML=`<span>📄 ${esc(file.path)}</span><span class="gs-badge">${cnt}</span>`;
+  h.addEventListener('click', ()=>{ selectFile(file.path,file.name); closeGlobal(); });
+  g.appendChild(h);
+  for(const m of matches){
+    const row=document.createElement('div'); row.className='gs-row';
+    row.innerHTML=`<span class="gs-lnum">${m.lineNum}</span><span class="gs-ltext">${hlLine(m.text,m.hits)}</span>`;
+    const ln=m.lineNum;
+    row.addEventListener('click', ()=>{
+      selectFile(file.path,file.name); closeGlobal();
+      setTimeout(()=>{
+        try{ const l=view.state.doc.line(ln); view.dispatch({selection:{anchor:l.from},effects:EditorView.scrollIntoView(l.from,{y:'center'})}); view.focus(); }catch(e){}
+      }, 900);
+    });
+    g.appendChild(row);
+  }
+  container.appendChild(g);
+}
+
+function hlLine(text, hits) {
+  const MAX=200, d=text.length>MAX?text.slice(0,MAX)+'…':text;
+  let out='', last=0;
+  for(const h of hits){
+    if(h.index>=MAX) break;
+    const end=Math.min(h.index+h.length,MAX);
+    out+=esc(d.slice(last,h.index));
+    out+=`<span class="gs-hl">${esc(d.slice(h.index,end))}</span>`;
+    last=end;
+  }
+  return out+esc(d.slice(last));
+}
+
+// ── Toolbar misc ──────────────────────────────────────
+document.getElementById('btnGoto').addEventListener('click', ()=>{
+  const total=view.state.doc.lines, cur=view.state.doc.lineAt(view.state.selection.main.head).number;
+  const n=prompt(`Go to line (1–${total}):`,cur); if(!n||isNaN(n)) return;
+  const l=view.state.doc.line(Math.max(1,Math.min(parseInt(n),total)));
+  view.dispatch({selection:{anchor:l.from,head:l.to},effects:EditorView.scrollIntoView(l.from,{y:'center'})});
+  view.focus();
+});
+document.getElementById('btnCopy').addEventListener('click', ()=>{
+  const s=view.state.sliceDoc(view.state.selection.main.from,view.state.selection.main.to);
+  if(!s){toast('No text selected');return;}
+  navigator.clipboard.writeText(s).then(()=>toast(`Copied ${s.split('\n').length} line(s)`)).catch(()=>toast('Copy failed'));
+});
+document.getElementById('btnPaste').addEventListener('click', async ()=>{
+  try{
+    const txt=await navigator.clipboard.readText();
+    const{from,to}=view.state.selection.main;
+    view.dispatch({changes:{from,to,insert:txt},selection:{anchor:from+txt.length}});
+    toast(`Pasted ${txt.split('\n').length} line(s)`);
+  }catch(e){toast('Paste failed — use long-press');}
+});
+
+// ── Init ──────────────────────────────────────────────
+if (getPat()) loadFileTree();
+</script>
+</body>
+</html>
