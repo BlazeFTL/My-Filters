@@ -1164,14 +1164,6 @@ mmshunt.com##.ipsLayout_sidebarright
 mmshunt.com##li.ipsResponsive_pull.ipsSpacer_bottom.ipsBox.cForumRow:has-text(Support | )
 mmshunt.com###ipsLayout_footer
 
-! May 11, 2025 https://dropmms.com
-dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id]
-dropmms.*##.cAnnouncementsFloat.cAnnouncements
-dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
-! Image Stretch To Screen Mobile
-##.ipsImage, .ipsImage_thumbnailed:style(max-width: 100% !important; width: 100% !important; height: auto !important; display: block !important; margin: 0 auto !important;)
-dropmms.*##.ipsType_richText [data-role="commentContent"] p:style(width: 100% !important; max-width: 100% !important; display: block !important;)
-
 ! Desi Porn Leaks Downloads
 ! StreamA2z
 smartkhabrinews.com##.justify-content-center.row > .taberContent.mx-auto.mt-2.col-md-10, footer, #lightsoff, .show.active.nav-link, .bg-light.rounded.border.p-3.mt-3.video-report, div.videoContent > .container > .align-items-center.flex-wrap.row, .rotate-button
@@ -1196,11 +1188,11 @@ streamtape.com##div.row:nth-of-type(4)
 bigwarp.*,vidnest.*###video-content:style(width: 100% !important; max-width: 100% !important; float: none !important;)
 bigwarp.*,vidnest.*##.main_container:style(min-height: initial! important;)
 bigwarp.*,vidnest.*##.footer > .container
-!vidnest.io##.section
+!bigwarp.*,vidnest.io##.section
 bigwarp.*,vidnest.*##.footer
-!vidnest.io###undervideo
-!vidnest.io##p > [href] > [src]
-!vidnest.io###video-content > [href]
+!bigwarp.*,vidnest.io###undervideo
+!bigwarp.*,vidnest.io##p > [href] > [src]
+!bigwarp.*,vidnest.io###video-content > [href]
 
 ! Dec 29, 2025 https://zapupload.top
 zapupload.top##+js(rmnt, script, fuckAdBlock)
@@ -1228,13 +1220,27 @@ krakenfiles.com##.myardbox.nativebaner
 krakenfiles.com##.col-xs-12.col-md-12.file-details:has(.no-preview)
 krakenfiles.com##div.nk-fmg-status-info:has-text(With Premium)
 
-! Mar 13, 2026 https://vidara.to
-vidara.to##.gap-2.align-items-center.flex-wrap.d-flex
-vidara.to##.mb-3.nav-fill.tabs.nav
-vidara.to##.tab-content
-vidara.to##.footer
-! Mar 13, 2026 https://luluvid.com
-luluvid.com##.footer
+! https://uploadg.com/drive/s/GYNauf3M4Csf48nnzZIrzzKf28OY0h
+||google-analytics.com^$image,domain=uploadg.com,redirect=1x1.gif
+@@*$ghide,domain=uploadg.com
+uploadg.com##+js(no-fetch-if, sentry)
+uploadg.com##+js(nano-sib, /.?/, *)
+uploadg.com###\:r2\:, #\:r3\:, .py-14.px-20.to-white\/5.via-white\/\[0\.02\].from-white\/5.bg-gradient-to-r.border-white\/10.border.rounded-xl.overflow-hidden.mt-20.relative, .md\:items-start.gap-12.items-center.flex-col.flex > .text-muted.text-xs, .backdrop-blur-xl.shadow-xl.p-20.bg-paper\/80.border-white\/10.border.rounded-2xl.mt-24, .mb-24.download-ad-sidebar-top, .lg\:w-\[340px\].flex-shrink-0.w-full.download-sidebar, .lg\:hidden.z-50.right-0.left-0.bottom-0.fixed.download-ad-mobile-sticky, .pb-24.px-16.max-w-\[970px\].w-full.mx-auto.download-ad-bottom-banner, .p-16.bg-paper\/90.border-white\/10.border.rounded-xl.justify-center.items-center.min-h-\[250px\].flex.mb-16
+
+! https://cloubix.com/a0gbsddbd3ny/Cutee.zip
+||cloubix.com/fonts/$font,1p
+||cloubix.com/css/style.css$stylesheet,1p
+cloubix.com##.d0a-upgrade-wrap, .cb-footer, .d0a-status-bar, .cb-hamburger, .d0a-card-head, .d0a-features-row, .d0a-speed-box, .d0a-btn-note, .d0a-ads-section, .dl1-report-btn, .dl1-actions, .dl1-codes
+cloubix.com##+js(nano-sib, remaining--, *)
+cloubix.com##+js(trusted-set-attr, #countdown, data-status, active)
+cloubix.com##*:style(font-family: none! important;)
+cloubix.com##.dl1-main:style(margin-left: 50px ! important;)
+
+! Apr 8, 2026 https://luluvdoo.com
+luluvid.com,luluvdoo.com##.block
+luluvid.com,luluvdoo.com##.footer
+savefiles.com##body > footer
+vidara.to##.gap-2.align-items-center.flex-wrap.d-flex, .mb-3.nav-fill.tabs.nav, .tab-content, .footer
 
 ! 2022-10-12 http://vkspeed.com
 ||watchporn.to/contents/*$media,1p
