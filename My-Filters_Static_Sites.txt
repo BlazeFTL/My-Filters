@@ -1567,6 +1567,7 @@ dodi-repacks.site##hr:empty
 dodi-repacks.site##.category-uncategorized.hentry.sticky.format-standard.status-publish.type-post.post.post-80:has-text(Support The Site)
 dodi-repacks.site##+js(trusted-set-attr, .entry-content a[href], target, _blank)
 dodi-repacks.site##+js(aopr, document.oncontextmenu)
+dodi-repacks.site##.wrap:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -khtml-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; -webkit-tap-highlight-color: revert !important; cursor: revert !important;)
 
 ! https://swiftuploads.com/gXeGOaBJ3Aa7/file
 ||cleartag.run^$script,domain=swiftuploads.com
