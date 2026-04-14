@@ -244,6 +244,10 @@ www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.web_player_v9_buf
 
 ! Jun 29, 2024 https://github.com
 !!#if false
+! Hide Commit Message On Files Name 3
+github.com##.react-directory-commit-age:style(margin-right: -120px ! important;)
+github.com##.react-directory-row-commit-cell
+github.com##.react-directory-filename-column:style(width: 400px ! important;)
 github.dev##.action-toolbar-container
 github.dev##.editor-actions
 github.dev##div.menubar-menu-button:has-text(/Run|Terminal|Help/)
@@ -1163,6 +1167,15 @@ masala-desi.com##.ipsType_center.ipsMessage_error.ipsAnnouncement.cAnnouncementC
 mmshunt.com##.ipsLayout_sidebarright
 mmshunt.com##li.ipsResponsive_pull.ipsSpacer_bottom.ipsBox.cForumRow:has-text(Support | )
 mmshunt.com###ipsLayout_footer
+
+! May 11, 2025 https://dropmms.com
+dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id]
+dropmms.*##.cAnnouncementsFloat.cAnnouncements
+!dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
+dropmms.*##.tthumbGridview_img:style(height: 150px !important;)
+! Image Stretch To Screen Mobile
+dropmms.*##.ipsImage, .ipsImage_thumbnailed:style(max-width: 100% !important; width: 100% !important; height: auto !important; display: block !important; margin: 0 auto !important;)
+dropmms.*##.ipsType_richText [data-role="commentContent"] p:style(width: 100% !important; max-width: 100% !important; display: block !important;)
 
 ! Desi Porn Leaks Downloads
 ! StreamA2z
