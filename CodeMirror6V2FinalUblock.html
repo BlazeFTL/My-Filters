@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Filter Editor — BlazeFTL</title>
+
+<script type="importmap">
+{
+  "imports": {
+    "@codemirror/state":    "https://esm.sh/@codemirror/state@6.4.1?bundle",
+    "@codemirror/view":     "https://esm.sh/@codemirror/view@6.26.3?bundle&external=@codemirror/state",
+    "@codemirror/commands": "https://esm.sh/@codemirror/commands@6.3.3?bundle&external=@codemirror/state,@codemirror/view",
+    "@codemirror/search":   "https://esm.sh/@codemirror/search@6.5.6?bundle&external=@codemirror/state,@codemirror/view,@codemirror/commands",
+    "@codemirror/language": "https://esm.sh/@codemirror/language@6.10.1?bundle&external=@codemirror/state,@codemirror/view"
+  }
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:#FAFAFA; --surface:#FFFFFF; --surface2:#F5F5F5;
+  --border:#E0E0E0; --border2:#BDBDBD;
+  --primary:#1565C0; --primary-light:#E3F2FD; --primary-dark:#0D47A1;
+  --warn:#F57F17; --danger:#C62828; --success:#2E7D32;
+  --text:#212121; --text2:#757575; --text3:#BDBDBD;
+  --shadow:0 1px 3px rgba(0,0,0,0.14); --shadow2:0 2px 8px rgba(0,0,0,0.18);
+  --fn:13px; --lh:21px;
+  --c-comment:#6A737D; --c-title:#005CC5; --c-except:#B31D28;
+  --c-network:#005CC5; --c-cosmetic:#22863A; --c-scriptlet:#6F42C1;
+  --c-domain:#E36209; --c-option:#032F62; --c-plain:#24292E;
+  --sidebar-w:240px;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; }
+body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif; display:flex; flex-direction:column; }
+
+/* ── TOP BAR ─────────────────────────────────────────── */
+#topBar {
+  flex-shrink:0; background:var(--primary); color:white;
+  padding:0 10px 0 14px; height:52px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:var(--shadow2); z-index:100; gap:8px;
+}
+.app-info { flex:1; min-width:0; }
+.app-title { font-size:16px; font-weight:500; }
+.app-file  { font-size:10px; opacity:0.7; font-family:'Roboto Mono',monospace;
+             white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.top-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+
+#statusChip {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.18);
+  border-radius:12px; padding:4px 10px; font-size:11px; white-space:nowrap;
+}
+#sDot { width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.35);transition:background 0.3s; }
+#sDot.ok      { background:#69F0AE; }
+#sDot.err     { background:#FF5252; }
+#sDot.loading { background:#FFD740; animation:blink 0.8s infinite; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+#patTopBtn {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.15); border:none; color:white;
+  border-radius:8px; padding:5px 10px; font-family:'Roboto',sans-serif;
+  font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap;
+}
+#patTopBtn:active { opacity:0.7; }
+#patDot { width:10px;height:10px;border-radius:50%;background:#FF5252;flex-shrink:0;transition:background 0.3s; }
+#patDot.set { background:#69F0AE; }
+
+/* ── TOOLBAR ─────────────────────────────────────────── */
+#toolbar {
+  flex-shrink:0; background:var(--surface);
+  border-bottom:2px solid var(--border);
+  padding:5px 8px; display:flex; gap:4px; flex-wrap:wrap; align-items:center;
+}
+.btn {
+  font-family:'Roboto',sans-serif; font-size:12px; font-weight:500;
+  padding:6px 10px; border-radius:4px; border:none; cursor:pointer;
+  white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
+  transition:background 0.12s; min-height:32px;
+  display:inline-flex; align-items:center; gap:4px;
+}
+.btn:active { opacity:0.75; transform:scale(0.96); }
+.btn-flat   { background:transparent; color:var(--primary); }
+.btn-flat:hover { background:var(--primary-light); }
+.btn-raised { background:var(--primary); color:white; box-shadow:var(--shadow); }
+.btn-green  { background:#388E3C; color:white; box-shadow:var(--shadow); }
+.btn:disabled { opacity:0.3; pointer-events:none; }
+.btn-outline { background:transparent; color:var(--primary); border:1.5px solid var(--primary); }
+.btn-outline.active { background:var(--primary); color:white; }
+
+#modBadge {
+  display:none; font-size:10px; font-weight:700;
+  background:#FF8F00; color:white;
+  border-radius:10px; padding:2px 8px; letter-spacing:0.5px;
+}
+#modBadge.show { display:inline-block; }
+
+/* ── TABS ROW ─────────────────────────────────────────── */
+#tabsRow {
+  flex-shrink:0; background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:stretch; overflow-x:auto; min-height:36px;
+  gap:0;
+}
+#tabsRow::-webkit-scrollbar { height:3px; }
+#tabsRow::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+
+.tab {
+  display:flex; align-items:center; gap:6px;
+  padding:0 10px 0 12px;
+  font-size:12px; font-family:'Roboto Mono',monospace;
+  white-space:nowrap; cursor:pointer;
+  border-right:1px solid var(--border);
+  border-bottom:2px solid transparent;
+  color:var(--text2); min-height:36px;
+  transition:all 0.12s; flex-shrink:0; max-width:180px;
+}
+.tab:hover { background:var(--primary-light); color:var(--primary); }
+.tab.active {
+  background:var(--surface); color:var(--primary);
+  border-bottom:2px solid var(--primary); font-weight:500;
+}
+.tab .tab-name {
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  flex:1; min-width:0;
+}
+.tab .tab-dirty {
+  width:7px; height:7px; border-radius:50%;
+  background:#FF8F00; flex-shrink:0;
+  display:none;
+}
+.tab .tab-dirty.show { display:block; }
+.tab .tab-close {
+  flex-shrink:0; width:18px; height:18px; border-radius:3px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:var(--text3); line-height:1;
+  transition:all 0.1s;
+}
+.tab .tab-close:hover { background:rgba(0,0,0,0.1); color:var(--danger); }
+
+/* ── MAIN LAYOUT (sidebar + editor) ──────────────────── */
+#mainLayout {
+  flex:1; display:flex; overflow:hidden; position:relative;
+}
+
+/* ── SIDEBAR ──────────────────────────────────────────── */
+#sidebar {
+  width:var(--sidebar-w); flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  transition:width 0.2s ease, min-width 0.2s ease;
+}
+#sidebar.collapsed { width:0; min-width:0; }
+
+#sidebarHeader {
+  flex-shrink:0; padding:8px 10px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:6px;
+}
+#sidebarTitle {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.8px; color:var(--text2); flex:1;
+}
+#sidebarSearchBtn {
+  padding:4px 8px; font-size:11px; border-radius:4px;
+  border:none; background:var(--primary-light); color:var(--primary);
+  cursor:pointer; font-weight:500; white-space:nowrap;
+}
+#sidebarSearchBtn:active { opacity:0.7; }
+
+#repoSelector {
+  flex-shrink:0; padding:6px 8px;
+  border-bottom:1px solid var(--border);
+  display:flex; flex-direction:column; gap:4px;
+}
+.repo-btn {
+  padding:5px 8px; border-radius:4px; border:1.5px solid var(--border);
+  background:transparent; color:var(--text2); font-size:11px;
+  cursor:pointer; text-align:left; font-family:'Roboto Mono',monospace;
+  transition:all 0.12s;
+}
+.repo-btn:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
+.repo-btn.active { border-color:var(--primary); background:var(--primary); color:white; }
+
+#fileTree {
+  flex:1; overflow-y:auto; overflow-x:hidden;
+  padding:4px 0;
+}
+#fileTree::-webkit-scrollbar { width:4px; }
+#fileTree::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+
+.tree-loading {
+  padding:16px 12px; font-size:12px; color:var(--text3);
+  text-align:center;
+}
+
+.tree-section {
+  border-bottom:1px solid var(--border); margin-bottom:2px;
+}
+.tree-section-header {
+  display:flex; align-items:center; gap:6px;
+  padding:6px 10px; cursor:pointer; font-size:11px;
+  font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.6px;
+  user-select:none;
+}
+.tree-section-header:hover { background:var(--surface2); }
+.tree-section-arrow { font-size:10px; transition:transform 0.15s; }
+.tree-section-arrow.open { transform:rotate(90deg); }
+.tree-section-body { display:none; }
+.tree-section-body.open { display:block; }
+
+.tree-file {
+  display:flex; align-items:center; gap:6px;
+  padding:5px 10px 5px 20px; cursor:pointer;
+  font-size:12px; font-family:'Roboto Mono',monospace;
+  color:var(--text); white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis;
+  transition:background 0.1s;
+}
+.tree-file:hover { background:var(--primary-light); color:var(--primary); }
+.tree-file.open  { color:var(--primary); font-weight:500; }
+.tree-file-icon { font-size:12px; flex-shrink:0; opacity:0.6; }
+
+/* ── SEARCH PANEL (custom, top-anchored, Material) ────── */
+#searchPanel {
+  display:none; flex-shrink:0;
+  background:#FFFFFF;
+  border-bottom:2px solid var(--primary);
+  padding:8px 10px;
+  box-shadow:0 2px 8px rgba(21,101,192,0.12);
+  z-index:90;
+  flex-direction:column; gap:6px;
+}
+#searchPanel.open { display:flex; }
+
+.sp-row { display:flex; gap:6px; align-items:center; }
+
+.sp-field {
+  flex:1; position:relative; display:flex; align-items:center;
+}
+.sp-field input {
+  width:100%; font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:8px 70px 8px 12px;
+  border:1.5px solid var(--border2); border-radius:6px;
+  background:var(--surface2); color:var(--text); outline:none;
+  transition:border-color 0.15s, box-shadow 0.15s;
+}
+.sp-field input:focus {
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(21,101,192,0.12);
+  background:#fff;
+}
+.sp-field input::placeholder { color:var(--text3); }
+
+.sp-toggles { display:flex; gap:2px; position:absolute; right:8px; }
+.sp-tog {
+  font-family:'Roboto Mono',monospace; font-size:10px; font-weight:700;
+  padding:3px 6px; border-radius:3px; border:1px solid var(--border);
+  background:transparent; color:var(--text2); cursor:pointer;
+  transition:all 0.12s; line-height:1;
+}
+.sp-tog.on { background:var(--primary); border-color:var(--primary); color:white; }
+
+.sp-nav-btns { display:flex; gap:4px; flex-shrink:0; }
+.sp-nav-btn {
+  width:32px; height:32px; border-radius:6px; border:1.5px solid var(--border2);
+  background:var(--surface2); color:var(--primary); font-size:16px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.12s; font-weight:700;
+}
+.sp-nav-btn:active { background:var(--primary-light); border-color:var(--primary); }
+
+.sp-close-btn {
+  width:32px; height:32px; border-radius:6px; border:none;
+  background:transparent; color:var(--text2); font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.sp-close-btn:active { background:var(--surface2); }
+
+.sp-replace-row { display:flex; gap:6px; align-items:center; }
+.sp-replace-row input {
+  flex:1; font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:8px 12px;
+  border:1.5px solid var(--border2); border-radius:6px;
+  background:var(--surface2); color:var(--text); outline:none;
+  transition:border-color 0.15s;
+}
+.sp-replace-row input:focus { border-color:#388E3C; box-shadow:0 0 0 3px rgba(56,142,60,0.12); background:#fff; }
+.sp-rep-btn {
+  font-family:'Roboto',sans-serif; font-size:11px; font-weight:500;
+  padding:6px 10px; border-radius:6px; border:1.5px solid var(--border2);
+  background:var(--surface2); color:#388E3C; cursor:pointer;
+  white-space:nowrap; text-transform:uppercase; letter-spacing:0.3px;
+  transition:all 0.12s;
+}
+.sp-rep-btn:active { background:#E8F5E9; border-color:#388E3C; }
+
+#spToggleReplace {
+  font-size:11px; font-weight:500; color:var(--text2);
+  background:none; border:none; cursor:pointer; padding:0 4px;
+  white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
+  font-family:'Roboto',sans-serif;
+}
+#spToggleReplace:active { color:var(--primary); }
+
+/* ── GLOBAL SEARCH PANEL ──────────────────────────────── */
+#globalSearchOverlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.45); z-index:300;
+  align-items:flex-start; justify-content:center;
+  padding-top:60px;
+}
+#globalSearchOverlay.show { display:flex; }
+#globalSearchBox {
+  background:white; border-radius:10px; width:100%; max-width:580px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.22);
+  display:flex; flex-direction:column; max-height:70vh;
+  overflow:hidden;
+}
+#globalSearchHeader {
+  padding:12px 12px 10px; border-bottom:1px solid var(--border);
+  display:flex; flex-direction:column; gap:8px;
+}
+#globalSearchHeader h3 {
+  font-size:13px; font-weight:600; color:var(--text2);
+  text-transform:uppercase; letter-spacing:0.6px;
+}
+.gs-input-row { display:flex; gap:8px; align-items:center; }
+#gsFind {
+  flex:1; font-family:'Roboto Mono',monospace; font-size:14px;
+  padding:10px 12px; border:1.5px solid var(--border2); border-radius:6px;
+  outline:none; color:var(--text); background:var(--surface2);
+}
+#gsFind:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(21,101,192,0.12); background:#fff; }
+.gs-tog {
+  font-family:'Roboto Mono',monospace; font-size:11px; font-weight:700;
+  padding:5px 8px; border-radius:4px; border:1px solid var(--border);
+  background:transparent; color:var(--text2); cursor:pointer;
+  transition:all 0.12s; white-space:nowrap;
+}
+.gs-tog.on { background:var(--primary); border-color:var(--primary); color:white; }
+#gsSearchBtn {
+  padding:8px 14px; background:var(--primary); color:white;
+  border:none; border-radius:6px; font-size:13px; font-weight:500;
+  cursor:pointer; white-space:nowrap;
+}
+#gsSearchBtn:disabled { opacity:0.5; }
+#gsSearchBtn:active { opacity:0.8; }
+#gsStatus {
+  font-size:11px; color:var(--text2); padding:0 2px;
+}
+
+#gsResults {
+  flex:1; overflow-y:auto;
+  padding:4px 0;
+}
+#gsResults::-webkit-scrollbar { width:4px; }
+#gsResults::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+
+.gs-result-file {
+  padding:6px 12px 4px;
+  font-size:11px; font-weight:700; color:var(--primary);
+  text-transform:none; letter-spacing:0; font-family:'Roboto Mono',monospace;
+  border-top:1px solid var(--border); background:var(--surface2);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.gs-result-file:first-child { border-top:none; }
+.gs-match-count { font-weight:400; color:var(--text2); font-size:10px; }
+
+.gs-result-line {
+  display:flex; align-items:flex-start; gap:8px;
+  padding:5px 12px 5px 20px; cursor:pointer;
+  font-size:12px; font-family:'Roboto Mono',monospace;
+  transition:background 0.1s;
+}
+.gs-result-line:hover { background:var(--primary-light); }
+.gs-line-num {
+  color:var(--text3); font-size:11px; min-width:36px;
+  flex-shrink:0; text-align:right; padding-top:1px;
+}
+.gs-line-text {
+  flex:1; color:var(--text); white-space:pre; overflow:hidden;
+  text-overflow:ellipsis; line-height:1.5;
+}
+.gs-line-text mark {
+  background:#FFF176; color:inherit; border-radius:2px;
+  padding:0 1px;
+}
+.gs-no-results {
+  padding:24px 12px; text-align:center;
+  font-size:13px; color:var(--text3);
+}
+#globalSearchClose {
+  padding:10px 12px; border-top:1px solid var(--border);
+  display:flex; justify-content:flex-end; gap:8px; flex-shrink:0;
+}
+
+/* ── EDITOR WRAPPER (right side) ─────────────────────── */
+#editorWrapper {
+  flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0;
+}
+
+/* ── EDITOR AREA ─────────────────────────────────────── */
+#editorArea { flex:1; overflow:hidden; position:relative; }
+
+#cmHost {
+  width:100%; height:100%;
+  overflow:auto;
+  font-family:'Roboto Mono',monospace;
+  font-size:var(--fn);
+}
+
+/* ── CodeMirror 6 theme overrides ───────────────────── */
+.cm-editor {
+  height:100%;
+  background:var(--surface) !important;
+  font-family:'Roboto Mono',monospace !important;
+  font-size:var(--fn) !important;
+}
+.cm-editor.cm-focused { outline:none !important; }
+.cm-scroller { overflow:auto !important; }
+.cm-content  { padding:8px 12px 250px 8px !important; }
+.cm-lineNumbers .cm-gutterElement {
+  font-family:'Roboto Mono',monospace;
+  font-size:var(--fn); color:var(--text3);
+  padding:0 6px 0 8px; min-width:40px;
+}
+.cm-gutters {
+  background:var(--surface2) !important;
+  border-right:1px solid var(--border) !important;
+  color:var(--text3);
+}
+.cm-activeLine            { background:rgba(21,101,192,0.05) !important; }
+.cm-activeLineGutter      { background:rgba(21,101,192,0.08) !important; }
+.cm-selectionBackground,
+.cm-focused .cm-selectionBackground { background:rgba(21,101,192,0.2) !important; }
+.cm-cursor                { border-left-color:var(--primary) !important; }
+.cm-searchMatch           { background:#FFF176 !important; border-radius:2px; }
+.cm-searchMatch-selected  { background:#FFD740 !important; outline:2px solid #F57F17; }
+.cm-search { display:none !important; }
+
+/* ── uBO syntax token classes ───────────────────────── */
+.ub-comment  { color:var(--c-comment); font-style:italic; }
+.ub-title    { color:var(--c-title); font-weight:500; }
+.ub-except   { color:var(--c-except); }
+.ub-network  { color:var(--c-network); }
+.ub-cosmetic { color:var(--c-cosmetic); }
+.ub-scriptlet{ color:var(--c-scriptlet); }
+.ub-domain   { color:var(--c-domain); }
+.ub-option   { color:var(--c-option); }
+.ub-plain    { color:var(--c-plain); }
+
+/* ── COMMIT BAR ──────────────────────────────────────── */
+#commitBar {
+  display:none; position:fixed; left:0; right:0;
+  background:var(--surface); border-top:2px solid #388E3C;
+  padding:10px; gap:8px; align-items:center;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.12); z-index:150;
+}
+#commitBar.show { display:flex; }
+#commitMsg {
+  flex:1; font-family:'Roboto',sans-serif; font-size:15px;
+  padding:12px 14px; border:1px solid var(--border2); border-radius:6px;
+  outline:none; color:var(--text); background:var(--surface); min-height:48px;
+}
+#commitMsg:focus { border-color:#388E3C; box-shadow:0 0 0 2px #C8E6C9; }
+
+/* ── PAT SHEET ───────────────────────────────────────── */
+#patModal {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.45); z-index:200;
+  align-items:flex-end; justify-content:center;
+}
+#patModal.show { display:flex; }
+.modal-sheet {
+  background:white; border-radius:16px 16px 0 0;
+  padding:22px 20px 36px; width:100%; max-width:520px;
+}
+.modal-sheet h2 { font-size:16px; font-weight:500; margin-bottom:6px; }
+.modal-sheet p  { font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+.modal-sheet input {
+  width:100%; font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:10px 12px; border:1px solid var(--border2); border-radius:4px;
+  outline:none; margin-bottom:14px; background:var(--surface2); color:var(--text);
+}
+.modal-sheet input:focus { border-color:var(--primary); }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+/* ── TOAST ───────────────────────────────────────────── */
+#toast {
+  position:fixed; bottom:20px; left:50%;
+  transform:translateX(-50%) translateY(64px);
+  background:#323232; color:white; border-radius:4px;
+  padding:10px 18px; font-size:13px; font-weight:500;
+  transition:transform 0.22s ease; z-index:400;
+  white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
+}
+#toast.show { transform:translateX(-50%) translateY(0); }
+
+/* ── SIDEBAR TOGGLE BTN ──────────────────────────────── */
+#sidebarToggleBtn {
+  display:flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:4px;
+  background:rgba(255,255,255,0.15); border:none;
+  color:white; font-size:16px; cursor:pointer;
+  flex-shrink:0;
+}
+#sidebarToggleBtn:active { opacity:0.7; }
+</style>
+</head>
+<body>
+
+<div id="topBar">
+  <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+    <button id="sidebarToggleBtn" onclick="toggleSidebar()" title="Toggle file tree">☰</button>
+    <div class="app-info">
+      <div class="app-title">Filter Editor</div>
+      <div class="app-file" id="appFileLabel">No file open</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <div id="statusChip"><div id="sDot"></div><span id="sText">Not loaded</span></div>
+    <button id="patTopBtn" onclick="showPat()">
+      <div id="patDot"></div> PAT
+    </button>
+  </div>
+</div>
+
+<div id="toolbar">
+  <button class="btn btn-raised" onclick="loadCurrentFile()">⬇ Load</button>
+  <button class="btn btn-green" id="saveBtn" onclick="showCommit()" disabled>⬆ Save</button>
+  <button class="btn btn-flat" onclick="openSearchPanel()">🔍 Find</button>
+  <button class="btn btn-flat" onclick="pasteToEditor()">📋 Paste</button>
+  <button class="btn btn-flat" onclick="copySelection()">⎘ Copy</button>
+  <button class="btn btn-flat" onclick="goToLine()"># Line</button>
+  <span id="modBadge">UNSAVED</span>
+</div>
+
+<div id="tabsRow"></div>
+
+<div id="mainLayout">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div id="sidebarHeader">
+      <span id="sidebarTitle">Files</span>
+      <button id="sidebarSearchBtn" onclick="openGlobalSearch()">🔍 Search All</button>
+    </div>
+    <div id="repoSelector">
+      <button class="repo-btn" id="repoBtnOwn" onclick="selectRepo('own')">
+        BlazeFTL/My-Filters
+      </button>
+      <button class="repo-btn" id="repoBtnUAssets" onclick="selectRepo('uassets')">
+        uBlockOrigin/uAssets/filters
+      </button>
+    </div>
+    <div id="fileTree"><div class="tree-loading">Enter PAT and select a repo</div></div>
+  </div>
+
+  <!-- EDITOR WRAPPER -->
+  <div id="editorWrapper">
+    <div id="searchPanel">
+      <div class="sp-row">
+        <div class="sp-field">
+          <input id="spFind" type="text" placeholder="Find…" oninput="spSearch()" onkeydown="spKey(event)"
+                 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          <div class="sp-toggles">
+            <button class="sp-tog" id="togCase" title="Match case" onclick="spToggle('case')">Aa</button>
+            <button class="sp-tog" id="togWord" title="Whole word" onclick="spToggle('word')">W</button>
+            <button class="sp-tog" id="togRe"   title="Regex"      onclick="spToggle('re')">.*</button>
+          </div>
+        </div>
+        <div class="sp-nav-btns">
+          <button class="sp-nav-btn" title="Previous (Shift+Enter)" onclick="spPrev()">↑</button>
+          <button class="sp-nav-btn" title="Next (Enter)" onclick="spNext()">↓</button>
+        </div>
+        <span id="spCount" style="font-size:11px;font-weight:600;color:var(--primary);white-space:nowrap;min-width:52px;text-align:right"></span>
+        <button id="spToggleReplace" onclick="spToggleReplaceRow()">Replace</button>
+        <button class="sp-close-btn" onclick="closeSearchPanel()">✕</button>
+      </div>
+      <div class="sp-replace-row" id="spReplaceRow" style="display:none">
+        <input id="spReplace" type="text" placeholder="Replace with…" onkeydown="spRepKey(event)"
+               autocomplete="off" spellcheck="false" />
+        <button class="sp-rep-btn" onclick="spReplaceOne()">Replace</button>
+        <button class="sp-rep-btn" onclick="spReplaceAll()">All</button>
+      </div>
+    </div>
+
+    <div id="editorArea">
+      <div id="cmHost"></div>
+    </div>
+  </div>
+</div>
+
+<div id="commitBar">
+  <input id="commitMsg" type="text" placeholder="Commit message..." />
+  <button class="btn btn-green" style="min-height:48px;font-size:14px;padding:10px 16px" onclick="saveFile()">✔ Commit</button>
+  <button class="btn btn-flat" style="min-height:48px;font-size:13px;color:#C62828" onclick="hideCommit()">Cancel ✕</button>
+</div>
+
+<div id="patModal">
+  <div class="modal-sheet">
+    <h2>GitHub Token (PAT)</h2>
+    <p>Required for loading private files and saving. Needs <b>repo</b> scope.<br>Stored in your browser — never committed to GitHub.</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <div class="modal-actions">
+      <button class="btn btn-flat" onclick="closePat()">Cancel</button>
+      <button class="btn btn-raised" onclick="savePat()">Save Token</button>
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL SEARCH OVERLAY -->
+<div id="globalSearchOverlay">
+  <div id="globalSearchBox">
+    <div id="globalSearchHeader">
+      <h3>Search Across All Files</h3>
+      <div class="gs-input-row">
+        <input id="gsFind" type="text" placeholder="Search query…"
+               onkeydown="gsKey(event)" autocomplete="off" autocorrect="off"
+               autocapitalize="off" spellcheck="false" />
+        <button class="gs-tog" id="gsTogCase" onclick="gsToggle('case')">Aa</button>
+        <button class="gs-tog" id="gsTogRe"   onclick="gsToggle('re')">.*</button>
+        <button id="gsSearchBtn" onclick="runGlobalSearch()">Search</button>
+      </div>
+      <div id="gsStatus"></div>
+    </div>
+    <div id="gsResults"><div class="gs-no-results">Enter a query and press Search</div></div>
+    <div id="globalSearchClose">
+      <button class="btn btn-flat" onclick="closeGlobalSearch()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { EditorState }                         from '@codemirror/state';
+import {
+  EditorView, lineNumbers, highlightActiveLine,
+  highlightActiveLineGutter, drawSelection,
+  keymap, ViewPlugin, Decoration,
+  rectangularSelection, crosshairCursor,
+  highlightSpecialChars, dropCursor
+} from '@codemirror/view';
+import {
+  defaultKeymap, history, historyKeymap, indentWithTab,
+  selectAll, deleteLine, moveLineUp, moveLineDown,
+  copyLineUp, copyLineDown, selectNextOccurrence
+} from '@codemirror/commands';
+import {
+  search, searchKeymap,
+  SearchQuery, setSearchQuery,
+  findNext, findPrevious,
+  replaceNext, replaceAll as cmReplaceAll,
+} from '@codemirror/search';
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+
+// ══════════════════════════════════════════════════════════
+// REPO CONFIGS
+// ══════════════════════════════════════════════════════════
+const REPOS = {
+  own: {
+    owner: 'BlazeFTL', repo: 'My-Filters', branch: 'master',
+    path: '',
+    label: 'My-Filters',
+    files: ['My-Filters_Static_Sites.txt'],
+  },
+  uassets: {
+    owner: 'uBlockOrigin', repo: 'uAssets', branch: 'master',
+    path: 'filters',
+    label: 'uAssets/filters',
+    files: null, // loaded dynamically
+  }
+};
+
+let currentRepo = 'own';
+
+// ══════════════════════════════════════════════════════════
+// TAB STATE
+// ══════════════════════════════════════════════════════════
+// tabs[id] = { id, repoKey, filename, path, apiUrl, rawUrl, content, sha, originalContent, dirty, editorState }
+const tabs = {};
+let activeTabId = null;
+let tabOrder = [];
+
+function makeTabId(repoKey, filename) {
+  return repoKey + '::' + filename;
+}
+
+function getApiUrl(repoKey, filename) {
+  const r = REPOS[repoKey];
+  const filePath = r.path ? r.path + '/' + filename : filename;
+  return `https://api.github.com/repos/${r.owner}/${r.repo}/contents/${filePath}`;
+}
+
+function getRawUrl(repoKey, filename) {
+  const r = REPOS[repoKey];
+  const filePath = r.path ? r.path + '/' + filename : filename;
+  return `https://raw.githubusercontent.com/${r.owner}/${r.repo}/refs/heads/${r.branch}/${filePath}`;
+}
+
+// ══════════════════════════════════════════════════════════
+// PAT
+// ══════════════════════════════════════════════════════════
+function getPat()  { return localStorage.getItem('blaze_pat') || ''; }
+function updatePatIndicator() {
+  document.getElementById('patDot').className = getPat() ? 'set' : '';
+}
+window.showPat = function() {
+  document.getElementById('patModal').classList.add('show');
+  document.getElementById('patInput').value = getPat();
+};
+window.closePat = function() { document.getElementById('patModal').classList.remove('show'); };
+window.savePat  = function() {
+  const v = document.getElementById('patInput').value.trim();
+  if (v) { localStorage.setItem('blaze_pat', v); toast('Token saved'); }
+  else   { localStorage.removeItem('blaze_pat'); toast('Token cleared'); }
+  updatePatIndicator();
+  closePat();
+  // After PAT set, refresh tree for current repo
+  loadFileTree(currentRepo);
+};
+
+// ══════════════════════════════════════════════════════════
+// SIDEBAR / REPO SELECT
+// ══════════════════════════════════════════════════════════
+window.toggleSidebar = function() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+};
+
+window.selectRepo = function(key) {
+  currentRepo = key;
+  document.getElementById('repoBtnOwn').classList.toggle('active', key === 'own');
+  document.getElementById('repoBtnUAssets').classList.toggle('active', key === 'uassets');
+  loadFileTree(key);
+};
+
+async function loadFileTree(repoKey) {
+  const tree = document.getElementById('fileTree');
+  tree.innerHTML = '<div class="tree-loading">Loading…</div>';
+
+  const r = REPOS[repoKey];
+
+  try {
+    let files;
+    if (r.files) {
+      files = r.files;
+    } else {
+      // Load dynamically from GitHub API
+      const pat = getPat();
+      const headers = pat ? { Authorization: 'token ' + pat } : {};
+      const apiUrl = `https://api.github.com/repos/${r.owner}/${r.repo}/contents/${r.path}`;
+      const resp = await fetch(apiUrl, { headers });
+      if (!resp.ok) {
+        if (resp.status === 401 || resp.status === 403) {
+          tree.innerHTML = '<div class="tree-loading">PAT required for uAssets. Set your token above.</div>';
+          return;
+        }
+        throw new Error('HTTP ' + resp.status);
+      }
+      const items = await resp.json();
+      files = items
+        .filter(i => i.type === 'file' && i.name.endsWith('.txt'))
+        .map(i => i.name)
+        .sort();
+    }
+
+    renderFileTree(tree, repoKey, r.label, files);
+  } catch(e) {
+    tree.innerHTML = `<div class="tree-loading">Error: ${e.message}</div>`;
+  }
+}
+
+function renderFileTree(container, repoKey, sectionLabel, files) {
+  container.innerHTML = '';
+
+  const section = document.createElement('div');
+  section.className = 'tree-section';
+
+  const header = document.createElement('div');
+  header.className = 'tree-section-header';
+  const arrow = document.createElement('span');
+  arrow.className = 'tree-section-arrow open';
+  arrow.textContent = '▶';
+  const label = document.createElement('span');
+  label.textContent = sectionLabel;
+  label.style.cssText = 'flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+  header.appendChild(arrow);
+  header.appendChild(label);
+
+  const body = document.createElement('div');
+  body.className = 'tree-section-body open';
+
+  header.onclick = () => {
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+  };
+
+  for (const filename of files) {
+    const item = document.createElement('div');
+    item.className = 'tree-file';
+    item.dataset.tabId = makeTabId(repoKey, filename);
+    item.innerHTML = `<span class="tree-file-icon">📄</span><span>${filename}</span>`;
+    item.onclick = () => openFileTab(repoKey, filename);
+    body.appendChild(item);
+  }
+
+  section.appendChild(header);
+  section.appendChild(body);
+  container.appendChild(section);
+}
+
+function updateTreeHighlight() {
+  document.querySelectorAll('.tree-file').forEach(el => {
+    el.classList.toggle('open', el.dataset.tabId === activeTabId);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════════
+async function openFileTab(repoKey, filename) {
+  const id = makeTabId(repoKey, filename);
+
+  if (tabs[id]) {
+    switchToTab(id);
+    return;
+  }
+
+  // Create tab (loading state)
+  tabs[id] = {
+    id, repoKey, filename,
+    apiUrl: getApiUrl(repoKey, filename),
+    rawUrl: getRawUrl(repoKey, filename),
+    content: '', sha: null, originalContent: '', dirty: false,
+    editorState: null,
+  };
+  if (!tabOrder.includes(id)) tabOrder.push(id);
+
+  renderTabs();
+  switchToTab(id);
+  await fetchTabContent(id);
+}
+
+async function fetchTabContent(id) {
+  const tab = tabs[id];
+  if (!tab) return;
+
+  setStatus('loading', 'Fetching…');
+
+  try {
+    const r = await fetch(tab.rawUrl + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const text = await r.text();
+
+    tab.content = text;
+    tab.originalContent = text;
+    tab.dirty = false;
+
+    // Fetch SHA for saving
+    const pat = getPat();
+    if (pat) {
+      try {
+        const ar = await fetch(tab.apiUrl, { headers: { Authorization: 'token ' + pat } });
+        if (ar.ok) { const aj = await ar.json(); tab.sha = aj.sha; }
+      } catch(e) {}
+    }
+
+    // Build or update editorState for this tab
+    if (id === activeTabId) {
+      // Set content into live editor
+      view.dispatch({
+        changes: { from: 0, to: view.state.doc.length, insert: text }
+      });
+      tab.editorState = null; // live editor owns the state
+    } else {
+      tab.editorState = EditorState.create({
+        doc: text,
+        extensions: buildExtensions(),
+      });
+    }
+
+    setStatus('ok', text.split('\n').length + ' lines');
+    document.getElementById('saveBtn').disabled = false;
+    updateTabDirty(id, false);
+    renderTabs();
+    toast('Loaded ' + tab.filename);
+  } catch(e) {
+    setStatus('err', 'Load failed');
+    toast('Load failed: ' + e.message);
+  }
+}
+
+function switchToTab(id) {
+  if (!tabs[id]) return;
+
+  // Save current editor state to old active tab
+  if (activeTabId && tabs[activeTabId] && activeTabId !== id) {
+    tabs[activeTabId].editorState = view.state;
+  }
+
+  activeTabId = id;
+  const tab = tabs[id];
+
+  // Restore into live editor
+  if (tab.editorState) {
+    view.setState(tab.editorState);
+    tab.editorState = null;
+  } else if (tab.content !== undefined && tab.content !== null) {
+    // New or empty state
+    const state = EditorState.create({
+      doc: tab.content,
+      extensions: buildExtensions(),
+    });
+    view.setState(state);
+  }
+
+  // Update UI
+  document.getElementById('appFileLabel').textContent =
+    REPOS[tab.repoKey].owner + '/' + REPOS[tab.repoKey].repo + '/' + tab.filename;
+  document.getElementById('commitMsg').value = 'Update ' + tab.filename;
+  document.getElementById('saveBtn').disabled = !tab.sha;
+  document.getElementById('modBadge').classList.toggle('show', tab.dirty);
+  setStatus(tab.sha ? 'ok' : 'loading',
+    tab.content ? tab.content.split('\n').length + ' lines' : 'Loading…');
+
+  renderTabs();
+  updateTreeHighlight();
+}
+
+function closeTab(id, e) {
+  if (e) e.stopPropagation();
+  const tab = tabs[id];
+  if (tab && tab.dirty) {
+    if (!confirm('Close ' + tab.filename + '? Unsaved changes will be lost.')) return;
+  }
+  delete tabs[id];
+  tabOrder = tabOrder.filter(t => t !== id);
+
+  if (activeTabId === id) {
+    activeTabId = null;
+    if (tabOrder.length) {
+      switchToTab(tabOrder[tabOrder.length - 1]);
+    } else {
+      // Clear editor
+      view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: '' } });
+      document.getElementById('appFileLabel').textContent = 'No file open';
+      document.getElementById('modBadge').classList.remove('show');
+      document.getElementById('saveBtn').disabled = true;
+      setStatus('', '');
+    }
+  }
+  renderTabs();
+  updateTreeHighlight();
+}
+
+function renderTabs() {
+  const row = document.getElementById('tabsRow');
+  row.innerHTML = '';
+  for (const id of tabOrder) {
+    const tab = tabs[id];
+    if (!tab) continue;
+    const el = document.createElement('div');
+    el.className = 'tab' + (id === activeTabId ? ' active' : '');
+    el.title = tab.filename;
+    el.innerHTML = `
+      <span class="tab-dirty${tab.dirty ? ' show' : ''}"></span>
+      <span class="tab-name">${tab.filename}</span>
+      <span class="tab-close" title="Close">×</span>
+    `;
+    el.onclick = () => switchToTab(id);
+    el.querySelector('.tab-close').onclick = (e) => closeTab(id, e);
+    row.appendChild(el);
+  }
+}
+
+function updateTabDirty(id, dirty) {
+  if (!tabs[id]) return;
+  tabs[id].dirty = dirty;
+  // Update dot on tab
+  const tabEl = document.querySelector(`#tabsRow .tab:nth-child(${tabOrder.indexOf(id)+1}) .tab-dirty`);
+  if (tabEl) tabEl.classList.toggle('show', dirty);
+}
+
+// ══════════════════════════════════════════════════════════
+// uBO Syntax Highlighter
+// ══════════════════════════════════════════════════════════
+const uboHighlighter = ViewPlugin.fromClass(
+  class {
+    constructor(view) { this.decorations = buildDecos(view); }
+    update(u) {
+      if (u.docChanged || u.viewportChanged) this.decorations = buildDecos(u.view);
+    }
+  },
+  { decorations: v => v.decorations }
+);
+
+function buildDecos(view) {
+  const builder = [];
+  const { from: vpFrom, to: vpTo } = view.viewport;
+  const doc = view.state.doc;
+  for (let pos = vpFrom; pos <= vpTo; ) {
+    const line = doc.lineAt(pos);
+    addLineDecos(builder, line.from, line.text);
+    pos = line.to + 1;
+  }
+  builder.sort((a, b) => a.from - b.from || a.startSide - b.startSide);
+  return Decoration.set(builder, true);
+}
+
+function mark(cls) { return Decoration.mark({ class: cls }); }
+function span(builder, from, to, cls) {
+  if (from < to) builder.push(mark(cls).range(from, to));
+}
+
+function addLineDecos(builder, base, text) {
+  if (!text.trim()) return;
+  if (/^[!#]/.test(text)) {
+    if (/^!\s*(Title|Version|Last modified|Expires|Description|License|Homepage|Forums):/i.test(text)) {
+      const m = text.match(/^(!\s*[^:]+:)(.*)/);
+      if (m) {
+        span(builder, base, base + m[1].length, 'ub-title');
+        span(builder, base + m[1].length, base + text.length, 'ub-comment');
+        return;
+      }
+    }
+    span(builder, base, base + text.length, 'ub-comment');
+    return;
+  }
+  if (text.startsWith('@@')) {
+    span(builder, base, base + 2, 'ub-except');
+    addNetworkDecos(builder, base + 2, text.slice(2));
+    return;
+  }
+  const htmlIdx = text.indexOf('##^');
+  if (htmlIdx > 0) {
+    span(builder, base, base + htmlIdx, 'ub-domain');
+    span(builder, base + htmlIdx, base + htmlIdx + 3, 'ub-cosmetic');
+    span(builder, base + htmlIdx + 3, base + text.length, 'ub-scriptlet');
+    return;
+  }
+  const scriptletRe = /^(.+?)(#[@+]?#\+js\(|#\+js\()(.*)/;
+  const sm = text.match(scriptletRe);
+  if (sm) {
+    span(builder, base, base + sm[1].length, 'ub-domain');
+    span(builder, base + sm[1].length, base + sm[1].length + sm[2].length, 'ub-cosmetic');
+    span(builder, base + sm[1].length + sm[2].length, base + text.length, 'ub-scriptlet');
+    return;
+  }
+  const cosmeticRe = /^(.+?)(#@?#)(.*)/;
+  const cm_ = text.match(cosmeticRe);
+  if (cm_) {
+    span(builder, base, base + cm_[1].length, 'ub-domain');
+    span(builder, base + cm_[1].length, base + text.length, 'ub-cosmetic');
+    return;
+  }
+  if (/^\|\||^\*|^\^/.test(text) || /\$[a-z]/.test(text)) {
+    addNetworkDecos(builder, base, text);
+    return;
+  }
+  span(builder, base, base + text.length, 'ub-plain');
+}
+
+function addNetworkDecos(builder, base, text) {
+  const i = text.lastIndexOf('$');
+  if (i > 0 && !/^https?:\/\//.test(text)) {
+    span(builder, base, base + i, 'ub-network');
+    span(builder, base + i, base + text.length, 'ub-option');
+  } else {
+    span(builder, base, base + text.length, 'ub-network');
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// EDITOR BUILD
+// ══════════════════════════════════════════════════════════
+const updateListener = EditorView.updateListener.of(u => {
+  if (u.docChanged && activeTabId) {
+    const cur = u.state.doc.toString();
+    const tab = tabs[activeTabId];
+    if (tab) {
+      const dirty = cur !== tab.originalContent;
+      if (dirty !== tab.dirty) updateTabDirty(activeTabId, dirty);
+      tab.dirty = dirty;
+      document.getElementById('modBadge').classList.toggle('show', dirty);
+    }
+    if (document.getElementById('searchPanel').classList.contains('open')) {
+      updateMatchCount();
+    }
+  }
+});
+
+function buildExtensions() {
+  return [
+    lineNumbers(),
+    highlightActiveLine(),
+    highlightActiveLineGutter(),
+    highlightSpecialChars(),
+    drawSelection(),
+    dropCursor(),
+    rectangularSelection(),
+    crosshairCursor(),
+    history(),
+    search({ top: true }),
+    keymap.of([
+      ...defaultKeymap,
+      ...historyKeymap,
+      ...searchKeymap,
+      indentWithTab,
+      { key: 'Mod-d',       run: selectNextOccurrence },
+      { key: 'Ctrl-l',      run: _v => { goToLine(); return true; } },
+      { key: 'Alt-ArrowUp', run: moveLineUp },
+      { key: 'Alt-ArrowDown', run: moveLineDown },
+      { key: 'Shift-Alt-ArrowUp', run: copyLineUp },
+      { key: 'Shift-Alt-ArrowDown', run: copyLineDown },
+      { key: 'Mod-Shift-k', run: deleteLine },
+      { key: 'Escape',      run: _v => { closeSearchPanel(); return false; } },
+      { key: 'Mod-f',       run: _v => { openSearchPanel(); return true; } },
+      { key: 'Mod-h',       run: _v => { openSearchPanel(true); return true; } },
+    ]),
+    EditorView.lineWrapping,
+    uboHighlighter,
+    updateListener,
+    EditorView.theme({
+      '&': { height: '100%', background: 'var(--surface)' },
+      '.cm-scroller': { fontFamily: "'Roboto Mono',monospace", fontSize: 'var(--fn)' },
+    }),
+  ];
+}
+
+const view = new EditorView({
+  state: EditorState.create({ doc: '', extensions: buildExtensions() }),
+  parent: document.getElementById('cmHost'),
+});
+
+window._view = view;
+
+// ══════════════════════════════════════════════════════════
+// CUSTOM SEARCH PANEL
+// ══════════════════════════════════════════════════════════
+let spState = { caseSensitive: false, wholeWord: false, regexp: false, replaceVisible: false };
+
+window.openSearchPanel = function(withReplace = false) {
+  const panel = document.getElementById('searchPanel');
+  panel.classList.add('open');
+  if (withReplace) {
+    spState.replaceVisible = true;
+    document.getElementById('spReplaceRow').style.display = 'flex';
+  }
+  const sel = view.state.sliceDoc(
+    view.state.selection.main.from,
+    view.state.selection.main.to
+  );
+  const findEl = document.getElementById('spFind');
+  if (sel && sel.length < 200 && !sel.includes('\n')) findEl.value = sel;
+  setTimeout(() => { findEl.focus(); findEl.select(); }, 30);
+  spSearch();
+};
+
+window.closeSearchPanel = function() {
+  document.getElementById('searchPanel').classList.remove('open');
+  document.getElementById('spCount').textContent = '';
+  view.focus();
+};
+
+window.spToggleReplaceRow = function() {
+  spState.replaceVisible = !spState.replaceVisible;
+  document.getElementById('spReplaceRow').style.display = spState.replaceVisible ? 'flex' : 'none';
+  if (spState.replaceVisible) document.getElementById('spReplace').focus();
+};
+
+window.spToggle = function(type) {
+  if (type === 'case') spState.caseSensitive = !spState.caseSensitive;
+  if (type === 'word') spState.wholeWord     = !spState.wholeWord;
+  if (type === 're')   spState.regexp        = !spState.regexp;
+  document.getElementById('togCase').classList.toggle('on', spState.caseSensitive);
+  document.getElementById('togWord').classList.toggle('on', spState.wholeWord);
+  document.getElementById('togRe').classList.toggle('on', spState.regexp);
+  spSearch();
+};
+
+function buildSearchQuery(searchStr, replaceStr = '') {
+  return new SearchQuery({
+    search: searchStr, replace: replaceStr,
+    caseSensitive: spState.caseSensitive,
+    wholeWord: spState.wholeWord,
+    regexp: spState.regexp,
+  });
+}
+
+function updateMatchCount() {
+  const q = document.getElementById('spFind').value;
+  if (!q) { document.getElementById('spCount').textContent = ''; return; }
+  try {
+    const query = buildSearchQuery(q);
+    if (!query.valid) { document.getElementById('spCount').textContent = '⚠'; return; }
+    const cursor = query.getCursor(view.state.doc);
+    let count = 0;
+    while (!cursor.next().done) count++;
+    document.getElementById('spCount').textContent = count === 0 ? 'No matches' : count + ' matches';
+  } catch(e) { document.getElementById('spCount').textContent = ''; }
+}
+
+window.spSearch = function() {
+  const q = document.getElementById('spFind').value;
+  if (!q) {
+    document.getElementById('spCount').textContent = '';
+    view.dispatch({ effects: setSearchQuery.of(buildSearchQuery('')) });
+    return;
+  }
+  try {
+    view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
+    updateMatchCount();
+  } catch(e) {}
+};
+
+window.spNext = function() {
+  const q = document.getElementById('spFind').value;
+  if (!q) return;
+  view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
+  findNext(view); view.focus();
+  setTimeout(() => document.getElementById('spFind').focus(), 30);
+};
+
+window.spPrev = function() {
+  const q = document.getElementById('spFind').value;
+  if (!q) return;
+  view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
+  findPrevious(view); view.focus();
+  setTimeout(() => document.getElementById('spFind').focus(), 30);
+};
+
+window.spReplaceOne = function() {
+  const q = document.getElementById('spFind').value;
+  const r = document.getElementById('spReplace').value;
+  if (!q) return;
+  view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q, r)) });
+  replaceNext(view); updateMatchCount();
+};
+
+window.spReplaceAll = function() {
+  const q = document.getElementById('spFind').value;
+  const r = document.getElementById('spReplace').value;
+  if (!q) return;
+  view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q, r)) });
+  const result = cmReplaceAll(view);
+  if (result) toast('Replaced all occurrences');
+  updateMatchCount();
+};
+
+window.spKey = function(e) {
+  if (e.key === 'Enter') { e.shiftKey ? spPrev() : spNext(); e.preventDefault(); }
+  if (e.key === 'Escape') { closeSearchPanel(); e.preventDefault(); }
+};
+window.spRepKey = function(e) {
+  if (e.key === 'Enter') { spReplaceOne(); e.preventDefault(); }
+  if (e.key === 'Escape') { closeSearchPanel(); e.preventDefault(); }
+};
+
+// ══════════════════════════════════════════════════════════
+// GLOBAL SEARCH
+// ══════════════════════════════════════════════════════════
+let gsState = { caseSensitive: false, regexp: false };
+
+window.openGlobalSearch = function() {
+  document.getElementById('globalSearchOverlay').classList.add('show');
+  setTimeout(() => document.getElementById('gsFind').focus(), 50);
+};
+
+window.closeGlobalSearch = function() {
+  document.getElementById('globalSearchOverlay').classList.remove('show');
+};
+
+window.gsToggle = function(type) {
+  if (type === 'case') gsState.caseSensitive = !gsState.caseSensitive;
+  if (type === 're')   gsState.regexp        = !gsState.regexp;
+  document.getElementById('gsTogCase').classList.toggle('on', gsState.caseSensitive);
+  document.getElementById('gsTogRe').classList.toggle('on', gsState.regexp);
+};
+
+window.gsKey = function(e) {
+  if (e.key === 'Enter') runGlobalSearch();
+  if (e.key === 'Escape') closeGlobalSearch();
+};
+
+// Cache for fetched file contents during global search
+const _gsCache = {};
+
+window.runGlobalSearch = async function() {
+  const query = document.getElementById('gsFind').value.trim();
+  if (!query) return;
+
+  const r = REPOS[currentRepo];
+  const statusEl = document.getElementById('gsStatus');
+  const resultsEl = document.getElementById('gsResults');
+  const btn = document.getElementById('gsSearchBtn');
+
+  btn.disabled = true;
+  resultsEl.innerHTML = '<div class="gs-no-results">Searching…</div>';
+
+  // Get file list
+  let files;
+  if (r.files) {
+    files = r.files;
+  } else {
+    // Try getting from tree (already loaded) or fetch
+    const treeItems = document.querySelectorAll('#fileTree .tree-file span:last-child');
+    if (treeItems.length) {
+      files = Array.from(treeItems).map(el => el.textContent);
+    } else {
+      statusEl.textContent = 'Load file tree first';
+      btn.disabled = false;
+      return;
+    }
+  }
+
+  statusEl.textContent = `Searching ${files.length} files…`;
+
+  // Fetch all files (cached)
+  let fetched = 0;
+  const fileContents = {};
+  const pat = getPat();
+  const headers = pat ? { Authorization: 'token ' + pat } : {};
+
+  await Promise.all(files.map(async (filename) => {
+    const rawUrl = getRawUrl(currentRepo, filename);
+    if (_gsCache[rawUrl]) { fileContents[filename] = _gsCache[rawUrl]; fetched++; return; }
+    try {
+      const resp = await fetch(rawUrl + '?t=' + Date.now(), { headers });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const text = await resp.text();
+      _gsCache[rawUrl] = text;
+      fileContents[filename] = text;
+    } catch(e) {
+      fileContents[filename] = null;
+    }
+    fetched++;
+    statusEl.textContent = `Fetched ${fetched}/${files.length}…`;
+  }));
+
+  // Search all files
+  let totalMatches = 0;
+  const fragments = [];
+
+  for (const filename of files) {
+    const content = fileContents[filename];
+    if (!content) continue;
+
+    const lines = content.split('\n');
+    const matches = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      let hit = false;
+      if (gsState.regexp) {
+        try {
+          const flags = gsState.caseSensitive ? 'g' : 'gi';
+          hit = new RegExp(query, flags).test(line);
+        } catch(e) {}
+      } else {
+        const haystack = gsState.caseSensitive ? line : line.toLowerCase();
+        const needle   = gsState.caseSensitive ? query : query.toLowerCase();
+        hit = haystack.includes(needle);
+      }
+      if (hit) matches.push({ lineNum: i + 1, text: line });
+    }
+
+    if (matches.length === 0) continue;
+    totalMatches += matches.length;
+
+    const fileHeader = document.createElement('div');
+    fileHeader.className = 'gs-result-file';
+    fileHeader.innerHTML = `<span>${filename}</span><span class="gs-match-count">${matches.length} match${matches.length>1?'es':''}</span>`;
+    fragments.push(fileHeader);
+
+    for (const m of matches) {
+      const row = document.createElement('div');
+      row.className = 'gs-result-line';
+      row.innerHTML = `<span class="gs-line-num">${m.lineNum}</span><span class="gs-line-text">${highlightMatch(m.text, query, gsState)}</span>`;
+      row.onclick = () => jumpToResult(currentRepo, filename, m.lineNum);
+      fragments.push(row);
+    }
+  }
+
+  resultsEl.innerHTML = '';
+  if (fragments.length === 0) {
+    resultsEl.innerHTML = `<div class="gs-no-results">No matches for "${escapeHtml(query)}"</div>`;
+  } else {
+    fragments.forEach(f => resultsEl.appendChild(f));
+  }
+
+  statusEl.textContent = `${totalMatches} match${totalMatches!==1?'es':''} in ${files.filter(f=>fileContents[f]).length} files`;
+  btn.disabled = false;
+};
+
+function highlightMatch(text, query, state) {
+  const safe = escapeHtml(text);
+  try {
+    const flags = state.caseSensitive ? 'g' : 'gi';
+    const pattern = state.regexp ? query : query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return safe.replace(new RegExp(pattern, flags), m => `<mark>${m}</mark>`);
+  } catch(e) { return safe; }
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function jumpToResult(repoKey, filename, lineNum) {
+  closeGlobalSearch();
+  const id = makeTabId(repoKey, filename);
+  if (!tabs[id]) {
+    await openFileTab(repoKey, filename);
+    // Wait for content to load then scroll
+    setTimeout(() => scrollToLine(lineNum), 600);
+  } else {
+    switchToTab(id);
+    scrollToLine(lineNum);
+  }
+}
+
+function scrollToLine(lineNum) {
+  const doc = view.state.doc;
+  if (lineNum < 1 || lineNum > doc.lines) return;
+  const line = doc.line(lineNum);
+  view.dispatch({
+    selection: { anchor: line.from, head: line.to },
+    scrollIntoView: true,
+    effects: EditorView.scrollIntoView(line.from, { y: 'center' }),
+  });
+  view.focus();
+}
+
+// ══════════════════════════════════════════════════════════
+// TOOLBAR ACTIONS
+// ══════════════════════════════════════════════════════════
+window.loadCurrentFile = async function() {
+  if (!activeTabId) { toast('No file open — click a file in the tree'); return; }
+  const tab = tabs[activeTabId];
+  if (tab.dirty && !confirm('Discard unsaved changes and reload?')) return;
+  tab.sha = null;
+  await fetchTabContent(activeTabId);
+};
+
+window.goToLine = function() {
+  const total = view.state.doc.lines;
+  const cur = view.state.doc.lineAt(view.state.selection.main.head).number;
+  const n = prompt(`Go to line (1–${total}):`, cur);
+  if (!n || isNaN(n)) return;
+  const lineNum = Math.max(1, Math.min(parseInt(n), total));
+  scrollToLine(lineNum);
+};
+
+window.copySelection = function() {
+  const sel = view.state.sliceDoc(
+    view.state.selection.main.from, view.state.selection.main.to
+  );
+  if (!sel) { toast('No text selected'); return; }
+  navigator.clipboard.writeText(sel)
+    .then(() => toast(`Copied ${sel.split('\n').length} line(s)`))
+    .catch(() => toast('Copy failed'));
+};
+
+window.pasteToEditor = async function() {
+  try {
+    const text = await navigator.clipboard.readText();
+    const { from, to } = view.state.selection.main;
+    view.dispatch({ changes: { from, to, insert: text }, selection: { anchor: from + text.length } });
+    toast(`Pasted ${text.split('\n').length} line(s)`);
+  } catch(e) { toast('Paste failed — use long-press instead'); }
+};
+
+// ══════════════════════════════════════════════════════════
+// SAVE / COMMIT
+// ══════════════════════════════════════════════════════════
+window.showCommit = function() {
+  if (!getPat()) { showPat(); return; }
+  if (!activeTabId) { toast('No file open'); return; }
+  document.getElementById('commitBar').classList.add('show');
+  positionCommitBar();
+  setTimeout(() => document.getElementById('commitMsg').focus(), 50);
+};
+window.hideCommit = function() { document.getElementById('commitBar').classList.remove('show'); };
+
+function positionCommitBar() {
+  const bar = document.getElementById('commitBar');
+  if (!bar.classList.contains('show')) return;
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    bar.style.bottom = (window.innerHeight - vv.height - vv.offsetTop) + 'px';
+  } else {
+    bar.style.bottom = '0px';
+  }
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', positionCommitBar);
+  window.visualViewport.addEventListener('scroll', positionCommitBar);
+}
+
+window.saveFile = async function() {
+  const pat = getPat();
+  if (!pat) { toast('No PAT — tap PAT button'); return; }
+  if (!activeTabId) { toast('No file open'); return; }
+  const tab = tabs[activeTabId];
+  if (!tab.sha) { toast('Load file first to get SHA'); return; }
+
+  const msg = document.getElementById('commitMsg').value || 'Update ' + tab.filename;
+  const content = btoa(unescape(encodeURIComponent(view.state.doc.toString())));
+  setStatus('loading', 'Saving…');
+  try {
+    const r = await fetch(tab.apiUrl, {
+      method: 'PUT',
+      headers: { Authorization: 'token ' + pat, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, content, sha: tab.sha }),
+    });
+    if (!r.ok) { const j = await r.json(); throw new Error(j.message || r.status); }
+    const j = await r.json();
+    tab.sha = j.content.sha;
+    tab.originalContent = view.state.doc.toString();
+    tab.content = tab.originalContent;
+    updateTabDirty(activeTabId, false);
+    document.getElementById('modBadge').classList.remove('show');
+    // Invalidate gs cache for this file
+    delete _gsCache[tab.rawUrl];
+    setStatus('ok', view.state.doc.lines + ' lines');
+    hideCommit();
+    toast('Saved to GitHub ✓');
+  } catch(e) {
+    setStatus('err', 'Save failed');
+    toast('Save failed: ' + e.message);
+  }
+};
+
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+function setStatus(state, text) {
+  document.getElementById('sDot').className = state;
+  document.getElementById('sText').textContent = text;
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+updatePatIndicator();
+// Default to own repo sidebar
+selectRepo('own');
+// Auto-open the single own-file tab
+openFileTab('own', 'My-Filters_Static_Sites.txt');
+</script>
+</body>
+</html>
