@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+  } catch(e) {
+    html = escH(raw).replace(/\n/g, '<br>');
+  }
+  if (query) {
+    try {
+      const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      html = html.replace(new RegExp(`(?![^<]*>)(${esc})`, 'gi'), '<mark>$1</mark>');
+    } catch(e) {}
+  }
+  return html;
+}
+
+
+function escH(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+// ── Progress ─────────────────────────────────────────────
+function setProgress(pct, label) {
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = label;
+}
+
+
+// ── Toast ─────────────────────────────────────────────────
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = '', 3000);
+}
+
+
+// ── Scroll buttons ────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const atTop = window.scrollY < 400;
+  const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 400;
+  document.getElementById('scrollTop').classList.toggle('show', !atTop);
+  document.getElementById('scrollBottom').classList.toggle('show', !atBottom && window.scrollY > 100);
+});
+
+
+// ── Init ──────────────────────────────────────────────────
+(async function init() {
+  updatePatUI();
+  const local = loadLocalCache();
+  if (local && local.items && local.items.length) {
+    const age = Math.round((Date.now() - local.ts) / 60000);
+    loadFromData(local.items, true, true);
+    document.getElementById('appBarCacheText').textContent =
+      age < 2 ? 'Fresh' : (age < 60 ? age + 'm ago' : Math.round(age/60) + 'h ago');
+    toast('Loaded from local cache', 'info');
+    return;
+  }
+  setProgress(10, 'Checking GitHub cache…');
+  document.getElementById('progressWrap').style.display = 'block';
+  const remote = await loadRemoteCache();
+  document.getElementById('progressWrap').style.display = 'none';
+  if (remote && remote.items && remote.items.length) {
+    saveLocalCache(remote.items);
+    const age = Math.round((Date.now() - remote.ts) / 60000);
+    loadFromData(remote.items, true, true);
+    document.getElementById('appBarCacheText').textContent =
+      age < 2 ? 'Fresh' : (age < 60 ? age + 'm ago' : Math.round(age/60) + 'h ago');
+    toast('Loaded from GitHub cache', 'info');
+  }
+})();
+</script>
+</body>
+</html>
+<!-- PAT Modal for entering GitHub PAT -->
+<div id="patModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000aa; justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:#fff; padding:20px; border-radius:8px; max-width:400px; width:80%;">
+    <h3>Enter Your GitHub Personal Access Token (PAT)</h3>
+    <input type="text" id="patInput" style="width:100%;" placeholder="PAT"/>
+    <button id="savePatBtn" style="margin-top:10px;">Save</button>
+    <p id="patStatus" style="color:red; margin-top:10px;"></p>
+  </div>
+</div>
+
+<!-- Sidebar for Files -->
+<div id="fileSidebar" style="width:250px; background:#f0f0f0; overflow:auto; display:none; position:fixed; top:0; left:0; bottom:0; z-index:999;">
+  <button onclick="toggleCollapse()">Collapse</button>
+  <h4>Files</h4>
+  <input type="text" id="searchFiles" placeholder="Search files" oninput="searchFileList()" style="width:90%; margin:5px 10px;"/>
+  <div id="fileListContainer"></div>
+</div>
+<button onclick="toggleSidebar()" style="position:fixed; top:10px; left:10px; z-index:1000;">☰ Files</button>
+
+<!-- Search across files UI -->
+<div style="margin-top:10px; padding-left:10px;">
+  <input type="text" id="searchInput" placeholder="Search across files" oninput="performSearch()" style="width:200px;"/>
+  <button onclick="performSearch()">Search</button>
+</div>
+<div id="searchResults" style="border:1px solid #ccc; max-height:200px; overflow:auto; margin:10px; padding:5px; display:none;"></div>
+
+<!-- Tabs for open files -->
+<div id="tabsContainer" style="display:flex; overflow-x:auto; background:#ddd; padding:5px; margin-top:10px;"></div>
+
+<!-- Editor container (your existing editor should be initialized here) -->
+<div id="editorContainer" style="margin-top:10px; padding:10px; border:1px solid #ccc;">
+  <!-- Your existing editor code should be here -->
+</div>
+
+<script>
+// --- PAT Handling ---
+let pat = localStorage.getItem('github_pat');
+
+// Show modal if no PAT
+if (!pat) {
+  document.getElementById('patModal').style.display = 'flex';
+}
+
+document.getElementById('savePatBtn').onclick = () => {
+  const inputPat = document.getElementById('patInput').value.trim();
+  if (inputPat) {
+    // Validate PAT
+    fetch('https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt', {
+      headers: { 'Authorization': 'token ' + inputPat }
+    }).then(res => {
+      if (res.ok) {
+        pat = inputPat;
+        localStorage.setItem('github_pat', pat);
+        document.getElementById('patModal').style.display = 'none';
+        loadFileList();
+      } else {
+        document.getElementById('patStatus').innerText = 'Invalid PAT. Please try again.';
+      }
+    }).catch(() => {
+      document.getElementById('patStatus').innerText = 'Error validating PAT.';
+    });
+  }
+};
+
+// --- File List & UI ---
+let allFiles = []; // list of file paths
+let loadedFiles = {}; // cache file contents
+let openTabs = {}; // filename -> content
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('fileSidebar');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleCollapse() {
+  const container = document.getElementById('fileListContainer');
+  container.style.display = container.style.display === 'none' ? 'block' : 'none';
+}
+
+function loadFileList() {
+  // Fetch list of files
+  fetch('https://api.github.com/repos/uBlockOrigin/uAssets/contents/filters', {
+    headers: { 'Authorization': 'token ' + pat }
+  }).then(res => res.json())
+    .then(data => {
+      allFiles = data.filter(f => f.type === 'file').map(f => f.path);
+      displayFileList(allFiles);
+    });
+}
+
+function displayFileList(files) {
+  const container = document.getElementById('fileListContainer');
+  container.innerHTML = '';
+  files.forEach(f => {
+    const btn = document.createElement('button');
+    btn.innerText = f;
+    btn.style.display = 'block';
+    btn.style.width = '90%';
+    btn.style.margin = '2px auto';
+    btn.onclick = () => openFileInTab(f);
+    container.appendChild(btn);
+  });
+}
+
+function searchFileList() {
+  const query = document.getElementById('searchFiles').value.toLowerCase();
+  const filtered = allFiles.filter(f => f.toLowerCase().includes(query));
+  displayFileList(filtered);
+}
+
+// --- File Loading & Tabs ---
+function openFileInTab(filePath) {
+  if (openTabs[filePath]) {
+    // Already open
+    loadEditorContent(openTabs[filePath], filePath);
+    highlightTab(filePath);
+  } else {
+    fetchFileContent(filePath).then(content => {
+      openTabs[filePath] = content;
+      addTab(filePath);
+      loadEditorContent(content, filePath);
+    });
+  }
+}
+
+function fetchFileContent(filePath) {
+  const url = `https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/${filePath}`;
+  return fetch(url, { headers: { 'Authorization': 'token ' + pat } })
+    .then(res => res.ok ? res.text() : Promise.reject('Failed to fetch'))
+    .then(text => {
+      loadedFiles[filePath] = text;
+      return text;
+    });
+}
+
+function addTab(filePath) {
+  const container = document.getElementById('tabsContainer');
+  // Remove existing tab button if exists
+  Array.from(container.children).forEach(t => {
+    if (t.dataset.file === filePath) {
+      container.removeChild(t);
+    }
+  });
+  const tabBtn = document.createElement('button');
+  tabBtn.innerText = filePath;
+  tabBtn.style.whiteSpace = 'nowrap';
+  tabBtn.dataset.file = filePath;
+  tabBtn.onclick = () => {
+    loadEditorContent(openTabs[filePath], filePath);
+    highlightTab(filePath);
+  };
+  container.appendChild(tabBtn);
+  highlightTab(filePath);
+}
+
+function highlightTab(filePath) {
+  const container = document.getElementById('tabsContainer');
+  Array.from(container.children).forEach(t => {
+    t.style.background = t.dataset.file === filePath ? '#bbb' : '';
+  });
+}
+
+function loadEditorContent(content, filePath) {
+  // Assuming your existing editor instance is window.editor
+  if (window.editor) {
+    window.editor.setValue(content);
+    window.currentFile = filePath;
+  }
+}
+
+// --- Search Across Files ---
+function performSearch() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const resultsDiv = document.getElementById('searchResults');
+  resultsDiv.innerHTML = '';
+  resultsDiv.style.display = 'block';
+
+  Object.keys(openTabs).forEach(file => {
+    const content = openTabs[file];
+    const lines = content.split('\n');
+    lines.forEach((line, index) => {
+      if (line.toLowerCase().includes(query)) {
+        const result = document.createElement('div');
+        result.innerText = `${file} [Line ${index + 1}]: ${line}`;
+        result.style.cursor = 'pointer';
+        result.style.padding = '2px 4px';
+        result.onclick = () => {
+          loadEditorContent(content, file);
+          // Optional: highlight line
+        };
+        resultsDiv.appendChild(result);
+      }
+    });
+  });
+}
+
+// --- Initialize on page load ---
+if (pat) {
+  loadFileList();
+}
+</script>
