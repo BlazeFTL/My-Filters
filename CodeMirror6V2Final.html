@@ -71,6 +71,59 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 #patDot { width:10px;height:10px;border-radius:50%;background:#FF5252;flex-shrink:0;transition:background 0.3s; }
 #patDot.set { background:#69F0AE; }
 
+/* ── FILES PANEL TOGGLE BTN ──────────────────────────── */
+#filesToggleBtn {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.15); border:none; color:white;
+  border-radius:8px; padding:5px 10px; font-family:'Roboto',sans-serif;
+  font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap;
+}
+#filesToggleBtn:active { opacity:0.7; }
+#filesToggleBtn.active { background:rgba(255,255,255,0.30); }
+
+/* ── TABS BAR ────────────────────────────────────────── */
+#tabsBar {
+  flex-shrink:0; background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:stretch; overflow-x:auto; overflow-y:hidden;
+  height:36px; min-height:36px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+#tabsBar::-webkit-scrollbar { display:none; }
+#tabsBar:empty { display:none; }
+
+.tab-item {
+  display:flex; align-items:center; gap:6px;
+  padding:0 10px 0 12px; white-space:nowrap;
+  font-size:11px; font-weight:500; cursor:pointer;
+  border-right:1px solid var(--border);
+  color:var(--text2); background:var(--surface2);
+  min-width:80px; max-width:160px; flex-shrink:0;
+  transition:background 0.12s, color 0.12s;
+  position:relative;
+}
+.tab-item.active {
+  background:var(--surface); color:var(--primary);
+  box-shadow:inset 0 -2px 0 var(--primary);
+}
+.tab-item .tab-name {
+  flex:1; overflow:hidden; text-overflow:ellipsis;
+  font-family:'Roboto Mono',monospace; font-size:11px;
+}
+.tab-item .tab-dot {
+  width:6px; height:6px; border-radius:50%; background:var(--warn);
+  flex-shrink:0; display:none;
+}
+.tab-item.modified .tab-dot { display:block; }
+.tab-item .tab-close {
+  width:18px; height:18px; border-radius:3px; border:none;
+  background:transparent; color:var(--text3); font-size:14px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; padding:0; line-height:1;
+}
+.tab-item .tab-close:hover { background:rgba(0,0,0,0.1); color:var(--danger); }
+
 /* ── TOOLBAR ─────────────────────────────────────────── */
 #toolbar {
   flex-shrink:0; background:var(--surface);
@@ -188,10 +241,10 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 #spToggleReplace:active { color:var(--primary); }
 
 /* ── EDITOR AREA ─────────────────────────────────────── */
-#editorArea { flex:1; overflow:hidden; position:relative; }
+#editorArea { flex:1; overflow:hidden; position:relative; display:flex; flex-direction:column; }
 
 #cmHost {
-  width:100%; height:100%;
+  width:100%; flex:1;
   overflow:auto;
   font-family:'Roboto Mono',monospace;
   font-size:var(--fn);
@@ -284,6 +337,201 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
   white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
 }
 #toast.show { transform:translateX(-50%) translateY(0); }
+
+/* ═══════════════════════════════════════════════════════
+   ── FILES PANEL (slide-in from left, full-height overlay)
+   ═══════════════════════════════════════════════════════ */
+#filesOverlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.35); z-index:500;
+}
+#filesOverlay.open { display:block; }
+
+#filesPanel {
+  position:fixed; top:0; left:-320px; bottom:0;
+  width:320px; max-width:88vw;
+  background:var(--surface); z-index:501;
+  display:flex; flex-direction:column;
+  box-shadow:4px 0 24px rgba(0,0,0,0.22);
+  transition:left 0.28s cubic-bezier(0.4,0,0.2,1);
+  overflow:hidden;
+}
+#filesPanel.open { left:0; }
+
+.fp-header {
+  background:var(--primary); color:white;
+  padding:14px 14px 12px; flex-shrink:0;
+}
+.fp-header h3 { font-size:14px; font-weight:500; margin-bottom:10px; }
+.fp-search-wrap { position:relative; }
+.fp-search-wrap input {
+  width:100%; font-family:'Roboto',sans-serif; font-size:13px;
+  padding:9px 38px 9px 12px;
+  border:1.5px solid rgba(255,255,255,0.3); border-radius:6px;
+  background:rgba(255,255,255,0.15); color:white; outline:none;
+}
+.fp-search-wrap input::placeholder { color:rgba(255,255,255,0.55); }
+.fp-search-wrap input:focus { border-color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.22); }
+.fp-search-clear {
+  position:absolute; right:8px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:rgba(255,255,255,0.7); font-size:16px;
+  cursor:pointer; padding:0; width:22px; height:22px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.fp-status {
+  flex-shrink:0; padding:7px 14px;
+  font-size:11px; color:var(--text2);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:6px; min-height:32px;
+}
+.fp-status-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--text3); flex-shrink:0;
+  transition:background 0.3s;
+}
+.fp-status-dot.ok  { background:#69F0AE; }
+.fp-status-dot.err { background:#FF5252; }
+.fp-status-dot.loading { background:#FFD740; animation:blink 0.8s infinite; }
+
+.fp-list {
+  flex:1; overflow-y:auto; padding:6px 0;
+  -webkit-overflow-scrolling:touch;
+}
+
+.fp-file-item {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px; cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.fp-file-item:active { background:var(--primary-light); }
+.fp-file-item.open-tab { background:#EFF6FF; }
+
+.fp-file-icon {
+  font-size:14px; flex-shrink:0; width:18px; text-align:center;
+}
+.fp-file-name {
+  flex:1; font-family:'Roboto Mono',monospace; font-size:12px;
+  color:var(--text); font-weight:400;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.fp-file-item.open-tab .fp-file-name { color:var(--primary); font-weight:500; }
+.fp-file-badge {
+  font-size:10px; font-weight:600; color:var(--primary);
+  background:var(--primary-light); border-radius:8px;
+  padding:2px 7px; flex-shrink:0; white-space:nowrap;
+}
+
+.fp-section-label {
+  padding:8px 14px 4px;
+  font-size:10px; font-weight:700; color:var(--text3);
+  text-transform:uppercase; letter-spacing:0.8px;
+}
+
+/* ── GLOBAL SEARCH MODAL ─────────────────────────────── */
+#globalSearchModal {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.5); z-index:600;
+  align-items:flex-start; justify-content:center;
+  padding-top:52px;
+}
+#globalSearchModal.open { display:flex; }
+
+.gs-sheet {
+  background:white; border-radius:12px;
+  width:calc(100% - 24px); max-width:560px;
+  display:flex; flex-direction:column;
+  max-height:calc(100vh - 80px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+  overflow:hidden;
+}
+.gs-top {
+  background:var(--primary); padding:14px 14px 12px;
+  flex-shrink:0;
+}
+.gs-top h3 { color:white; font-size:14px; font-weight:500; margin-bottom:10px; }
+
+.gs-field-row { display:flex; gap:8px; align-items:center; }
+.gs-field-row input {
+  flex:1; font-family:'Roboto Mono',monospace; font-size:13px;
+  padding:9px 12px;
+  border:1.5px solid rgba(255,255,255,0.3); border-radius:6px;
+  background:rgba(255,255,255,0.15); color:white; outline:none;
+}
+.gs-field-row input::placeholder { color:rgba(255,255,255,0.55); }
+.gs-field-row input:focus { border-color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.22); }
+.gs-search-btn {
+  padding:9px 14px; border-radius:6px; border:none;
+  background:rgba(255,255,255,0.25); color:white;
+  font-family:'Roboto',sans-serif; font-size:12px; font-weight:500;
+  cursor:pointer; white-space:nowrap; text-transform:uppercase;
+  letter-spacing:0.3px;
+}
+.gs-search-btn:active { background:rgba(255,255,255,0.4); }
+.gs-close-btn {
+  width:32px; height:32px; border-radius:6px; border:none;
+  background:rgba(255,255,255,0.15); color:white; font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+.gs-opts { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.gs-opt-tog {
+  font-family:'Roboto Mono',monospace; font-size:10px; font-weight:700;
+  padding:4px 8px; border-radius:4px;
+  border:1px solid rgba(255,255,255,0.35);
+  background:transparent; color:rgba(255,255,255,0.8); cursor:pointer;
+  transition:all 0.12s;
+}
+.gs-opt-tog.on { background:rgba(255,255,255,0.3); border-color:white; color:white; }
+
+.gs-results-area { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.gs-progress {
+  padding:14px; font-size:12px; color:var(--text2);
+  text-align:center; display:flex; align-items:center; justify-content:center;
+  gap:8px;
+}
+.gs-spinner {
+  width:16px; height:16px; border:2px solid var(--border);
+  border-top-color:var(--primary); border-radius:50%;
+  animation:spin 0.7s linear infinite; flex-shrink:0;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.gs-file-group { border-bottom:1px solid var(--border); }
+.gs-file-header {
+  padding:8px 14px; background:var(--surface2);
+  font-size:11px; font-weight:600; color:var(--primary);
+  font-family:'Roboto Mono',monospace;
+  display:flex; align-items:center; gap:6px;
+  position:sticky; top:0; z-index:2;
+}
+.gs-file-count {
+  font-size:10px; font-weight:500; color:var(--text2);
+  background:var(--border); border-radius:8px; padding:2px 7px;
+}
+.gs-match-item {
+  padding:9px 14px 9px 22px; cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+}
+.gs-match-item:active { background:var(--primary-light); }
+.gs-line-num {
+  font-size:10px; color:var(--text3); font-family:'Roboto Mono',monospace;
+  margin-bottom:2px;
+}
+.gs-match-text {
+  font-family:'Roboto Mono',monospace; font-size:12px; color:var(--text);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.gs-match-text mark {
+  background:#FFF176; color:inherit; border-radius:2px;
+  font-weight:700; padding:0 1px;
+}
+
+.gs-empty { padding:24px; text-align:center; color:var(--text2); font-size:13px; }
 </style>
 </head>
 <body>
@@ -291,20 +539,25 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 <div id="topBar">
   <div class="app-info">
     <div class="app-title">Filter Editor</div>
-    <div class="app-file">My-Filters_Static_Sites.txt</div>
+    <div class="app-file" id="appFileLabel">My-Filters_Static_Sites.txt</div>
   </div>
   <div class="top-right">
     <div id="statusChip"><div id="sDot"></div><span id="sText">Not loaded</span></div>
+    <button id="filesToggleBtn" onclick="toggleFilesPanel()">📁 Files</button>
     <button id="patTopBtn" onclick="showPat()">
       <div id="patDot"></div> PAT
     </button>
   </div>
 </div>
 
+<!-- TABS BAR -->
+<div id="tabsBar"></div>
+
 <div id="toolbar">
   <button class="btn btn-raised" onclick="loadFile()">⬇ Load</button>
   <button class="btn btn-green" id="saveBtn" onclick="showCommit()" disabled>⬆ Save</button>
   <button class="btn btn-flat" onclick="openSearchPanel()">🔍 Find</button>
+  <button class="btn btn-flat" onclick="openGlobalSearch()">🌐 All</button>
   <button class="btn btn-flat" onclick="pasteToEditor()">📋 Paste</button>
   <button class="btn btn-flat" onclick="copySelection()">⎘ Copy</button>
   <button class="btn btn-flat" onclick="goToLine()"># Line</button>
@@ -341,19 +594,71 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 </div>
 
 <div id="commitBar">
-  <input id="commitMsg" type="text" placeholder="Commit message..." value="Update My-Filters" />
+  <input id="commitMsg" type="text" placeholder="Commit message..." value="Update filters" />
   <button class="btn btn-green" style="min-height:48px;font-size:14px;padding:10px 16px" onclick="saveFile()">✔ Commit</button>
   <button class="btn btn-flat" style="min-height:48px;font-size:13px;color:#C62828" onclick="hideCommit()">Cancel ✕</button>
 </div>
 
+<!-- PAT MODAL -->
 <div id="patModal">
   <div class="modal-sheet">
     <h2>GitHub Token (PAT)</h2>
-    <p>Required for saving only. Needs <b>repo</b> scope.<br>Stored in your browser — never committed to GitHub.</p>
+    <p>Required for loading & saving. Needs <b>repo</b> scope.<br>Stored in your browser — never committed to GitHub.</p>
     <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <div id="patValidStatus" style="font-size:12px;margin-bottom:10px;display:none;"></div>
     <div class="modal-actions">
       <button class="btn btn-flat" onclick="closePat()">Cancel</button>
+      <button class="btn btn-flat" onclick="checkPat()">Test Token</button>
       <button class="btn btn-raised" onclick="savePat()">Save Token</button>
+    </div>
+  </div>
+</div>
+
+<!-- FILES PANEL OVERLAY + PANEL -->
+<div id="filesOverlay" onclick="closeFilesPanel()"></div>
+<div id="filesPanel">
+  <div class="fp-header">
+    <h3>uAssets / filters</h3>
+    <div class="fp-search-wrap">
+      <input type="text" id="fpFilter" placeholder="Filter files…"
+             oninput="filterFilesList()" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" />
+      <button class="fp-search-clear" onclick="clearFpFilter()">✕</button>
+    </div>
+  </div>
+  <div class="fp-status">
+    <div class="fp-status-dot" id="fpDot"></div>
+    <span id="fpStatusText">Waiting for PAT…</span>
+  </div>
+  <div class="fp-list" id="fpList">
+    <div style="padding:20px;text-align:center;color:var(--text2);font-size:12px;">
+      Set a GitHub PAT first, then reopen this panel.
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL SEARCH MODAL -->
+<div id="globalSearchModal">
+  <div class="gs-sheet">
+    <div class="gs-top">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3>Search Across All Files</h3>
+        <button class="gs-close-btn" onclick="closeGlobalSearch()">✕</button>
+      </div>
+      <div class="gs-field-row">
+        <input type="text" id="gsInput" placeholder="Search term…"
+               onkeydown="gsInputKey(event)" autocomplete="off"
+               autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <button class="gs-search-btn" onclick="runGlobalSearch()">Search</button>
+      </div>
+      <div class="gs-opts">
+        <button class="gs-opt-tog" id="gsCaseBtn" onclick="gsToggle('case')">Aa Case</button>
+        <button class="gs-opt-tog" id="gsWordBtn" onclick="gsToggle('word')">W Word</button>
+        <button class="gs-opt-tog" id="gsReBtn"   onclick="gsToggle('re')">Regex .*</button>
+      </div>
+    </div>
+    <div class="gs-results-area" id="gsResults">
+      <div class="gs-empty">Enter a search term and press Search.</div>
     </div>
   </div>
 </div>
@@ -391,6 +696,10 @@ const FILE  = 'My-Filters_Static_Sites.txt';
 const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/refs/heads/master/${FILE}`;
 const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
 
+// uAssets config
+const UA_OWNER = 'uBlockOrigin', UA_REPO = 'uAssets', UA_PATH = 'filters';
+const UA_API   = `https://api.github.com/repos/${UA_OWNER}/${UA_REPO}/contents/${UA_PATH}`;
+
 let fileSha = null, originalContent = '';
 
 // ── PAT helpers ───────────────────────────────────────
@@ -398,18 +707,61 @@ function getPat()  { return localStorage.getItem('blaze_pat') || ''; }
 function updatePatIndicator() {
   document.getElementById('patDot').className = getPat() ? 'set' : '';
 }
+
 window.showPat = function() {
   document.getElementById('patModal').classList.add('show');
   document.getElementById('patInput').value = getPat();
+  document.getElementById('patValidStatus').style.display = 'none';
 };
 window.closePat = function() { document.getElementById('patModal').classList.remove('show'); };
-window.savePat  = function() {
+
+window.savePat = function() {
   const v = document.getElementById('patInput').value.trim();
   if (v) { localStorage.setItem('blaze_pat', v); toast('Token saved'); }
   else   { localStorage.removeItem('blaze_pat'); toast('Token cleared'); }
   updatePatIndicator();
   closePat();
 };
+
+window.checkPat = async function() {
+  const v = document.getElementById('patInput').value.trim();
+  const el = document.getElementById('patValidStatus');
+  if (!v) { el.style.display='block'; el.style.color='#C62828'; el.textContent='Enter a token first.'; return; }
+  el.style.display='block'; el.style.color=var_text2(); el.textContent='Checking…';
+  try {
+    const r = await fetch('https://api.github.com/user', {
+      headers: { Authorization: 'token ' + v }
+    });
+    if (r.ok) {
+      const j = await r.json();
+      el.style.color='#2E7D32';
+      el.textContent = '✓ Valid — logged in as @' + j.login;
+    } else {
+      el.style.color='#C62828';
+      el.textContent = '✗ Invalid token (HTTP ' + r.status + ')';
+    }
+  } catch(e) {
+    el.style.color='#C62828'; el.textContent='✗ Network error: ' + e.message;
+  }
+};
+
+function var_text2() { return '#757575'; }
+
+// Auto-check PAT on load
+async function autoCheckPat() {
+  const pat = getPat();
+  updatePatIndicator();
+  if (!pat) return;
+  try {
+    const r = await fetch('https://api.github.com/user', {
+      headers: { Authorization: 'token ' + pat }
+    });
+    if (!r.ok) {
+      toast('⚠ PAT invalid or expired — tap PAT to update');
+      document.getElementById('patDot').style.background = '#FF5252';
+    }
+  } catch(e) {}
+}
 
 // ── uBO Syntax Highlighter ────────────────────────────
 const uboHighlighter = ViewPlugin.fromClass(
@@ -498,19 +850,21 @@ function addNetworkDecos(builder, base, text) {
   }
 }
 
-// ── scrollMatchToCenter: scrolls CM6 so the found position
-//    sits at ~35% from top — visible above the on-screen keyboard.
-function scrollMatchToCenter(pos) {
-  view.dispatch({
-    effects: EditorView.scrollIntoView(pos, { y: 'center', yMargin: 80 }),
-  });
-}
-
 // ── Build the editor ──────────────────────────────────
 const updateListener = EditorView.updateListener.of(u => {
   if (u.docChanged) {
     const cur = u.state.doc.toString();
-    document.getElementById('modBadge').classList.toggle('show', cur !== originalContent);
+    const isModified = cur !== originalContent;
+    document.getElementById('modBadge').classList.toggle('show', isModified);
+    // update active tab modified indicator
+    if (activeTabId) {
+      const tab = tabs[activeTabId];
+      if (tab) {
+        tab.modified = isModified;
+        renderTabs();
+      }
+    }
+    // update match count if search panel open
     if (document.getElementById('searchPanel').classList.contains('open')) {
       updateMatchCount();
     }
@@ -615,28 +969,19 @@ function buildSearchQuery(searchStr, replaceStr = '') {
   });
 }
 
-// Count matches and return position of first match (or -1)
-function countMatchesAndFirst(q) {
-  try {
-    const query = buildSearchQuery(q);
-    if (!query.valid) return { count: 0, firstPos: -1 };
-    const cursor = query.getCursor(view.state.doc);
-    let count = 0, firstPos = -1;
-    while (!cursor.next().done) {
-      if (count === 0) firstPos = cursor.value.from;
-      count++;
-    }
-    return { count, firstPos };
-  } catch(e) {
-    return { count: 0, firstPos: -1 };
-  }
-}
-
 function updateMatchCount() {
   const q = document.getElementById('spFind').value;
   if (!q) { document.getElementById('spCount').textContent = ''; return; }
-  const { count } = countMatchesAndFirst(q);
-  document.getElementById('spCount').textContent = count === 0 ? 'No matches' : count + ' matches';
+  try {
+    const query = buildSearchQuery(q);
+    if (!query.valid) { document.getElementById('spCount').textContent = '⚠'; return; }
+    const cursor = query.getCursor(view.state.doc);
+    let count = 0;
+    while (!cursor.next().done) count++;
+    document.getElementById('spCount').textContent = count === 0 ? 'No matches' : count + ' matches';
+  } catch(e) {
+    document.getElementById('spCount').textContent = '';
+  }
 }
 
 window.spSearch = function() {
@@ -649,12 +994,7 @@ window.spSearch = function() {
   try {
     const query = buildSearchQuery(q);
     view.dispatch({ effects: setSearchQuery.of(query) });
-    // Immediately scroll to + highlight first match as user types
-    const { count, firstPos } = countMatchesAndFirst(q);
-    document.getElementById('spCount').textContent = count === 0 ? 'No matches' : count + ' matches';
-    if (firstPos >= 0) {
-      scrollMatchToCenter(firstPos);
-    }
+    updateMatchCount();
   } catch(e) {}
 };
 
@@ -663,12 +1003,8 @@ window.spNext = function() {
   if (!q) return;
   view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
   findNext(view);
-  // After CM6 moves selection, scroll the new cursor pos to center
-  requestAnimationFrame(() => {
-    const pos = view.state.selection.main.from;
-    scrollMatchToCenter(pos);
-    setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
-  });
+  view.focus();
+  setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
 };
 
 window.spPrev = function() {
@@ -676,11 +1012,8 @@ window.spPrev = function() {
   if (!q) return;
   view.dispatch({ effects: setSearchQuery.of(buildSearchQuery(q)) });
   findPrevious(view);
-  requestAnimationFrame(() => {
-    const pos = view.state.selection.main.from;
-    scrollMatchToCenter(pos);
-    setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
-  });
+  view.focus();
+  setTimeout(() => { document.getElementById('spFind').focus(); }, 30);
 };
 
 window.spReplaceOne = function() {
@@ -755,7 +1088,7 @@ window.pasteToEditor = async function() {
   }
 };
 
-// ── Load / Save ───────────────────────────────────────
+// ── Load / Save (original file) ───────────────────────
 window.loadFile = async function(force) {
   const cur = view.state.doc.toString();
   if (!force && cur !== originalContent && cur.trim()) {
@@ -820,6 +1153,13 @@ if (window.visualViewport) {
 window.saveFile = async function() {
   const pat = getPat();
   if (!pat)     { toast('No PAT — tap PAT button'); return; }
+
+  // Save current tab (uAssets) or original file
+  if (activeTabId && tabs[activeTabId]) {
+    await saveTabFile();
+    return;
+  }
+
   if (!fileSha) { toast('Load file first'); return; }
   const msg     = document.getElementById('commitMsg').value || 'Update filters';
   const content = btoa(unescape(encodeURIComponent(view.state.doc.toString())));
@@ -858,8 +1198,397 @@ function toast(msg) {
   t._t = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+// ══════════════════════════════════════════════════════
+// ── TAB SYSTEM
+// ══════════════════════════════════════════════════════
+// tabs[tabId] = { id, filename, path, sha, content, originalContent, modified, scrollTop, cursorPos }
+let tabs = {};
+let activeTabId = null;
+let tabOrder = [];
+
+function generateTabId() { return 'tab_' + Date.now() + '_' + Math.random().toString(36).slice(2,7); }
+
+function renderTabs() {
+  const bar = document.getElementById('tabsBar');
+  if (tabOrder.length === 0) { bar.innerHTML = ''; return; }
+  bar.innerHTML = tabOrder.map(id => {
+    const t = tabs[id];
+    if (!t) return '';
+    const isActive = id === activeTabId;
+    return `<div class="tab-item${isActive ? ' active' : ''}${t.modified ? ' modified' : ''}"
+                 onclick="switchTab('${id}')" data-id="${id}">
+      <div class="tab-dot"></div>
+      <div class="tab-name" title="${t.filename}">${t.filename}</div>
+      <button class="tab-close" onclick="closeTab(event,'${id}')" title="Close">×</button>
+    </div>`;
+  }).join('');
+}
+
+window.switchTab = function(id) {
+  if (id === activeTabId) return;
+  // Save current editor state to current tab
+  if (activeTabId && tabs[activeTabId]) {
+    const cur = tabs[activeTabId];
+    cur.content = view.state.doc.toString();
+    cur.scrollTop = document.getElementById('cmHost').scrollTop;
+  }
+  activeTabId = id;
+  const tab = tabs[id];
+  originalContent = tab.originalContent;
+  view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: tab.content } });
+  document.getElementById('modBadge').classList.toggle('show', tab.modified);
+  document.getElementById('saveBtn').disabled = false;
+  document.getElementById('appFileLabel').textContent = tab.filename;
+  setStatus('ok', tab.content.split('\n').length + ' lines');
+  renderTabs();
+  renderFilesList(); // refresh open-tab highlights
+};
+
+window.closeTab = function(e, id) {
+  e.stopPropagation();
+  const tab = tabs[id];
+  if (tab && tab.modified) {
+    if (!confirm(`Close "${tab.filename}" with unsaved changes?`)) return;
+  }
+  delete tabs[id];
+  tabOrder = tabOrder.filter(x => x !== id);
+  if (activeTabId === id) {
+    activeTabId = null;
+    // switch to last tab or clear editor
+    if (tabOrder.length > 0) {
+      switchTab(tabOrder[tabOrder.length - 1]);
+    } else {
+      originalContent = '';
+      view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: '' } });
+      document.getElementById('appFileLabel').textContent = 'My-Filters_Static_Sites.txt';
+      document.getElementById('modBadge').classList.remove('show');
+      setStatus('ok', 'No file');
+      document.getElementById('saveBtn').disabled = true;
+    }
+  }
+  renderTabs();
+  renderFilesList();
+};
+
+async function openUAFile(filename) {
+  // Check if already open
+  const existing = tabOrder.find(id => tabs[id] && tabs[id].filename === filename);
+  if (existing) { switchTab(existing); closeFilesPanel(); return; }
+
+  const pat = getPat();
+  if (!pat) { toast('PAT required — tap PAT'); showPat(); return; }
+
+  setStatus('loading', 'Loading ' + filename + '…');
+  toast('Loading ' + filename + '…');
+
+  try {
+    const apiUrl = `https://api.github.com/repos/${UA_OWNER}/${UA_REPO}/contents/${UA_PATH}/${filename}`;
+    const r = await fetch(apiUrl, { headers: { Authorization: 'token ' + pat } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    const content = decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    const id = generateTabId();
+    tabs[id] = {
+      id, filename, path: UA_PATH + '/' + filename,
+      sha: j.sha, content, originalContent: content,
+      modified: false, scrollTop: 0,
+    };
+    tabOrder.push(id);
+    closeFilesPanel();
+    switchTab(id);
+    toast('Loaded ' + filename + ' — ' + content.split('\n').length + ' lines');
+  } catch(e) {
+    setStatus('err', 'Load failed');
+    toast('Load failed: ' + e.message);
+  }
+}
+
+async function saveTabFile() {
+  const pat = getPat();
+  const tab = tabs[activeTabId];
+  if (!tab) return;
+  const msg = document.getElementById('commitMsg').value || `Update ${tab.filename}`;
+  const content = btoa(unescape(encodeURIComponent(view.state.doc.toString())));
+  setStatus('loading', 'Saving...');
+  try {
+    const apiUrl = `https://api.github.com/repos/${UA_OWNER}/${UA_REPO}/contents/${tab.path}`;
+    const r = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { Authorization: 'token ' + pat, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, content, sha: tab.sha }),
+    });
+    if (!r.ok) { const j = await r.json(); throw new Error(j.message || r.status); }
+    const j = await r.json();
+    tab.sha = j.content.sha;
+    tab.originalContent = view.state.doc.toString();
+    tab.content = tab.originalContent;
+    tab.modified = false;
+    originalContent = tab.originalContent;
+    document.getElementById('modBadge').classList.remove('show');
+    setStatus('ok', view.state.doc.lines + ' lines');
+    hideCommit();
+    renderTabs();
+    toast('Saved ' + tab.filename + ' ✓');
+  } catch(e) {
+    setStatus('err', 'Save failed');
+    toast('Save failed: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// ── FILES PANEL
+// ══════════════════════════════════════════════════════
+let uaFilesList = [];   // [{name, size}]
+let uaFilesLoaded = false;
+
+window.toggleFilesPanel = function() {
+  const panel = document.getElementById('filesPanel');
+  const btn   = document.getElementById('filesToggleBtn');
+  const isOpen = panel.classList.contains('open');
+  if (isOpen) {
+    closeFilesPanel();
+  } else {
+    panel.classList.add('open');
+    document.getElementById('filesOverlay').classList.add('open');
+    btn.classList.add('active');
+    if (!uaFilesLoaded) loadUAFilesList();
+  }
+};
+
+window.closeFilesPanel = function() {
+  document.getElementById('filesPanel').classList.remove('open');
+  document.getElementById('filesOverlay').classList.remove('open');
+  document.getElementById('filesToggleBtn').classList.remove('active');
+};
+
+async function loadUAFilesList() {
+  const pat = getPat();
+  const dotEl = document.getElementById('fpDot');
+  const statusEl = document.getElementById('fpStatusText');
+
+  if (!pat) {
+    dotEl.className = 'fp-status-dot err';
+    statusEl.textContent = 'No PAT — tap PAT button to set one';
+    return;
+  }
+
+  dotEl.className = 'fp-status-dot loading';
+  statusEl.textContent = 'Loading file list…';
+
+  try {
+    const r = await fetch(UA_API, { headers: { Authorization: 'token ' + pat } });
+    if (!r.ok) throw new Error('HTTP ' + r.status + (r.status === 401 ? ' — invalid PAT' : ''));
+    const files = await r.json();
+    uaFilesList = files
+      .filter(f => f.type === 'file')
+      .map(f => ({ name: f.name, size: f.size }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    uaFilesLoaded = true;
+    dotEl.className = 'fp-status-dot ok';
+    statusEl.textContent = uaFilesList.length + ' files · tap to open';
+    renderFilesList();
+  } catch(e) {
+    dotEl.className = 'fp-status-dot err';
+    statusEl.textContent = 'Error: ' + e.message;
+    document.getElementById('fpList').innerHTML =
+      `<div style="padding:16px;font-size:12px;color:var(--danger)">${e.message}</div>`;
+  }
+}
+
+function renderFilesList() {
+  const filter = (document.getElementById('fpFilter').value || '').toLowerCase();
+  const list   = document.getElementById('fpList');
+  const openFilenames = new Set(tabOrder.map(id => tabs[id]?.filename).filter(Boolean));
+
+  const filtered = filter
+    ? uaFilesList.filter(f => f.name.toLowerCase().includes(filter))
+    : uaFilesList;
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div style="padding:16px;font-size:12px;color:var(--text2)">No files match.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(f => {
+    const isOpen = openFilenames.has(f.name);
+    const kb = f.size > 1024 ? (f.size/1024).toFixed(0) + 'k' : f.size + 'b';
+    return `<div class="fp-file-item${isOpen ? ' open-tab' : ''}" onclick="openUAFile('${f.name}')">
+      <div class="fp-file-icon">${isOpen ? '✎' : '📄'}</div>
+      <div class="fp-file-name">${f.name}</div>
+      ${isOpen ? '<div class="fp-file-badge">Open</div>' : `<div style="font-size:10px;color:var(--text3);flex-shrink:0">${kb}</div>`}
+    </div>`;
+  }).join('');
+}
+
+window.filterFilesList = function() { renderFilesList(); };
+window.clearFpFilter   = function() {
+  document.getElementById('fpFilter').value = '';
+  renderFilesList();
+};
+
+// Expose openUAFile globally
+window.openUAFile = openUAFile;
+
+// ══════════════════════════════════════════════════════
+// ── GLOBAL SEARCH (across all uAssets filter files)
+// ══════════════════════════════════════════════════════
+let gsOpts = { caseSensitive: false, wholeWord: false, regexp: false };
+let gsAbort = null;
+
+window.openGlobalSearch = function() {
+  document.getElementById('globalSearchModal').classList.add('open');
+  setTimeout(() => document.getElementById('gsInput').focus(), 60);
+};
+
+window.closeGlobalSearch = function() {
+  document.getElementById('globalSearchModal').classList.remove('open');
+  if (gsAbort) { gsAbort = true; }
+};
+
+window.gsToggle = function(type) {
+  if (type === 'case') gsOpts.caseSensitive = !gsOpts.caseSensitive;
+  if (type === 'word') gsOpts.wholeWord     = !gsOpts.wholeWord;
+  if (type === 're')   gsOpts.regexp        = !gsOpts.regexp;
+  document.getElementById('gsCaseBtn').classList.toggle('on', gsOpts.caseSensitive);
+  document.getElementById('gsWordBtn').classList.toggle('on', gsOpts.wholeWord);
+  document.getElementById('gsReBtn').classList.toggle('on', gsOpts.regexp);
+};
+
+window.gsInputKey = function(e) {
+  if (e.key === 'Enter') runGlobalSearch();
+  if (e.key === 'Escape') closeGlobalSearch();
+};
+
+window.runGlobalSearch = async function() {
+  const term = document.getElementById('gsInput').value.trim();
+  if (!term) return;
+  const pat = getPat();
+  if (!pat) { toast('PAT required for search'); showPat(); return; }
+
+  if (gsAbort) gsAbort = true;
+  gsAbort = false;
+
+  const resultsEl = document.getElementById('gsResults');
+  resultsEl.innerHTML = `<div class="gs-progress"><div class="gs-spinner"></div>Loading file list…</div>`;
+
+  // Ensure file list is loaded
+  if (!uaFilesLoaded) {
+    try {
+      const r = await fetch(UA_API, { headers: { Authorization: 'token ' + pat } });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const files = await r.json();
+      uaFilesList = files.filter(f => f.type === 'file').map(f => ({ name: f.name, size: f.size })).sort((a,b) => a.name.localeCompare(b.name));
+      uaFilesLoaded = true;
+    } catch(e) {
+      resultsEl.innerHTML = `<div class="gs-empty">Could not load file list: ${e.message}</div>`;
+      return;
+    }
+  }
+
+  if (gsAbort) return;
+
+  let needle;
+  try {
+    if (gsOpts.regexp) {
+      needle = new RegExp(term, gsOpts.caseSensitive ? 'g' : 'gi');
+    } else {
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const wb = gsOpts.wholeWord ? '\\b' : '';
+      needle = new RegExp(wb + escaped + wb, gsOpts.caseSensitive ? 'g' : 'gi');
+    }
+  } catch(e) {
+    resultsEl.innerHTML = `<div class="gs-empty">Invalid regex: ${e.message}</div>`;
+    return;
+  }
+
+  let totalMatches = 0;
+  let filesSearched = 0;
+  const allResults = [];
+
+  resultsEl.innerHTML = `<div class="gs-progress"><div class="gs-spinner"></div>Searching 0 / ${uaFilesList.length} files…</div>`;
+
+  for (const file of uaFilesList) {
+    if (gsAbort) break;
+    filesSearched++;
+
+    if (filesSearched % 3 === 0) {
+      resultsEl.innerHTML = `<div class="gs-progress"><div class="gs-spinner"></div>Searching ${filesSearched} / ${uaFilesList.length} files… (${totalMatches} matches so far)</div>`;
+      await new Promise(r => setTimeout(r, 0));
+    }
+
+    try {
+      const rawUrl = `https://raw.githubusercontent.com/${UA_OWNER}/${UA_REPO}/master/${UA_PATH}/${file.name}?t=${Date.now()}`;
+      const r = await fetch(rawUrl);
+      if (!r.ok) continue;
+      const text = await r.text();
+      const lines = text.split('\n');
+      const fileMatches = [];
+      for (let i = 0; i < lines.length; i++) {
+        needle.lastIndex = 0;
+        if (needle.test(lines[i])) {
+          fileMatches.push({ lineNum: i + 1, text: lines[i] });
+          totalMatches++;
+        }
+      }
+      if (fileMatches.length > 0) {
+        allResults.push({ filename: file.name, matches: fileMatches });
+      }
+    } catch(e) { /* skip */ }
+  }
+
+  if (gsAbort) {
+    resultsEl.innerHTML = `<div class="gs-empty">Search cancelled.</div>`;
+    return;
+  }
+
+  if (allResults.length === 0) {
+    resultsEl.innerHTML = `<div class="gs-empty">No matches found in ${filesSearched} files.</div>`;
+    return;
+  }
+
+  // Render results
+  function highlight(line) {
+    needle.lastIndex = 0;
+    return line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(needle, m => `<mark>${m}</mark>`);
+  }
+
+  resultsEl.innerHTML = allResults.map(group => `
+    <div class="gs-file-group">
+      <div class="gs-file-header">
+        📄 ${group.filename}
+        <span class="gs-file-count">${group.matches.length}</span>
+      </div>
+      ${group.matches.map(m => `
+        <div class="gs-match-item" onclick="gsOpenMatch('${group.filename}',${m.lineNum})">
+          <div class="gs-line-num">Line ${m.lineNum}</div>
+          <div class="gs-match-text">${highlight(m.text)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('') + `<div class="gs-empty" style="font-size:11px;padding:10px">${totalMatches} matches in ${allResults.length} file(s) · ${filesSearched} files searched</div>`;
+};
+
+window.gsOpenMatch = async function(filename, lineNum) {
+  closeGlobalSearch();
+  await openUAFile(filename);
+  // Jump to line after editor loads
+  setTimeout(() => {
+    const total = view.state.doc.lines;
+    const ln = Math.max(1, Math.min(lineNum, total));
+    const line = view.state.doc.line(ln);
+    view.dispatch({
+      selection: { anchor: line.from, head: line.to },
+      scrollIntoView: true,
+      effects: EditorView.scrollIntoView(line.from, { y: 'center' }),
+    });
+    view.focus();
+  }, 350);
+};
+
 // ── Init ──────────────────────────────────────────────
 updatePatIndicator();
+autoCheckPat();
 loadFile(true);
 </script>
 </body>
