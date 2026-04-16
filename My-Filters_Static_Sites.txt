@@ -1714,6 +1714,8 @@ nexusmods.com#@#+js(remove-cookie, ab)
 nexusmods.com##+js(trusted-set-cookie, ab, 0|$now$)
 nexusmods.com##+js(nano-stb, e1, *)
 nexusmods.com###upsell-cards:style(margin-left: 230px! important;)
+nexusmods.com##div[class*="relative"][class*="min-h-"]:has(img[alt][src*="banner"])
+nexusmods.com##.sm\:last\:rounded-b.sm\:backdrop-blur-md.sm\:p-4.sm\:bg-surface-translucent-low.sm\:rounded-t
 
 ! Feb 8, 2025 https://creatus.com.bd
 creatus.com.bd##.block-description.block-content
