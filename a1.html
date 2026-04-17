@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BlazeFTL / My-Filters - Docs</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#0b1220; color:#e8eefc; }
+    .wrap { max-width: 1050px; margin: 0 auto; padding: 24px; }
+    header { padding: 16px 18px; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; background: rgba(255,255,255,.03); }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    .meta { display:flex; gap:14px; flex-wrap: wrap; color: rgba(232,238,252,.85); font-size: 14px; margin-top: 8px;}
+    .card { margin-top: 18px; padding: 18px; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; background: rgba(255,255,255,.02); }
+    .status { color: rgba(232,238,252,.75); margin: 8px 0; }
+    .grid { display:grid; grid-template-columns: 1fr; gap: 18px; }
+    .list { display:flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .item { padding: 10px 12px; border:1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(255,255,255,.02); }
+    .k { color: rgba(232,238,252,.75); font-size: 12px; }
+    .v { font-size: 14px; word-break: break-word; margin-top: 4px; }
+    a { color: #7cc4ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Markdown rendering */
+    .md { line-height: 1.55; }
+    .md img { max-width: 100%; border-radius: 10px; }
+    .md pre { background: rgba(0,0,0,.35); padding: 12px; border-radius: 12px; overflow:auto; }
+    .md code { background: rgba(255,255,255,.07); padding: 2px 6px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 id="repoTitle">Loading My-Filters docs...</h1>
+      <div class="meta" id="repoMeta"></div>
+      <div class="status" id="status">Fetching from GitHub...</div>
+    </header>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px;">README</h2>
+      <div id="readme" class="md">Waiting for README...</div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px;">Top-level Files/Folders</h2>
+      <div id="files" class="list"></div>
+      <div class="status" style="margin-top:10px;">
+        Note: This shows only top-level entries. (If you want full recursion, tell me.)
+      </div>
+    </div>
+  </div>
+
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    const owner = "BlazeFTL";
+    const repo = "My-Filters";
+
+    const statusEl = document.getElementById("status");
+    const titleEl = document.getElementById("repoTitle");
+    const metaEl = document.getElementById("repoMeta");
+    const readmeEl = document.getElementById("readme");
+    const filesEl = document.getElementById("files");
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    async function init() {
+      try {
+        // 1) Get repo info (including default branch)
+        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        if (!repoRes.ok) throw new Error(`GitHub API error: ${repoRes.status}`);
+        const repoData = await repoRes.json();
+
+        const defaultBranch = repoData.default_branch;
+
+        titleEl.innerHTML = `${escapeHtml(repoData.full_name)} <span style="color:rgba(232,238,252,.65);font-weight:600;font-size:14px;">— ${escapeHtml(repoData.description || "")}</span>`;
+
+        metaEl.innerHTML = `
+          <span><b>${repoData.stargazers_count}</b> ⭐ Stars</span>
+          <span><b>${repoData.forks_count}</b> 🍴 Forks</span>
+          <span><b>${escapeHtml(repoData.language || "—")}</b> 🧩 Language</span>
+          <span><b>${escapeHtml(defaultBranch)}</b> 🌿 Branch</span>
+          <span><b>${new Date(repoData.updated_at).toLocaleString()}</b> 🕒 Updated</span>
+        `;
+
+        statusEl.textContent = "Loading README and file list...";
+
+        // 2) Fetch README from raw (render markdown)
+        // Docs file URL: raw.githubusercontent.com
+        const readmeUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/README.md`;
+
+        const readmeRes = await fetch(readmeUrl);
+        if (!readmeRes.ok) {
+          readmeEl.innerHTML = `<div style="opacity:.8;">README.md not found at <code>${escapeHtml(readmeUrl)}</code></div>`;
+        } else {
+          const md = await readmeRes.text();
+          readmeEl.innerHTML = marked.parse(md);
+        }
+
+        // 3) Fetch top-level directory entries
+        const contentsUrl = `https://api.github.com/repos/${owner}/${repo}/contents?ref=${defaultBranch}`;
+        const filesRes = await fetch(contentsUrl);
+
+        if (!filesRes.ok) throw new Error(`Contents API error: ${filesRes.status}`);
+
+        const entries = await filesRes.json();
+        filesEl.innerHTML = "";
+
+        if (!Array.isArray(entries)) {
+          filesEl.innerHTML = `<div class="item"><div class="k">Info</div><div class="v">Unexpected response shape.</div></div>`;
+          return;
+        }
+
+        // Sort folders first, then files
+        entries.sort((a, b) => (b.type === "dir") - (a.type === "dir"));
+
+        for (const e of entries) {
+          const url = e.html_url;
+          const typeLabel = e.type === "dir" ? "Folder" : "File";
+          const size = e.size != null ? `${e.size} bytes` : "";
+
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = `
+            <div class="k">${escapeHtml(typeLabel)}</div>
+            <div class="v">
+              <a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(e.name)}</a>
+              <div class="k" style="margin-top:6px;">${escapeHtml(size)}</div>
+            </div>
+          `;
+          filesEl.appendChild(div);
+        }
+
+        statusEl.textContent = "Done ✅";
+
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Failed to load repo from GitHub (check your internet/CORS).";
+        readmeEl.innerHTML = `<div style="color:#ffb4b4;">Error: ${escapeHtml(String(err.message || err))}</div>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
