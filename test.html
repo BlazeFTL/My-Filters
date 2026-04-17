@@ -10,69 +10,74 @@
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f9fafb; color: #111827; }
         .wiki-card { transition: all 0.2s; border: 1px solid #e5e7eb; }
         .code-font { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+        .status-log { scroll-behavior: smooth; }
+        .status-log::-webkit-scrollbar { width: 6px; }
+        .status-log::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
         .loader { border-top-color: #3b82f6; animation: spinner 0.6s linear infinite; }
         @keyframes spinner { to { transform: rotate(360deg); } }
-        #fileInput { display: none; }
+        .badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px; margin-right: 5px; }
+        .badge-dead { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
+        .badge-live { background: #dcfce7; color: #22c55e; border: 1px solid #bbf7d0; }
+        .badge-skip { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="max-w-5xl mx-auto">
-        <header class="mb-8 border-b pb-6">
+        <header class="mb-6 border-b pb-6">
             <div class="flex items-center gap-3 mb-2">
-                <i class="fa-solid fa-file-shield text-3xl text-blue-600"></i>
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900">uBO Filter Checker</h1>
+                <i class="fa-solid fa-shield-virus text-3xl text-blue-600"></i>
+                <h1 class="text-3xl font-bold tracking-tight">uBO Filter Analyzer</h1>
             </div>
-            <p class="text-gray-500">Upload or paste filters to detect dead domains with single-domain preservation logic.</p>
+            <p class="text-gray-500">Quad-layer verification with visual status badges and file preservation.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-4">
-                <div class="bg-white rounded-lg shadow-sm border p-6">
-                    <div class="flex flex-wrap gap-3 mb-4">
-                        <button onclick="document.getElementById('fileInput').click()" class="flex-1 bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-black transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-file-arrow-up"></i> Upload .txt
+                <div class="bg-white rounded-lg shadow-sm border p-5">
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="document.getElementById('fileInput').click()" class="flex-1 bg-gray-800 text-white py-2 rounded hover:bg-black transition text-sm font-bold">
+                            <i class="fa-solid fa-file-upload"></i> UPLOAD .TXT
                         </button>
-                        <input type="file" id="fileInput" accept=".txt" onchange="handleFile(this)">
-                        
-                        <button onclick="handlePaste()" class="flex-1 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-clipboard"></i> Paste
+                        <input type="file" id="fileInput" class="hidden" accept=".txt" onchange="handleFile(this)">
+                        <button onclick="handlePaste()" class="flex-1 border py-2 rounded hover:bg-gray-50 transition text-sm font-bold">
+                            <i class="fa-solid fa-paste"></i> PASTE
                         </button>
                     </div>
 
-                    <textarea id="filterInput" rows="12" 
-                        class="w-full p-4 border rounded-md bg-gray-50 code-font text-xs focus:ring-2 focus:ring-blue-500 outline-none mb-4"
-                        placeholder="Paste uBlock filters or GitHub links..."></textarea>
+                    <textarea id="filterInput" rows="10" 
+                        class="w-full p-4 border rounded bg-gray-50 code-font text-xs focus:ring-2 focus:ring-blue-500 outline-none mb-4"
+                        placeholder="Paste domains or uBO filters..."></textarea>
 
-                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-blue-50 p-4 rounded-md border border-blue-100">
-                        <span class="text-sm text-blue-800 font-medium">
-                            <i class="fa-solid fa-circle-info mr-1"></i> 
-                            Single-domain dead filters will be commented with <code>! dead</code>
-                        </span>
-                        <button id="runBtn" onclick="processFilters()" class="w-full sm:w-auto bg-blue-600 text-white px-8 py-2 rounded-md font-bold hover:bg-blue-700 transition">
-                            RUN ANALYSIS
-                        </button>
-                    </div>
+                    <button id="runBtn" onclick="processFilters()" class="w-full bg-blue-600 text-white py-3 rounded-md font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                        RUN DEEP ANALYSIS
+                    </button>
+                </div>
+
+                <div id="visualStatus" class="hidden bg-white rounded-lg border p-5 shadow-sm">
+                    <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-widest">Live Verification Status</h3>
+                    <div id="statusGrid" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-2">
+                        </div>
                 </div>
             </div>
 
             <div class="space-y-4">
-                <div id="statusBox" class="hidden bg-gray-900 rounded-lg p-5 shadow-inner">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold text-blue-400">PROCESSING LOG</span>
-                        <div id="loadingSpinner" class="loader w-3 h-3 border-2 border-gray-600 rounded-full"></div>
+                <div class="bg-gray-900 rounded-lg p-4 shadow-xl">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-blue-400">ENGINE LOG</span>
+                        <div id="loader" class="hidden loader w-3 h-3 border-2 border-gray-600 rounded-full"></div>
                     </div>
-                    <div id="logArea" class="h-48 overflow-y-auto text-[10px] code-font text-gray-400 space-y-1"></div>
+                    <div id="logArea" class="h-40 overflow-y-auto text-[10px] code-font text-gray-400 space-y-1"></div>
                 </div>
 
-                <div class="wiki-card bg-[#fffcf0] rounded-lg p-5 border-l-4 border-amber-400">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-amber-800 font-bold text-sm uppercase">Processed Results</h3>
-                        <button id="dlBtn" onclick="downloadResults()" class="hidden text-xs bg-amber-200 hover:bg-amber-300 px-3 py-1 rounded font-bold text-amber-900">
-                            <i class="fa-solid fa-download mr-1"></i> DOWNLOAD .TXT
+                <div class="wiki-card bg-[#fffcf0] rounded-lg p-5 border-l-4 border-amber-400 shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-amber-800 font-bold text-sm">PROCESSED FILE</h3>
+                        <button id="dlBtn" onclick="downloadResults()" class="hidden text-[10px] bg-amber-600 text-white px-2 py-1 rounded font-bold">
+                            DOWNLOAD .TXT
                         </button>
                     </div>
-                    <textarea id="filterOutput" readonly class="w-full bg-transparent border-none resize-none code-font text-[11px] text-amber-900 focus:ring-0" rows="12" placeholder="Results will appear here..."></textarea>
+                    <textarea id="filterOutput" readonly class="w-full bg-transparent border-none resize-none code-font text-[10px] text-amber-900 focus:ring-0" rows="12"></textarea>
                 </div>
             </div>
         </div>
@@ -83,50 +88,52 @@
 
         async function handleFile(input) {
             const file = input.files[0];
-            if (!file) return;
-            const text = await file.text();
-            document.getElementById('filterInput').value = text;
+            if (file) document.getElementById('filterInput').value = await file.text();
         }
 
         async function handlePaste() {
-            const text = await navigator.clipboard.readText();
-            document.getElementById('filterInput').value = text;
+            document.getElementById('filterInput').value = await navigator.clipboard.readText();
         }
 
         function extractDomains(line) {
             if (!line.trim() || line.startsWith('!') || line.startsWith('[')) return null;
-            let domainPart = line.split(/##|\$|#@#/)[0]
-                                .replace(/^\|\|/, '')
-                                .replace(/^@@/, '')
-                                .trim();
-            
-            if (!domainPart) return null;
-            return domainPart.split(',').map(d => d.trim().replace(/^https?:\/\//, '').split('/')[0].split(':')[0]);
+            let dp = line.split(/##|\$|#@#/)[0].replace(/^\|\|/, '').replace(/^@@/, '').trim();
+            if (!dp) return null;
+            return dp.split(',').map(d => d.trim().replace(/^https?:\/\//, '').split('/')[0].split(':')[0]);
         }
 
-        async function isDomainDead(domain) {
-            if (domain.includes('*')) return false;
+        async function checkDomain(domain) {
+            if (domain.includes('*')) return 'skip';
             if (domainCache.has(domain)) return domainCache.get(domain);
 
             try {
                 const dns = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
                 if (dns.Status !== 0 || !dns.Answer) {
-                    domainCache.set(domain, true);
-                    return true;
+                    domainCache.set(domain, 'dead');
+                    return 'dead';
                 }
-                // Quick HTTP ping
                 const ctrl = new AbortController();
                 const tid = setTimeout(() => ctrl.abort(), 3000);
                 try {
                     await fetch(`https://${domain}`, { mode: 'no-cors', signal: ctrl.signal });
                     clearTimeout(tid);
-                    domainCache.set(domain, false);
-                    return false;
+                    domainCache.set(domain, 'live');
+                    return 'live';
                 } catch {
-                    domainCache.set(domain, true);
-                    return true;
+                    domainCache.set(domain, 'dead');
+                    return 'dead';
                 }
-            } catch { return false; }
+            } catch { return 'dead'; }
+        }
+
+        function addBadge(domain, status) {
+            const grid = document.getElementById('statusGrid');
+            const item = document.createElement('div');
+            item.className = "flex items-center text-[11px] border-b border-gray-50 pb-1";
+            const badgeClass = status === 'live' ? 'badge-live' : (status === 'dead' ? 'badge-dead' : 'badge-skip');
+            const icon = status === 'live' ? '✅' : (status === 'dead' ? '❌' : '⏭');
+            item.innerHTML = `<span class="badge ${badgeClass}">${icon} ${status.toUpperCase()}</span> <span class="truncate">${domain}</span>`;
+            grid.prepend(item);
         }
 
         async function processFilters() {
@@ -136,56 +143,53 @@
             const runBtn = document.getElementById('runBtn');
             const logArea = document.getElementById('logArea');
             const output = document.getElementById('filterOutput');
-            const statusBox = document.getElementById('statusBox');
+            const visualStatus = document.getElementById('visualStatus');
+            const statusGrid = document.getElementById('statusGrid');
 
             runBtn.disabled = true;
-            statusBox.classList.remove('hidden');
-            logArea.innerHTML = `> Initializing...<br>`;
+            visualStatus.classList.remove('hidden');
+            document.getElementById('loader').classList.remove('hidden');
+            logArea.innerHTML = `> Starting Quad-Layer Check...<br>`;
+            statusGrid.innerHTML = '';
             
             const lines = input.split('\n');
-            let results = [];
+            let finalResults = [];
 
             for (let line of lines) {
                 const domains = extractDomains(line);
-
                 if (!domains) {
-                    results.push(line);
+                    finalResults.push(line);
                     continue;
                 }
 
-                // Logic: Only comment if exactly 1 domain and it is dead
-                if (domains.length === 1) {
-                    const dead = await isDomainDead(domains[0]);
-                    if (dead) {
-                        logArea.innerHTML += `<span class="text-red-400">DEAD: ${domains[0]}</span><br>`;
-                        results.push(`! dead\n! ${line}`);
-                    } else {
-                        results.push(line);
-                    }
+                let allDead = true;
+                for (let d of domains) {
+                    const status = await checkDomain(d);
+                    addBadge(d, status);
+                    if (status !== 'dead') allDead = false;
+                }
+
+                if (allDead) {
+                    logArea.innerHTML += `<span class="text-red-400">!! DEAD: ${domains.join(', ')}</span><br>`;
+                    finalResults.push(`! dead\n! ${line}`);
                 } else {
-                    // Multiple domains: we verify the first one just to check status, 
-                    // but we keep the line active regardless to avoid breaking the filter for other sites
-                    results.push(line);
+                    finalResults.push(line);
                 }
                 logArea.scrollTop = logArea.scrollHeight;
             }
 
-            output.value = results.join('\n');
+            output.value = finalResults.join('\n');
             document.getElementById('dlBtn').classList.remove('hidden');
-            document.getElementById('loadingSpinner').classList.add('hidden');
+            document.getElementById('loader').classList.add('hidden');
             runBtn.disabled = false;
-            logArea.innerHTML += `> Done. Check results.`;
         }
 
         function downloadResults() {
-            const content = document.getElementById('filterOutput').value;
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
+            const blob = new Blob([document.getElementById('filterOutput').value], { type: 'text/plain' });
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `processed_filters_${new Date().getTime()}.txt`;
+            a.href = URL.createObjectURL(blob);
+            a.download = `blazeftl_verified_${Date.now()}.txt`;
             a.click();
-            URL.revokeObjectURL(url);
         }
     </script>
 </body>
