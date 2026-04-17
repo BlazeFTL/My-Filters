@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dead Domain Checker | BlazeFTL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f9fafb; color: #111827; }
+        .wiki-card { transition: transform 0.2s; border: 1px solid #e5e7eb; }
+        .wiki-card:hover { transform: translateY(-2px); }
+        .code-font { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .status-log::-webkit-scrollbar { width: 6px; }
+        .status-log::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .loader { border-top-color: #3b82f6; animation: spinner 0.6s linear infinite; }
+        @keyframes spinner { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8 border-b pb-6">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="fa-solid fa-microchip text-2xl text-blue-600"></i>
+                <h1 class="text-3xl font-bold tracking-tight">Dead Domain Checker</h1>
+            </div>
+            <p class="text-gray-600">Deep verification utility using Quad-Layer logic: DNS, Wildcard Traps, and HTTP pre-flight.</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass text-gray-400"></i> Input Sources
+            </h2>
+            
+            <textarea id="domainInput" rows="6" 
+                class="w-full p-4 border rounded-md bg-gray-50 code-font text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                placeholder="Paste domains, uBlock filters, or GitHub raw links here..."></textarea>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                <button onclick="handlePaste()" class="flex items-center justify-center gap-2 bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-black transition">
+                    <i class="fa-solid fa-clipboard"></i> Paste
+                </button>
+                <button id="checkBtn" onclick="processInput()" class="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                    <i class="fa-solid fa-play"></i> Run Check
+                </button>
+                <button onclick="clearAll()" class="flex items-center justify-center gap-2 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition">
+                    <i class="fa-solid fa-trash-can"></i> Clear
+                </button>
+            </div>
+        </div>
+
+        <div id="statusSection" class="hidden mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <span id="progressText" class="text-sm font-medium text-blue-600 flex items-center gap-2">
+                    <div class="loader w-4 h-4 border-2 border-gray-200 rounded-full"></div>
+                    Verifying Domains...
+                </span>
+                <button id="sortBtn" onclick="toggleSort()" class="text-xs font-bold uppercase tracking-wider text-gray-500 border px-2 py-1 rounded hover:bg-gray-100">
+                    Sort A-Z: <span id="sortStatus">OFF</span>
+                </button>
+            </div>
+            <div id="statusLog" class="status-log w-full h-48 bg-gray-900 text-gray-300 p-4 rounded-md code-font text-xs overflow-y-auto border-l-4 border-blue-500">
+                </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 mb-8">
+            <div class="wiki-card bg-[#fffcf0] rounded-lg p-5 border-l-4 border-l-amber-400">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-amber-800 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-code"></i> Working Domains (Comma)
+                    </h3>
+                    <button onclick="copyToClipboard('outComma')" class="text-amber-700 hover:text-amber-900 text-sm font-bold">COPY</button>
+                </div>
+                <textarea id="outComma" readonly class="w-full bg-transparent border-none resize-none code-font text-sm text-amber-900 focus:ring-0" rows="2" placeholder="Clean results will appear here..."></textarea>
+            </div>
+
+            <div class="wiki-card bg-[#f0f9ff] rounded-lg p-5 border-l-4 border-l-blue-400">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-blue-800 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-filter"></i> Working Domains (Pipe)
+                    </h3>
+                    <button onclick="copyToClipboard('outPipe')" class="text-blue-700 hover:text-blue-900 text-sm font-bold">COPY</button>
+                </div>
+                <textarea id="outPipe" readonly class="w-full bg-transparent border-none resize-none code-font text-sm text-blue-900 focus:ring-0" rows="2" placeholder="Clean results will appear here..."></textarea>
+            </div>
+        </div>
+
+        <footer class="text-center text-gray-400 text-xs py-4">
+            BlazeFTL Toolset &copy; 2026 • Built for Performance
+        </footer>
+    </div>
+
+    <script>
+        let isSortEnabled = false;
+        let lastWorkingDomains = [];
+
+        async function handlePaste() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('domainInput').value = text;
+            } catch (err) { alert('Failed to read clipboard'); }
+        }
+
+        function clearAll() {
+            document.getElementById('domainInput').value = '';
+            document.getElementById('outComma').value = '';
+            document.getElementById('outPipe').value = '';
+            document.getElementById('statusLog').innerHTML = '';
+            document.getElementById('statusSection').classList.add('hidden');
+            lastWorkingDomains = [];
+        }
+
+        function toggleSort() {
+            isSortEnabled = !isSortEnabled;
+            document.getElementById('sortStatus').textContent = isSortEnabled ? 'ON' : 'OFF';
+            updateOutputs();
+        }
+
+        function updateOutputs() {
+            let list = [...lastWorkingDomains];
+            if (isSortEnabled) {
+                list.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+            }
+            document.getElementById('outComma').value = list.join(',');
+            document.getElementById('outPipe').value = list.join('|');
+        }
+
+        function extractDomains(text) {
+            // Logic to clean uBlock filters and extract domains
+            // Removes ||, ^, $ etc.
+            const lines = text.split(/[\n\r,\| ]+/);
+            const domains = lines.map(line => {
+                let clean = line.trim()
+                    .replace(/^\|\|/, '')   // Remove uBO prefix
+                    .replace(/\^.*/, '')     // Remove uBO suffix
+                    .replace(/^https?:\/\//, '') // Remove protocols
+                    .split('/')[0]           // Remove paths
+                    .split(':')[0];          // Remove ports
+                return clean;
+            }).filter(d => d.includes('.') && !d.startsWith('!') && !d.startsWith('#'));
+            return [...new Set(domains)];
+        }
+
+        async function validateDomain(domain) {
+            try {
+                // 1. DNS Resolution
+                const dnsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
+                if (dnsRes.Status !== 0 || !dnsRes.Answer) return false;
+
+                // 2. Wildcard Trap
+                const fakeSub = `verify-${Math.floor(Math.random() * 9999)}.${domain}`;
+                const wildRes = await fetch(`https://dns.google/resolve?name=${fakeSub}&type=A`).then(r => r.json());
+                if (wildRes.Status === 0 && wildRes.Answer) return false;
+
+                // 3. HTTP Fetch Pre-flight
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                try {
+                    await fetch(`https://${domain}`, { mode: 'no-cors', signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    return true;
+                } catch (e) {
+                    try {
+                        await fetch(`http://${domain}`, { mode: 'no-cors', signal: controller.signal });
+                        clearTimeout(timeoutId);
+                        return true;
+                    } catch (e2) { return false; }
+                }
+            } catch { return false; }
+        }
+
+        async function processInput() {
+            const input = document.getElementById('domainInput').value.trim();
+            if (!input) return;
+
+            let textToProcess = input;
+
+            // Handle GitHub Links
+            if (input.startsWith('http') && (input.includes('github.com') || input.includes('githubusercontent.com'))) {
+                document.getElementById('statusSection').classList.remove('hidden');
+                document.getElementById('statusLog').innerHTML = `> Fetching remote file...\n`;
+                const rawUrl = input.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+                try {
+                    const resp = await fetch(rawUrl);
+                    textToProcess = await resp.text();
+                } catch (e) {
+                    document.getElementById('statusLog').innerHTML += `!! Error fetching URL\n`;
+                    return;
+                }
+            }
+
+            const domains = extractDomains(textToProcess);
+            if (domains.length === 0) return;
+
+            document.getElementById('statusSection').classList.remove('hidden');
+            const log = document.getElementById('statusLog');
+            const checkBtn = document.getElementById('checkBtn');
+            
+            log.innerHTML = `> Starting check for ${domains.length} unique domains...\n`;
+            checkBtn.disabled = true;
+            lastWorkingDomains = [];
+
+            for (const d of domains) {
+                if (d.includes('*')) {
+                    log.innerHTML += `<span class="text-yellow-400">SKIP: ${d} (Wildcard Pattern)</span>\n`;
+                    lastWorkingDomains.push(d);
+                    continue;
+                }
+
+                const isLive = await validateDomain(d);
+                if (isLive) {
+                    log.innerHTML += `<span class="text-green-400">LIVE: ${d}</span>\n`;
+                    lastWorkingDomains.push(d);
+                } else {
+                    log.innerHTML += `<span class="text-red-500">DEAD: ${d}</span>\n`;
+                }
+                log.scrollTop = log.scrollHeight;
+                updateOutputs();
+            }
+
+            document.getElementById('progressText').innerHTML = `<i class="fa-solid fa-check-double"></i> Check Complete`;
+            checkBtn.disabled = false;
+        }
+
+        function copyToClipboard(id) {
+            const el = document.getElementById(id);
+            el.select();
+            document.execCommand('copy');
+            const btn = window.event.target;
+            const originalText = btn.innerText;
+            btn.innerText = 'COPIED!';
+            setTimeout(() => btn.innerText = originalText, 2000);
+        }
+    </script>
+</body>
+</html>
