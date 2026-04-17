@@ -109,10 +109,10 @@ ublock- https://raw.githubusercontent.com/BlazeFTL/My-Filters/
 Explore the latest builds and interactive tools directly on GitHub Pages:
 
 * **[CodeMirror 6 Migration Final](https://blazeftl.github.io/My-Filters/CodeMirror6V2Final.html)** – The stable, final implementation of the filter editor using the CodeMirror 6 engine.
-* **[uAsset Test Tool](https://blazeftl.github.io/My-Filters/uAssetTest.html)** – Diagnostic page for testing uBlock Origin assets and filter functionality.
+* **[uAsset Test Tool](https://blazeftl.github.io/My-Filters/uAssetTest.html)** – The stable, final implementation of the filter editor using the CodeMirror 6 engine for all **ublock files**
 * **[Shortener Thread Manager 27472](https://blazeftl.github.io/My-Filters/27472_ShortnerThreadAllComments.html)** – Specialized tool for aggregating and displaying comments within thread 27472.
+* **[Shortener Thread Manager User 27472](https://blazeftl.github.io/My-Filters/27472_ShortnerThreadAllCommentsUser.html)** – User-focused version of the comment manager for thread 27472.
 * **[Shortener Thread Manager 17361](https://blazeftl.github.io/My-Filters/17361_ShortnerThreadAllComments.html)** – Specialized tool for aggregating and displaying comments within thread 17361.
 * **[Shortener Thread Manager User 17361](https://blazeftl.github.io/My-Filters/17361_ShortnerThreadAllCommentsUser.html)** – User-focused version of the comment manager for thread 17361.
-* **[Shortener Thread Manager User 27472](https://blazeftl.github.io/My-Filters/27472_ShortnerThreadAllCommentsUser.html)** – User-focused version of the comment manager for thread 27472.
 * **[Live Editor (Final Build)](https://blazeftl.github.io/My-Filters/LiveEditorNoWrapFinal.html)** – High-performance editor with "No Wrap" configuration for enhanced code readability.
 ---
