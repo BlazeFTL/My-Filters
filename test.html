@@ -3,175 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filter Engine | BlazeFTL</title>
+    <title>GitSync | Domain Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f9fafb; color: #111827; }
-        .wiki-card { border: 1px solid #e5e7eb; transition: 0.2s; }
-        .code-font { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
-        .badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px; text-transform: uppercase; }
-        .badge-dead { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
-        .badge-live { background: #dcfce7; color: #22c55e; border: 1px solid #bbf7d0; }
-        .loader { border-top-color: #3b82f6; animation: spinner 0.6s linear infinite; }
-        @keyframes spinner { to { transform: rotate(360deg); } }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #fcfcfc; color: #1a1a1b; }
+        .wiki-container { max-width: 1100px; margin: 0 auto; background: white; border: 1px solid #e0e0e0; min-height: 100vh; }
+        .sidebar-item { font-size: 13px; padding: 6px 12px; border-radius: 4px; display: flex; align-items: center; gap: 8px; color: #444; }
+        .sidebar-item:hover { background: #f0f0f0; cursor: pointer; }
+        .code-block { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; }
+        .status-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; }
+        .live { background: #dafbe1; color: #1a7f37; }
+        .dead { background: #ffebe9; color: #cf222e; }
+        .skip { background: #fff8c5; color: #9a6700; }
+        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #0969da; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-6 border-b pb-4 flex justify-between items-end">
+<div class="wiki-container flex flex-col md:flex-row">
+    <aside class="w-full md:w-64 border-r p-6 space-y-6 bg-[#f8f9fa]">
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-bars text-gray-500"></i>
+            <span class="font-bold text-lg text-[#1a7f37]">GitSync Wiki</span>
+        </div>
+        
+        <nav class="space-y-1">
+            <div class="sidebar-item font-bold text-gray-900"><i class="fa-solid fa-house"></i> Overview</div>
+            <div class="sidebar-item"><i class="fa-solid fa-bolt"></i> Fast Mode</div>
+            <div class="sidebar-item"><i class="fa-solid fa-shield-halved"></i> Security Check</div>
+            <div class="sidebar-item"><i class="fa-solid fa-file-export"></i> Export Logs</div>
+        </nav>
+
+        <div class="pt-6 border-t">
+            <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3">Settings</h4>
+            <div class="sidebar-item"><i class="fa-solid fa-gear"></i> Preferences</div>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-10">
+        <header class="flex justify-between items-start border-b pb-6 mb-8">
             <div>
-                <h1 class="text-2xl font-bold flex items-center gap-2 text-gray-900">
-                    <i class="fa-solid fa-microchip text-blue-600"></i> Domain Checker Engine
-                </h1>
-                <p class="text-xs text-gray-500 mt-1">Quad-Layer Verification: DNS + Wildcard + HTTP/S Fetch</p>
+                <h1 class="text-3xl font-bold tracking-tight mb-2">Domain Verification Engine</h1>
+                <p class="text-gray-600">Quad-Layer check: DNS, Wildcard Redirection, and Protocol Fetch.</p>
             </div>
-            <span class="text-[10px] code-font font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">V2.9 FINAL</span>
+            <div class="flex gap-2">
+                <button onclick="document.getElementById('fileUp').click()" class="bg-gray-100 hover:bg-gray-200 text-sm px-4 py-2 rounded font-semibold border">Upload .txt</button>
+                <input type="file" id="fileUp" class="hidden" accept=".txt" onchange="handleFile(this)">
+                <button onclick="runAnalysis()" id="runBtn" class="bg-[#1a7f37] hover:bg-[#16662d] text-white text-sm px-6 py-2 rounded font-semibold transition">Analyze</button>
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div class="lg:col-span-7 space-y-4">
-                <div class="bg-white p-5 rounded-lg border shadow-sm">
-                    <div class="flex gap-2 mb-4">
-                        <button onclick="document.getElementById('fUp').click()" class="flex-1 bg-gray-800 text-white py-2 rounded font-bold text-sm hover:bg-black transition"><i class="fa-solid fa-file-arrow-up mr-2"></i>UPLOAD .TXT</button>
-                        <input type="file" id="fUp" class="hidden" accept=".txt" onchange="handleFile(this)">
-                        <button onclick="handlePaste()" class="flex-1 border py-2 rounded font-bold text-sm hover:bg-gray-50 transition"><i class="fa-solid fa-clipboard-check mr-2"></i>PASTE</button>
-                    </div>
-                    <textarea id="ti" rows="8" class="w-full p-3 border rounded bg-gray-50 code-font text-xs mb-4 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Paste domains, .txt content, or uBO filters..."></textarea>
-                    <button id="rb" onclick="runEngine()" class="w-full bg-blue-600 text-white py-3 rounded-md font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all">RUN DEEP ANALYSIS</button>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-gray-700">Filter / Domain Input</label>
+                    <textarea id="mainInput" class="w-full h-64 p-4 code-block outline-none focus:ring-2 focus:ring-green-500" placeholder="Paste domains or uBO filters here..."></textarea>
                 </div>
 
-                <div id="vsBox" class="hidden bg-white p-5 rounded-lg border shadow-sm">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Live Verification Status</h3>
-                        <div id="engineLoader" class="loader w-3 h-3 border-2 border-gray-200 rounded-full"></div>
+                <div id="statusPanel" class="hidden border rounded-lg p-4 bg-white shadow-sm">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <span class="text-xs font-bold text-gray-500 uppercase">Live Engine Logs</span>
+                        <div id="spinner" class="loader"></div>
                     </div>
-                    <div id="sg" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-2"></div>
+                    <div id="logList" class="space-y-2 max-h-48 overflow-y-auto pr-2"></div>
                 </div>
             </div>
 
-            <div class="lg:col-span-5 space-y-4">
-                <div class="wiki-card bg-[#f0f9ff] p-4 rounded-lg border-l-4 border-blue-400">
+            <div class="space-y-6">
+                <div class="bg-[#f0f9ff] border-l-4 border-blue-500 p-4 rounded shadow-sm">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-blue-800 font-bold text-[10px] uppercase">Working Domains (Comma)</span>
-                        <button onclick="copyToClip('oc')" class="text-[10px] font-bold text-blue-600 hover:underline">COPY</button>
+                        <span class="text-xs font-bold text-blue-800 uppercase">Live Domains (Comma)</span>
+                        <button onclick="copyToClipboard('commaOut')" class="text-[10px] font-bold text-blue-600 uppercase">Copy</button>
                     </div>
-                    <textarea id="oc" readonly class="w-full bg-transparent border-none text-[11px] code-font text-blue-900 outline-none resize-none" rows="2" placeholder="Live domains will appear here..."></textarea>
+                    <textarea id="commaOut" readonly class="w-full bg-transparent border-none text-xs code-block resize-none" rows="2"></textarea>
                 </div>
 
-                <div class="wiki-card bg-[#fdf2f8] p-4 rounded-lg border-l-4 border-pink-400">
+                <div class="bg-[#fff0f6] border-l-4 border-pink-500 p-4 rounded shadow-sm">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-pink-800 font-bold text-[10px] uppercase">Working Domains (Pipe)</span>
-                        <button onclick="copyToClip('op')" class="text-[10px] font-bold text-pink-600 hover:underline">COPY</button>
+                        <span class="text-xs font-bold text-pink-800 uppercase">Live Domains (Pipe)</span>
+                        <button onclick="copyToClipboard('pipeOut')" class="text-[10px] font-bold text-pink-600 uppercase">Copy</button>
                     </div>
-                    <textarea id="op" readonly class="w-full bg-transparent border-none text-[11px] code-font text-pink-900 outline-none resize-none" rows="2" placeholder="Live domains will appear here..."></textarea>
+                    <textarea id="pipeOut" readonly class="w-full bg-transparent border-none text-xs code-block resize-none" rows="2"></textarea>
                 </div>
 
-                <div class="wiki-card bg-[#fffcf0] p-4 rounded-lg border-l-4 border-amber-400">
+                <div class="bg-[#fffcf0] border-l-4 border-amber-500 p-4 rounded shadow-sm">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-amber-800 font-bold text-[10px] uppercase">Processed uBO Filter</span>
-                        <button onclick="downloadFile()" id="dlBtn" class="hidden text-[10px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded">DOWNLOAD .TXT</button>
+                        <span class="text-xs font-bold text-amber-800 uppercase">Processed uBO Filter</span>
+                        <button onclick="downloadOutput()" id="dlBtn" class="hidden text-[10px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded">Download</button>
                     </div>
-                    <textarea id="of" readonly class="w-full bg-transparent border-none text-[10px] code-font text-amber-900 outline-none resize-none" rows="12" placeholder="Full filter log..."></textarea>
+                    <textarea id="filterOut" readonly class="w-full bg-transparent border-none text-[11px] code-block resize-none" rows="10"></textarea>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+</div>
 
-    <script>
-        let cache = new Map();
+<script>
+    let domainCache = new Map();
 
-        async function handleFile(i) { if(i.files[0]) document.getElementById('ti').value = await i.files[0].text(); }
-        async function handlePaste() { document.getElementById('ti').value = await navigator.clipboard.readText(); }
-        function copyToClip(id) { document.getElementById(id).select(); document.execCommand('copy'); }
+    async function handleFile(input) {
+        if(input.files[0]) document.getElementById('mainInput').value = await input.files[0].text();
+    }
 
-        function getDomains(line) {
-            if (!line.trim() || line.startsWith('!') || line.startsWith('[')) return null;
-            let dp = line.split(/##|\$|#@#/)[0].replace(/^\|\|/, '').replace(/^@@/, '').trim();
-            return dp ? dp.split(',').map(d => d.trim().replace(/^https?:\/\//, '').split('/')[0].split(':')[0]) : null;
-        }
+    async function checkDomain(domain) {
+        if (domain.includes('*')) return 'skip';
+        if (domainCache.has(domain)) return domainCache.get(domain);
 
-        async function validateDomain(domain) {
-            if (domain.includes('*')) return 'live'; // Skip wildcard rules
-            if (cache.has(domain)) return cache.get(domain);
-
-            try {
-                const dnsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
-                if (dnsRes.Status !== 0 || !dnsRes.Answer) { cache.set(domain, 'dead'); return 'dead'; }
-
-                const fakeSub = `verify-${Math.floor(Math.random()*999)}.${domain}`;
-                const wildRes = await fetch(`https://dns.google/resolve?name=${fakeSub}&type=A`).then(r => r.json());
-                if (wildRes.Status === 0 && wildRes.Answer) { cache.set(domain, 'dead'); return 'dead'; }
-
-                const ctrl = new AbortController();
-                const tid = setTimeout(() => ctrl.abort(), 4000);
-                try {
-                    await fetch(`https://${domain}`, { mode: 'no-cors', signal: ctrl.signal });
-                    clearTimeout(tid); cache.set(domain, 'live'); return 'live';
-                } catch {
-                    try {
-                        await fetch(`http://${domain}`, { mode: 'no-cors', signal: ctrl.signal });
-                        clearTimeout(tid); cache.set(domain, 'live'); return 'live';
-                    } catch { cache.set(domain, 'dead'); return 'dead'; }
-                }
-            } catch { cache.set(domain, 'dead'); return 'dead'; }
-        }
-
-        function addStatus(d, s) {
-            const grid = document.getElementById('sg');
-            const el = document.createElement('div');
-            el.className = "flex items-center gap-2 text-[10px] border-b border-gray-50 pb-1 py-1";
-            el.innerHTML = `<span class="badge ${s==='live'?'badge-live':'badge-dead'}">${s}</span> <span class="truncate">${d}</span>`;
-            grid.prepend(el);
-        }
-
-        async function runEngine() {
-            const input = document.getElementById('ti').value;
-            if (!input) return;
-
-            document.getElementById('rb').disabled = true;
-            document.getElementById('vsBox').classList.remove('hidden');
-            document.getElementById('sg').innerHTML = '';
-            
-            let lines = input.split('\n'), liveDomains = [], processedLines = [];
-
-            for (let line of lines) {
-                const domains = getDomains(line);
-                if (!domains) { processedLines.push(line); continue; }
-
-                let statuses = [];
-                for (let d of domains) {
-                    const status = await validateDomain(d);
-                    addStatus(d, status);
-                    statuses.push(status);
-                    if (status === 'live') liveDomains.push(d);
-                }
-
-                if (statuses.every(s => s === 'dead')) {
-                    processedLines.push(`! dead\n! ${line}`);
-                } else {
-                    processedLines.push(line);
-                }
+        try {
+            const dns = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
+            if (dns.Status !== 0 || !dns.Answer) {
+                domainCache.set(domain, 'dead');
+                return 'dead';
             }
 
-            const uniqueLive = [...new Set(liveDomains)];
-            document.getElementById('oc').value = uniqueLive.join(',');
-            document.getElementById('op').value = uniqueLive.join('|');
-            document.getElementById('of').value = processedLines.join('\n');
-            
-            document.getElementById('dlBtn').classList.remove('hidden');
-            document.getElementById('rb').disabled = false;
-            document.getElementById('engineLoader').classList.add('hidden');
+            const fake = `trap-${Math.floor(Math.random()*999)}.${domain}`;
+            const trap = await fetch(`https://dns.google/resolve?name=${fake}&type=A`).then(r => r.json());
+            if (trap.Status === 0 && trap.Answer) {
+                domainCache.set(domain, 'dead');
+                return 'dead';
+            }
+
+            const ctrl = new AbortController();
+            const tid = setTimeout(() => ctrl.abort(), 4000);
+            try {
+                await fetch(`https://${domain}`, { mode: 'no-cors', signal: ctrl.signal });
+                clearTimeout(tid); domainCache.set(domain, 'live'); return 'live';
+            } catch {
+                try {
+                    await fetch(`http://${domain}`, { mode: 'no-cors', signal: ctrl.signal });
+                    clearTimeout(tid); domainCache.set(domain, 'live'); return 'live';
+                } catch { domainCache.set(domain, 'dead'); return 'dead'; }
+            }
+        } catch { return 'dead'; }
+    }
+
+    function addLog(domain, status) {
+        const list = document.getElementById('logList');
+        const entry = document.createElement('div');
+        entry.className = "flex items-center gap-3 py-1 border-b border-gray-50 text-[11px]";
+        entry.innerHTML = `<span class="status-badge ${status}">${status}</span> <span class="truncate text-gray-600">${domain}</span>`;
+        list.prepend(entry);
+    }
+
+    async function runAnalysis() {
+        const input = document.getElementById('mainInput').value;
+        if (!input) return;
+
+        document.getElementById('runBtn').disabled = true;
+        document.getElementById('statusPanel').classList.remove('hidden');
+        document.getElementById('logList').innerHTML = '';
+        
+        let lines = input.split('\n'), livePool = [], processedLines = [];
+
+        for (let line of lines) {
+            let domains = line.trim().startsWith('!') || line.startsWith('[') ? null : 
+                          line.split(/##|\$|#@#/)[0].replace(/^\|\|/, '').replace(/^@@/, '').trim().split(',').map(d => d.trim().replace(/^https?:\/\//, '').split('/')[0].split(':')[0]);
+
+            if (!domains || domains[0] === "") {
+                processedLines.push(line);
+                continue;
+            }
+
+            let results = [];
+            for (let d of domains) {
+                const s = await checkDomain(d);
+                addLog(d, s);
+                results.push(s);
+                if (s === 'live' || s === 'skip') livePool.push(d);
+            }
+
+            if (results.every(s => s === 'dead')) {
+                processedLines.push(`! dead\n! ${line}`);
+            } else {
+                processedLines.push(line);
+            }
         }
 
-        function downloadFile() {
-            const b = new Blob([document.getElementById('of').value], {type:'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(b);
-            a.download = `blazeftl_clean_filter.txt`;
-            a.click();
-        }
-    </script>
+        const unique = [...new Set(livePool)];
+        document.getElementById('commaOut').value = unique.join(',');
+        document.getElementById('pipeOut').value = unique.join('|');
+        document.getElementById('filterOut').value = processedLines.join('\n');
+        
+        document.getElementById('runBtn').disabled = false;
+        document.getElementById('spinner').classList.add('hidden');
+        document.getElementById('dlBtn').classList.remove('hidden');
+    }
+
+    function copyToClipboard(id) {
+        const el = document.getElementById(id);
+        el.select();
+        document.execCommand('copy');
+    }
+
+    function downloadOutput() {
+        const b = new Blob([document.getElementById('filterOut').value], {type:'text/plain'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = `cleansed_filters_${Date.now()}.txt`;
+        a.click();
+    }
+</script>
+
 </body>
 </html>
