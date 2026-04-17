@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uBO Dead Domain Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #f7626a;
+    --green: #3ddc84;
+    --yellow: #f5c842;
+    --text: #e8e8f0;
+    --muted: #6a6a88;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    top: -200px; left: -100px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  header {
+    margin-bottom: 40px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    font-family: var(--mono);
+  }
+
+  /* Drop zone */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--surface);
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  .dropzone:hover, .dropzone.drag-over {
+    border-color: var(--accent);
+    background: rgba(124,106,247,0.06);
+  }
+
+  .dropzone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+
+  .drop-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .drop-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .drop-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  /* Options bar */
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+
+  .opt-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .chip input { display: none; }
+
+  .chip:has(input:checked), .chip.active {
+    border-color: var(--accent);
+    background: rgba(124,106,247,0.12);
+    color: var(--accent);
+  }
+
+  select.chip {
+    appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236a6a88'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  /* Run button */
+  .btn-run {
+    width: 100%;
+    padding: 16px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+  }
+
+  .btn-run:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-run:active { transform: translateY(0); }
+  .btn-run:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Progress */
+  .progress-wrap {
+    display: none;
+    margin-bottom: 24px;
+  }
+
+  .progress-wrap.visible { display: block; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  .progress-status {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Stats */
+  .stats {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stats.visible { display: grid; }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .stat-card .num {
+    font-size: 28px;
+    font-weight: 800;
+    font-family: var(--mono);
+    line-height: 1;
+  }
+
+  .stat-card .lbl {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .stat-card.dead .num { color: var(--accent2); }
+  .stat-card.live .num { color: var(--green); }
+  .stat-card.skip .num { color: var(--yellow); }
+  .stat-card.total .num { color: var(--accent); }
+
+  /* Results list */
+  .results-wrap {
+    display: none;
+    margin-bottom: 24px;
+  }
+
+  .results-wrap.visible { display: block; }
+
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .results-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .results-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .results-list::-webkit-scrollbar { width: 6px; }
+  .results-list::-webkit-scrollbar-track { background: var(--surface); }
+  .results-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .dead-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    transition: background 0.1s;
+  }
+
+  .dead-item:last-child { border-bottom: none; }
+  .dead-item:hover { background: var(--surface2); }
+
+  .dead-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+  }
+
+  .dead-hostname { color: var(--accent2); flex: 1; }
+  .dead-reason { color: var(--muted); font-size: 11px; }
+
+  /* Action buttons */
+  .actions {
+    display: none;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .actions.visible { display: flex; }
+
+  .btn {
+    flex: 1;
+    min-width: 160px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .btn-download {
+    background: var(--green);
+    color: #000;
+    border-color: var(--green);
+  }
+
+  .btn-download:hover { opacity: 0.88; }
+
+  .btn-copy {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .btn-copy:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--muted);
+  }
+
+  .btn-reset:hover { color: var(--accent2); border-color: var(--accent2); }
+
+  /* File loaded state */
+  .file-loaded {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  .file-loaded.visible { display: flex; }
+
+  .file-icon { font-size: 20px; }
+  .file-name { color: var(--accent); font-weight: 600; flex: 1; }
+  .file-meta { color: var(--muted); font-size: 11px; }
+
+  /* Log panel */
+  .log-wrap { margin-bottom: 24px; display: none; }
+  .log-wrap.visible { display: block; }
+  .log-toggle {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 6px;
+  }
+  .log-toggle:hover { color: var(--text); }
+  .log-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    max-height: 140px;
+    overflow-y: auto;
+    display: none;
+  }
+  .log-box.open { display: block; }
+  .log-line { padding: 1px 0; }
+  .log-line.ok { color: var(--green); }
+  .log-line.dead { color: var(--accent2); }
+  .log-line.skip { color: var(--yellow); }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="container">
+
+  <header>
+    <div class="badge">uBO Filter Tools</div>
+    <h1>Dead Domain <span>Checker</span></h1>
+    <p class="subtitle">// upload filter list → DNS check → download cleaned file</p>
+  </header>
+
+  <!-- Drop zone -->
+  <div class="dropzone" id="dropzone">
+    <input type="file" id="fileInput" accept=".txt">
+    <span class="drop-icon">📄</span>
+    <div class="drop-title">Drop your filter list here</div>
+    <div class="drop-sub">or click to browse · .txt files</div>
+  </div>
+
+  <!-- File loaded -->
+  <div class="file-loaded" id="fileLoaded">
+    <span class="file-icon">✅</span>
+    <span class="file-name" id="loadedName">—</span>
+    <span class="file-meta" id="loadedMeta">—</span>
+  </div>
+
+  <!-- Options -->
+  <div class="options">
+    <span class="opt-label">DNS via:</span>
+    <label class="chip">
+      <input type="radio" name="dns" value="cloudflare" checked> ☁ Cloudflare
+    </label>
+    <label class="chip">
+      <input type="radio" name="dns" value="google"> 🔍 Google
+    </label>
+    <label class="chip">
+      <input type="radio" name="dns" value="both"> ⚡ Both (slower)
+    </label>
+
+    <span class="opt-label" style="margin-left:8px">Concurrency:</span>
+    <select class="chip" id="concurrency">
+      <option value="5">5 parallel</option>
+      <option value="10" selected>10 parallel</option>
+      <option value="20">20 parallel</option>
+    </select>
+  </div>
+
+  <!-- Run -->
+  <button class="btn-run" id="btnRun" disabled>Select a file first</button>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-header">
+      <span id="progressLabel">Checking hostnames…</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-status" id="progressStatus">—</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats" id="stats">
+    <div class="stat-card total">
+      <div class="num" id="statTotal">0</div>
+      <div class="lbl">Hostnames</div>
+    </div>
+    <div class="stat-card dead">
+      <div class="num" id="statDead">0</div>
+      <div class="lbl">Dead</div>
+    </div>
+    <div class="stat-card live">
+      <div class="num" id="statLive">0</div>
+      <div class="lbl">Live</div>
+    </div>
+    <div class="stat-card skip">
+      <div class="num" id="statSkip">0</div>
+      <div class="lbl">Skipped</div>
+    </div>
+  </div>
+
+  <!-- Dead list -->
+  <div class="results-wrap" id="resultsWrap">
+    <div class="results-header">
+      <span class="results-title">💀 Dead domains found</span>
+    </div>
+    <div class="results-list" id="deadList"></div>
+  </div>
+
+  <!-- Log -->
+  <div class="log-wrap" id="logWrap">
+    <div class="log-toggle" id="logToggle">▶ Show DNS log</div>
+    <div class="log-box" id="logBox"></div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions" id="actions">
+    <button class="btn btn-download" id="btnDownload">⬇ Download Cleaned</button>
+    <button class="btn btn-copy" id="btnCopy">📋 Copy Dead List</button>
+    <button class="btn btn-reset" id="btnReset">✕ Reset</button>
+  </div>
+
+</div>
+
+<script>
+// ─── State ────────────────────────────────────────────────────────────────────
+let fileContent = '';
+let fileName = '';
+let deadDomains = new Set();
+let running = false;
+
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+const dropzone     = document.getElementById('dropzone');
+const fileInput    = document.getElementById('fileInput');
+const fileLoaded   = document.getElementById('fileLoaded');
+const loadedName   = document.getElementById('loadedName');
+const loadedMeta   = document.getElementById('loadedMeta');
+const btnRun       = document.getElementById('btnRun');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const progressPct  = document.getElementById('progressPct');
+const progressLabel= document.getElementById('progressLabel');
+const progressStatus=document.getElementById('progressStatus');
+const statsEl      = document.getElementById('stats');
+const statTotal    = document.getElementById('statTotal');
+const statDead     = document.getElementById('statDead');
+const statLive     = document.getElementById('statLive');
+const statSkip     = document.getElementById('statSkip');
+const resultsWrap  = document.getElementById('resultsWrap');
+const deadList     = document.getElementById('deadList');
+const logWrap      = document.getElementById('logWrap');
+const logBox       = document.getElementById('logBox');
+const logToggle    = document.getElementById('logToggle');
+const actions      = document.getElementById('actions');
+const btnDownload  = document.getElementById('btnDownload');
+const btnCopy      = document.getElementById('btnCopy');
+const btnReset     = document.getElementById('btnReset');
+
+// ─── Drag & drop ──────────────────────────────────────────────────────────────
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+logToggle.addEventListener('click', () => {
+  logBox.classList.toggle('open');
+  logToggle.textContent = logBox.classList.contains('open') ? '▼ Hide DNS log' : '▶ Show DNS log';
+});
+
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    fileContent = e.target.result;
+    fileName = file.name;
+    const lines = fileContent.split('\n').length;
+    loadedName.textContent = file.name;
+    loadedMeta.textContent = `${lines} lines · ${(file.size/1024).toFixed(1)} KB`;
+    fileLoaded.classList.add('visible');
+    dropzone.style.display = 'none';
+    btnRun.disabled = false;
+    btnRun.textContent = 'Run Dead Domain Check';
+    // Reset previous results
+    resetResults();
+  };
+  reader.readAsText(file);
+}
+
+// ─── Filter parser ────────────────────────────────────────────────────────────
+function extractHostnames(text) {
+  const hostnames = new Set();
+  const skipped = new Set();
+
+  for (const rawLine of text.split('\n')) {
+    const line = rawLine.trim();
+
+    // Skip comments, blank lines, directives
+    if (!line || line.startsWith('!') || line.startsWith('[') || line.startsWith('#')) continue;
+
+    // Skip pure option-only lines
+    if (line.startsWith('$')) continue;
+
+    // ── Cosmetic/scriptlet rules ──
+    // ##, #@#, #?#, #$#  — extract the hostname(s) before ##
+    if (/^[^#]*#{1,2}[\@\?\$]?#/.test(line)) {
+      const domainPart = line.split(/#{1,2}[\@\?\$]?#/)[0];
+      if (!domainPart) continue;
+      for (const part of domainPart.split(',')) {
+        const d = part.trim().replace(/^~/, '');
+        if (isValidHostname(d)) hostnames.add(d);
+        else if (d) skipped.add(d);
+      }
+      continue;
+    }
+
+    // ── Network rules ──
+    // Remove options after $
+    let rule = line.split('$')[0].trim();
+
+    // Exception prefix @@
+    if (rule.startsWith('@@')) rule = rule.slice(2);
+
+    // ||domain^ or ||domain/ style (the most common)
+    let m = rule.match(/^\|\|([a-zA-Z0-9._*-]+)[\/\^\|]/);
+    if (m) {
+      const hn = m[1].replace(/^\*\./, '');
+      if (isValidHostname(hn)) hostnames.add(hn);
+      else skipped.add(hn);
+      continue;
+    }
+
+    // |http(s)://domain
+    m = rule.match(/^\|https?:\/\/([a-zA-Z0-9._-]+)/i);
+    if (m) {
+      if (isValidHostname(m[1])) hostnames.add(m[1]);
+      continue;
+    }
+
+    // Plain hostname (hosts-file style: 0.0.0.0 domain or just domain)
+    m = rule.match(/^(?:0\.0\.0\.0|127\.0\.0\.1)\s+([a-zA-Z0-9._-]+)$/);
+    if (m) {
+      if (isValidHostname(m[1])) hostnames.add(m[1]);
+      continue;
+    }
+
+    // Bare hostname line
+    if (/^[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])$/.test(rule) && rule.includes('.')) {
+      if (isValidHostname(rule)) hostnames.add(rule);
+    }
+  }
+
+  return { hostnames: [...hostnames], skipped: [...skipped] };
+}
+
+function isValidHostname(h) {
+  if (!h || h.includes('*') || h.includes('/')) return false;
+  // Must have at least one dot, no invalid chars
+  return /^[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?$/.test(h) && h.includes('.');
+}
+
+// ─── DNS check ────────────────────────────────────────────────────────────────
+async function checkHostname(hostname, dnsMode) {
+  const providers = [];
+  if (dnsMode === 'cloudflare' || dnsMode === 'both') {
+    providers.push(`https://cloudflare-dns.com/dns-query?name=${hostname}&type=A`);
+  }
+  if (dnsMode === 'google' || dnsMode === 'both') {
+    providers.push(`https://dns.google/resolve?name=${hostname}&type=A`);
+  }
+
+  for (const url of providers) {
+    try {
+      const res = await fetch(url, { headers: { 'Accept': 'application/dns-json' }, signal: AbortSignal.timeout(5000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      // status 0 = NOERROR, status 3 = NXDOMAIN (dead)
+      if (data.Status === 3) return { dead: true, reason: 'NXDOMAIN' };
+      if (data.Status === 0) {
+        if (!data.Answer || data.Answer.length === 0) return { dead: true, reason: 'No records' };
+        return { dead: false };
+      }
+    } catch (e) {
+      // timeout or network error — treat as inconclusive
+    }
+  }
+  // If all providers inconclusive, assume live to avoid false positives
+  return { dead: false, reason: 'timeout' };
+}
+
+// ─── Concurrency pool ─────────────────────────────────────────────────────────
+async function runPool(tasks, concurrency, onResult) {
+  let idx = 0;
+  async function worker() {
+    while (idx < tasks.length) {
+      const i = idx++;
+      const result = await tasks[i]();
+      onResult(i, result);
+    }
+  }
+  const workers = Array.from({ length: concurrency }, worker);
+  await Promise.all(workers);
+}
+
+// ─── Main run ─────────────────────────────────────────────────────────────────
+btnRun.addEventListener('click', async () => {
+  if (running) return;
+  running = true;
+  btnRun.disabled = true;
+  deadDomains.clear();
+
+  const dnsMode = document.querySelector('input[name=dns]:checked').value;
+  const concurrency = parseInt(document.getElementById('concurrency').value);
+
+  const { hostnames, skipped } = extractHostnames(fileContent);
+
+  if (hostnames.length === 0) {
+    btnRun.disabled = false;
+    running = false;
+    alert('No valid hostnames found in the filter list.');
+    return;
+  }
+
+  // Show progress
+  progressWrap.classList.add('visible');
+  statsEl.classList.add('visible');
+  logWrap.classList.add('visible');
+  logBox.innerHTML = '';
+
+  statTotal.textContent = hostnames.length;
+  statSkip.textContent = skipped.length;
+  statDead.textContent = '0';
+  statLive.textContent = '0';
+
+  let done = 0, dead = 0, live = 0;
+
+  const tasks = hostnames.map(hn => async () => {
+    const result = await checkHostname(hn, dnsMode);
+    return { hn, result };
+  });
+
+  await runPool(tasks, concurrency, (i, { hn, result }) => {
+    done++;
+    const pct = Math.round((done / hostnames.length) * 100);
+    progressFill.style.width = pct + '%';
+    progressPct.textContent = pct + '%';
+    progressStatus.textContent = `Checking: ${hn}`;
+
+    if (result.dead) {
+      dead++;
+      deadDomains.add(hn);
+      statDead.textContent = dead;
+      addDeadItem(hn, result.reason);
+      addLog(hn, 'dead', result.reason);
+    } else {
+      live++;
+      statLive.textContent = live;
+      addLog(hn, 'ok', result.reason || '');
+    }
+  });
+
+  progressLabel.textContent = `Done — ${done} checked`;
+  progressStatus.textContent = `${dead} dead · ${live} live · ${skipped.length} skipped`;
+  if (dead > 0) resultsWrap.classList.add('visible');
+  actions.classList.add('visible');
+  running = false;
+});
+
+function addDeadItem(hn, reason) {
+  const el = document.createElement('div');
+  el.className = 'dead-item';
+  el.innerHTML = `<span class="dead-dot"></span><span class="dead-hostname">${hn}</span><span class="dead-reason">${reason || ''}</span>`;
+  deadList.appendChild(el);
+}
+
+function addLog(hn, type, reason) {
+  const el = document.createElement('div');
+  el.className = `log-line ${type}`;
+  el.textContent = `${type === 'dead' ? '✗' : '✓'} ${hn}${reason ? ' — ' + reason : ''}`;
+  logBox.appendChild(el);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+// ─── Download cleaned file ────────────────────────────────────────────────────
+btnDownload.addEventListener('click', () => {
+  if (!fileContent || deadDomains.size === 0) {
+    alert('Nothing to clean — no dead domains found!');
+    return;
+  }
+
+  const lines = fileContent.split('\n');
+  const cleaned = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Always keep comments/directives
+    if (!trimmed || trimmed.startsWith('!') || trimmed.startsWith('[') || trimmed.startsWith('#')) {
+      cleaned.push(line);
+      continue;
+    }
+
+    // Check if this line references any dead domain
+    let isDead = false;
+    for (const dn of deadDomains) {
+      if (lineContainsDomain(trimmed, dn)) {
+        isDead = true;
+        break;
+      }
+    }
+
+    if (!isDead) cleaned.push(line);
+  }
+
+  const blob = new Blob([cleaned.join('\n')], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName.replace('.txt', '-cleaned.txt');
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+function lineContainsDomain(line, domain) {
+  // Match the domain as a hostname in a rule (not partial match)
+  const escaped = domain.replace(/\./g, '\\.');
+  const patterns = [
+    new RegExp(`\\|\\|${escaped}[/^|]`),          // ||domain^
+    new RegExp(`\\|\\|\\*\\.${escaped}[/^|]`),    // ||*.domain^
+    new RegExp(`https?://${escaped}`),              // http(s)://domain
+    new RegExp(`(^|,)~?${escaped}(,|#)`),          // cosmetic domains
+    new RegExp(`^0\\.0\\.0\\.0\\s+${escaped}$`),  // hosts file
+    new RegExp(`^127\\.0\\.0\\.1\\s+${escaped}$`),
+    new RegExp(`^${escaped}$`),                    // bare hostname
+  ];
+  return patterns.some(p => p.test(line));
+}
+
+// ─── Copy dead list ───────────────────────────────────────────────────────────
+btnCopy.addEventListener('click', () => {
+  const text = [...deadDomains].join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    btnCopy.textContent = '✓ Copied!';
+    setTimeout(() => btnCopy.textContent = '📋 Copy Dead List', 2000);
+  });
+});
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+btnReset.addEventListener('click', () => {
+  fileContent = '';
+  fileName = '';
+  fileInput.value = '';
+  dropzone.style.display = '';
+  fileLoaded.classList.remove('visible');
+  btnRun.disabled = true;
+  btnRun.textContent = 'Select a file first';
+  resetResults();
+});
+
+function resetResults() {
+  deadDomains.clear();
+  progressWrap.classList.remove('visible');
+  statsEl.classList.remove('visible');
+  resultsWrap.classList.remove('visible');
+  logWrap.classList.remove('visible');
+  actions.classList.remove('visible');
+  progressFill.style.width = '0%';
+  progressPct.textContent = '0%';
+  deadList.innerHTML = '';
+  logBox.innerHTML = '';
+  logBox.classList.remove('open');
+  logToggle.textContent = '▶ Show DNS log';
+}
+</script>
+</body>
+</html>
