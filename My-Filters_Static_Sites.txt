@@ -307,6 +307,9 @@ github.com##:matches-path(/uBlockOrigin/uAssets) [class*="AsyncChecksStatusBadge
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="prc-Button-IconButton-"]:has(.octicon-copy)
 ! Ublock Issues
 github.com##:matches-path(/uBlockOrigin/uBlock-issues) [class^=ListItems-module__listItem--]:has([class*=prc-Link-Link-]:has-text(/declined|filterlist|invalid|external/i))
+! Hide Empty Space Near Comments Icon
+github.com##:matches-path(/uBlockOrigin/uAssets/) div[class*="IssueItemMetadata-module__ListItemMetadata_"][class*="Metadata-module__secondary__"][class^="Metadata-module__metadata__"]:empty
+github.com##[class^="IssueIndexPage-module__feedbackLinkContainer__"]
 ! AdGuard Repo
 github.com##:matches-path(/AdguardTeam/AdguardFilters/issues) div[class*=TrailingBadge-module__container--]:has-text(/AdGuard |^P[1-6]: |N: Other|In progress/)
 github.com##:matches-path(/AdguardTeam/AdguardFilters) .js-notice.mb-4
