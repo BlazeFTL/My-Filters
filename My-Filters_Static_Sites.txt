@@ -1249,6 +1249,16 @@ cloubix.com##+js(trusted-set-attr, #countdown, data-status, active)
 cloubix.com##*:style(font-family: none! important;)
 cloubix.com##.dl1-main:style(margin-left: 50px ! important;)
 
+! Fileq.net
+fileq.net##.download.p-0.block
+fileq.net##.p-4.block
+fileq.net##.footer
+fileq.net##.me-4.ms-5.float-start.dropdown
+fileq.net##.fs-4.mb-2.text-truncate.d-inline.download-title > span
+fileq.net##.flex-nowrap.align-items-center.header-row.row > .d-lg-none.col-auto
+fileq.net##.mt-2.download-meta:style(margin-left: 120px ! important;)
+fileq.net###downloadbtn:style(margin-left: 40% ! important;)
+
 ! Apr 8, 2026 https://luluvdoo.com
 luluvid.com,luluvdoo.com##.block
 luluvid.com,luluvdoo.com##.footer
@@ -1622,7 +1632,13 @@ datanodes.to##.text-xs.rounded-full.px-4.py-1\.5.bg-white\/10.gap-2.items-center
 datanodes.to##.contentWrap:style(min-height: initial! important;)
 datanodes.to##.h-96:style(height: initial! important;)
 datanodes.to###app > div.container.contentWrap.mt-16.mx-auto.px-4.w-full.flex.flex-col.justify-center.items-center > div > div.flex.w-full.bg-white\/50.mt-auto.h-\[550px\].justify-center.items-center.flex-col.border.rounded-lg.p-8
-datanodes.to##+js(nano-stb, getElementById, *, 0.001)
+datanodes.to##.lg\:flex.lg\:max-w-none.overflow-hidden.my-12.shadow-sm.rounded-lg.mx-auto.max-w-lg
+datanodes.to##.justify-between.items-center.flex.w-full.text-white.font-medium.text-sm.proFeatures.hover\:opacity-90.px-6.rounded-lg.gap-4.shadow.leading-none.relative.py-3
+datanodes.to##.hover\:text-white.no-underline.justify-between.items-center.flex.w-full.text-white.font-medium.text-sm.bg-gray-900.hover\:opacity-90.px-6.rounded-lg.gap-4.shadow.leading-none.relative.py-3
+datanodes.to##div.border-b.text-sm.gap-4.items-center.flex
+datanodes.to##div.text-sm.gap-4.items-center.flex
+datanodes.to##button.hover\:text-blue-500.transition-all.rounded.p-2:nth-of-type(3)
+datanodes.to##+js(nano-stb, , *, 0.001)
 
 ! Nov 7, 2025 https://datavaults.co
 datavaults.co##.col-lg-3.col
@@ -1683,6 +1699,25 @@ vik1ngfile.site#%#//scriptlet('abort-current-inline-script', 'document.createEle
 vik1ngfile.site##+js(rmnt, script, /popundersPerIP|adserverDomain|wpadmngr|h=decodeURIComponent|popMagic/)
 vik1ngfile.site##+js(aeld, click, clicksCount)
 vik1ngfile.site###support-us, .column, .box.column-full, .page-container > .row
+
+! Apr 18, 2026 https://repack-games.com
+repack-games.com##.top-navigation, div._track.wp-dark-mode-ignore, div.blur-toggle-switch, a.torrent-side-stripe
+! Adjust main container to fill available width
+repack-games.com##.articles-content:style(width: 100% !important; max-width: 100% !important; flex: 1 1 auto !important;)
+! Remove constraints from the middle wrapper
+repack-games.com##.wrap-middle:style(display: block !important; width: 100% !important;)
+! Optional: Ensure the internal content grid expands
+repack-games.com##.wrap-content:style(width: 100% !important; max-width: 100% !important;)
+repack-games.com##.post-reactions-container
+repack-games.com##.sidebar-wrapper
+repack-games.com##footer
+repack-games.com##.entry > h3:has-text(Develop)
+
+! Hides the entire download offer table and surrounding clutter
+1fichier.com##.ct_warn, a.ui-corner-all.ui-button, a[href*="fichier.com/console"], .center-container, #footer
+1fichier.com##td.titre.normal:not(:has-text(Download))
+1fichier.com##.premium.alc tr:not(:has(#dlw))
+1fichier.com##+js(nano-stb, ctt(), 1000, 0.001)
 
 ! Jan 18, 2025 https://nexusmods.com
 nexusmods.com##[class*="premium-moderate"]
