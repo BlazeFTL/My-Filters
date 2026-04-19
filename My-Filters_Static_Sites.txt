@@ -473,6 +473,14 @@ dailyuploads.net##td:has(> input[value="Premium Download"])
 dailyuploads.net##.smallRes > div > table > tbody > tr > td:has-text(MB/s)
 dailyuploads.net##[style="padding-top:50px;"]:style(padding-top:0px ! important)
 
+! https://www.mediafire.com/file/1ick640f4vfqivp/FacebookAMD+1.0.7.apk/file
+mediafire.com##.dl-info, .DLExtraInfo-wrap, .footer, .actions, [id^="div-gpt-ad-"], [class*="ezoic_ad_unit"]
+mediafire.com##*:style(min-height: initial! important;)
+mediafire.com##.nonDLContentWrap, .page, .center:style(min-height: initial! important;)
+mediafire.com##.center:style(height: initial! important;)
+mediafire.com##.center:style(margin-right: 20%! important;)
+mediafire.com##.header:style(margin-left: 35%! important;)
+
 ! https://up-4ever.net/r4p6xsjkulb8
 up-4ever.net##.h-100.card > .card-body:has-text(Fast Down)
 up-4ever.net##.p-3.card-body:has-text(/File Type|Share File/)
