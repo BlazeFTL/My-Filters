@@ -264,7 +264,10 @@ github.com##div.ActionBar-item:has-text(/italic|list/i)
 github.com##.js-pinned-issues-reorder-list.gutter.pr-md-0.px-3.d-sm-flex.d-block
 github.com###security-tab, #projects-tab, #insights-tab
 github.com##[class*="PinnedIssues-module__area--"]
-! Post
+! Remove 3 Empty Blocks Near Comments Icon On Issues
+github.com##:matches-path(/uBlockOrigin/uAssets/) div[class*="IssueItemMetadata-module__ListItemMetadata_"][class*="Metadata-module__secondary__"][class^="Metadata-module__metadata__"]:empty
+github.com##[class^="IssueIndexPage-module__feedbackLinkContainer__"]
+! Post Discussion Thread
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"])
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"], [href*="ahmedok2022"], [href*="Nogososro33"], [href*="RvNaaM"], [href*="Salngader"], [href*="labaikbae"], [href*="ilham372"], [href*="Ocurata"], [href*="milan001dev"], [href*="aaradhya953"])
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.width-full.discussion-primer-next-nested-comment-timeline-item.discussion-nested-comment-timeline-item.js-targetable-element.js-nested-comment-container.js-comment-container.TimelineItem:has-text(/off-topi|as spam|been hidden|been minimized/i)
@@ -687,6 +690,7 @@ hdhub4u.*##.navbar-left.navbar-nav.nav
 hdhub4u.*##[href] > p:style(color: white! important;)
 hdhub4u.*##+js(rpnt, script, target="_blank", target="_self", condition, ping)
 hdhub4u.*##+js(trusted-click-element, '500, .btn-primary.btn-radius.btn-lg.btn.new-tab', 1500)
+hdhub4u.*##+js(alert-buster)
 !#if env_mobile
 hdhub4u.*##.recent-movies:style(zoom: 0.75 !important;)
 !#endif
