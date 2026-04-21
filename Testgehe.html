@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BlazeFTL Remote Transporter</title>
+    <style>
+        body { font-family: sans-serif; background: #0d1117; color: #c9d1d9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #161b22; padding: 2rem; border-radius: 12px; border: 1px solid #30363d; width: 450px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 15px 0; border-radius: 6px; border: 1px solid #30363d; background: #010409; color: white; box-sizing: border-box; }
+        #status { margin-top: 15px; font-size: 0.9rem; color: #8b949e; min-height: 1.2rem; }
+        .btn { background: #238636; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Remote to GoFile</h2>
+        <input type="text" id="remoteLink" placeholder="Paste IP-bound Link Here" value="https://e20.urleecher.com/d/cfsphpzoshzhz54nq7sahrz4vxe3qvw2h5rwj2bcvb2imr7hmvxmyoz2kcdixszksppkm2bqdis5uax6ubbe2/all%20in%201.zip">
+        <button class="btn" id="transferBtn">Send Command</button>
+        <div id="status">Waiting for UserScript...</div>
+    </div>
+
+    <script>
+        // This communicates with the UserScript
+        document.getElementById('transferBtn').addEventListener('click', () => {
+            const url = document.getElementById('remoteLink').value;
+            const event = new CustomEvent('BlazeTransfer', { detail: { url: url } });
+            window.dispatchEvent(event);
+            document.getElementById('status').innerText = "Command Sent to UserScript...";
+        });
+
+        // Listen for success from UserScript
+        window.addEventListener('BlazeSuccess', (e) => {
+            document.getElementById('status').innerHTML = `Done! <a href="${e.detail.link}" target="_blank" style="color:#58a6ff">Download</a>`;
+        });
+    </script>
+</body>
+</html>
