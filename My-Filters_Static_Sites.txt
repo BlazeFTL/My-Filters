@@ -252,7 +252,7 @@ github.dev##.action-toolbar-container
 github.dev##.editor-actions
 github.dev##div.menubar-menu-button:has-text(/Run|Terminal|Help/)
 github.com##.cm-panel.cm-help-panel
-github.com##[class^="prc-components-UnderlineItem-"]:has-text(/Copilot|project|stars|gists|enterprise|Sponsor|Docs|Support|Community|security|Insight/i)
+github.com##[class^="prc-components-UnderlineItem-"]:has-text(/Copilot|project|stars|gists|enterprise|Sponsor|Docs|Support|Community|security|Insight|Agent/i)
 github.com##a[class^="prc-Button-ButtonBase-"]:has-text(Milestone)
 github.com##li[class^="prc-ActionList-ActionListItem-"]:has-text(/Gists|Enterprise|Sponsor/)
 github.com##div.BorderGrid-row > .BorderGrid-cell:has-text(Deployment)
