@@ -244,7 +244,7 @@ www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.web_player_v9_buf
 
 ! Jun 29, 2024 https://github.com
 !!#if false
-! Hide Commit Message On Files Name 3
+! Hide Commit Message On Files Name 3 Lines
 github.com##.react-directory-commit-age:style(margin-right: -120px ! important;)
 github.com##.react-directory-row-commit-cell
 github.com##.react-directory-filename-column:style(width: 400px ! important;)
@@ -258,14 +258,13 @@ github.com##li[class^="prc-ActionList-ActionListItem-"]:has-text(/Gists|Enterpri
 github.com##div.BorderGrid-row > .BorderGrid-cell:has-text(Deployment)
 github.com##a.mr-2.d-block.no-underline.Link--secondary:has-text(/Tags|Activity|Custom pro/)
 github.com###actions-tab
-github.com##:matches-path(/uBlockOrigin/uAssets/commits/master/) [id*="-list-view-node-"]:has-text(/Update.*asset|badware|cookie|adcrap|consent|uBOL|breakage|GDPR|email tracker|consent/i)
 github.com##.footer
 github.com##div.ActionBar-item:has-text(/italic|list/i)
 github.com##.js-pinned-issues-reorder-list.gutter.pr-md-0.px-3.d-sm-flex.d-block
 github.com###security-tab, #projects-tab, #insights-tab
 github.com##[class*="PinnedIssues-module__area--"]
 ! Remove 3 Empty Blocks Near Comments Icon On Issues
-github.com##:matches-path(/uBlockOrigin/uAssets/) div[class*="IssueItemMetadata-module__ListItemMetadata_"][class*="Metadata-module__secondary__"][class^="Metadata-module__metadata__"]:empty
+github.com##div[class*="IssueItemMetadata-module__ListItemMetadata_"][class*="Metadata-module__secondary__"][class^="Metadata-module__metadata__"]:empty
 github.com##[class^="IssueIndexPage-module__feedbackLinkContainer__"]
 ! Post Discussion Thread
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"])
@@ -278,6 +277,7 @@ github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .js-comment-c
 !github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
 !github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .discussion-item-header:style(position: absolute !important; top: 0 !important; right: 0 !important;)
 ! Uassets
+github.com##:matches-path(/uBlockOrigin/uAssets/commits/master/) [id*="-list-view-node-"]:has-text(/Update.*asset|badware|cookie|adcrap|consent|uBOL|breakage|GDPR|email tracker|consent/i)
 github.com##.prc-Timeline-TimelineItem-Sd-t-.Timeline-Item:has-text(pull)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="OverviewRepoFiles-module__Box_2__"]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="prc-components-UnderlineItemList-"] > li:has-text(/Action|Security|Insight/)
@@ -298,8 +298,8 @@ github.com##:matches-path(/uBlockOrigin/uAssets/issues) [id^="event-"]:has-text(
 github.com##:matches-path(/uBlockOrigin/uAssets) .container-lg.entry-content.markdown-body > p:not(:has([href]))
 github.com##:matches-path(/uBlockOrigin/uAssets) .container-lg.entry-content.markdown-body > ul
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="SortableListContainer-module__container"]:has-text(/Youtube/i)
-github.com##:matches-path(/uBlockOrigin/uAssets) [class^="IssueRow-module__row"]:has-text(/Fixable|duplicate|invalid|facebook|youtube|twitch/i)
-github.com##:matches-path(/uBlockOrigin/uAssets) [class^="IssueRow-module__row"]:has-text(/unable to|site issue|Ad-Shield|regional|privacy|badware/i)
+github.com##:matches-path(/uBlockOrigin/uAssets) [class^="IssueRow-module__row"]:has-text(/duplicate|invalid|facebook|youtube|twitch/i)
+github.com##:matches-path(/uBlockOrigin/uAssets) [class^="IssueRow-module__row"]:has-text(/site issue|Ad-Shield|regional|privacy|badware/i)
 github.com##:matches-path(/uBlockOrigin/uAssets) .jxTzTd.Box-sc-g0xbh4-0 > .prc-Button-ButtonBase-c50BI:has-text(Code)
 ! Gorhill Git
 github.com##:matches-path(/gorhill/uBlock/commits/master) [id*="list-view-node"]:has-text(/translation|revision|mv3|Readme|auto-up|changelog/i)
