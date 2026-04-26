@@ -1255,15 +1255,6 @@ uploadg.com##+js(no-fetch-if, sentry)
 uploadg.com##+js(nano-sib, /.?/, *)
 uploadg.com###\:r2\:, #\:r3\:, .py-14.px-20.to-white\/5.via-white\/\[0\.02\].from-white\/5.bg-gradient-to-r.border-white\/10.border.rounded-xl.overflow-hidden.mt-20.relative, .md\:items-start.gap-12.items-center.flex-col.flex > .text-muted.text-xs, .backdrop-blur-xl.shadow-xl.p-20.bg-paper\/80.border-white\/10.border.rounded-2xl.mt-24, .mb-24.download-ad-sidebar-top, .lg\:w-\[340px\].flex-shrink-0.w-full.download-sidebar, .lg\:hidden.z-50.right-0.left-0.bottom-0.fixed.download-ad-mobile-sticky, .pb-24.px-16.max-w-\[970px\].w-full.mx-auto.download-ad-bottom-banner, .p-16.bg-paper\/90.border-white\/10.border.rounded-xl.justify-center.items-center.min-h-\[250px\].flex.mb-16
 
-! https://cloubix.com/a0gbsddbd3ny/Cutee.zip
-||cloubix.com/fonts/$font,1p
-||cloubix.com/css/style.css$stylesheet,1p
-cloubix.com##.d0a-upgrade-wrap, .cb-footer, .d0a-status-bar, .cb-hamburger, .d0a-card-head, .d0a-features-row, .d0a-speed-box, .d0a-btn-note, .d0a-ads-section, .dl1-report-btn, .dl1-actions, .dl1-codes
-cloubix.com##+js(nano-sib, remaining--, *)
-cloubix.com##+js(trusted-set-attr, #countdown, data-status, active)
-cloubix.com##*:style(font-family: none! important;)
-cloubix.com##.dl1-main:style(margin-left: 50px ! important;)
-
 ! Fileq.net
 fileq.net##.download.p-0.block
 fileq.net##.p-4.block
