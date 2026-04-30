@@ -291,7 +291,7 @@ github.com##:matches-path(/uBlockOrigin/uAssets) div[class*="Section-module__Sec
 github.com##:matches-path(/uBlockOrigin/uAssets) [id^="folder-row-"]:not(:has-text(/filters|quick|ubo-/))
 github.com##:matches-path(/BlazeFTL/UBO-Blazed) [id^="folder-row-"]:not(:has-text(/filters|quick|ubo-/))
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="NewMarkdownViewer-module__safe-html-box"] > h3:has-text(Prerequisites)
-github.com##:matches-path(/uBlockOrigin/uAssets) .contains-task-list
+github.com##:matches-path(/uBlockOrigin/uAssets) .markdown-body[class*="NewMarkdownViewer"] > .contains-task-list > .base-task-list-item > div[class*="DragAndDropContainer"] > .base-list-item
 github.com##:matches-path(/uBlockOrigin/uAssets) .js-comment-body.markdown-body.comment-body.d-block > h3:has-text(/Prerequisit|Other extension/)
 github.com##:matches-path(/uBlockOrigin/uAssets) .js-comment-body.markdown-body.comment-body.d-block > h3:has-text(Other extension) + p
 github.com##:matches-path(/uBlockOrigin/uAssets/issues) [id^="event-"]:has-text(/added|changed the title/i)
