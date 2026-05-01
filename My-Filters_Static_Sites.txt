@@ -266,6 +266,10 @@ github.com##[class*="PinnedIssues-module__area--"]
 ! Remove 3 Empty Blocks Near Comments Icon On Issues
 github.com##div[class*="IssueItemMetadata-module__ListItemMetadata_"][class*="Metadata-module__secondary__"][class^="Metadata-module__metadata__"]:empty
 github.com##[class^="IssueIndexPage-module__feedbackLinkContainer__"]
+! Hide Code,List CommentBox Stuff 
+github.com##[class*="ToolbarButton-module__iconButton"]:has(.octicon-italic, .octicon-quote, .octicon-code, [class*="octicon-list-"], .octicon-cross-reference, .octicon-tasklist, .octicon-mention)
+github.com##div.ActionBar-item:has(.octicon-mention, .octicon-code, .octicon-quote, .octicon-cross-reference)
+github.com##[class^="prc-ActionBar-Divider-"]:empty
 ! Post Discussion Thread
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"])
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"], [href*="ahmedok2022"], [href*="Nogososro33"], [href*="RvNaaM"], [href*="Salngader"], [href*="labaikbae"], [href*="ilham372"], [href*="Ocurata"], [href*="milan001dev"], [href*="aaradhya953"])
@@ -1184,7 +1188,7 @@ mmshunt.com##li.ipsResponsive_pull.ipsSpacer_bottom.ipsBox.cForumRow:has-text(Su
 mmshunt.com###ipsLayout_footer
 
 ! May 11, 2025 https://dropmms.com
-dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id]
+dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar
 dropmms.*##.cAnnouncementsFloat.cAnnouncements
 !dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
 dropmms.*##.tthumbGridview_img:style(height: 150px !important;)
