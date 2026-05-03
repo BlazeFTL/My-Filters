@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investor Intelligence · India & Bangladesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf7f4;
+  --bg2: #f3ede6;
+  --surface: rgba(255,255,255,0.72);
+  --surface-solid: #ffffff;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.11);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08), 0 12px 48px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12), 0 24px 80px rgba(0,0,0,0.08);
+  --g1: #e8673c;
+  --g2: #c94d8c;
+  --g3: #7c3bcc;
+  --g4: #2d6bdd;
+  --g5: #19a58a;
+  --text: #1a1410;
+  --text2: #5a4e46;
+  --text3: #9a8c82;
+  --pill-r: 50px;
+  --card-r: 20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden;}
+
+.bg-blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.22;animation:floatBlob linear infinite;}
+.blob-1{width:560px;height:560px;background:radial-gradient(circle,#e8673c,#c94d8c);top:-140px;left:-100px;animation-duration:24s;}
+.blob-2{width:480px;height:480px;background:radial-gradient(circle,#7c3bcc,#2d6bdd);top:15%;right:-120px;animation-duration:30s;animation-delay:-9s;}
+.blob-3{width:400px;height:400px;background:radial-gradient(circle,#19a58a,#2d6bdd);bottom:8%;left:28%;animation-duration:36s;animation-delay:-15s;}
+.blob-4{width:320px;height:320px;background:radial-gradient(circle,#c94d8c,#7c3bcc);bottom:-80px;right:18%;animation-duration:28s;animation-delay:-6s;}
+@keyframes floatBlob{0%{transform:translate(0,0) rotate(0deg);}25%{transform:translate(35px,-25px) rotate(90deg);}50%{transform:translate(-25px,35px) rotate(180deg);}75%{transform:translate(25px,25px) rotate(270deg);}100%{transform:translate(0,0) rotate(360deg);}}
+
+.app{position:relative;z-index:1;}
+
+/* Header */
+header{backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);background:rgba(255,255,255,0.85);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--g1),var(--g3));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 4px 18px rgba(124,59,204,0.32);}
+.logo-text{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;background:linear-gradient(135deg,var(--g1),var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{font-size:11px;color:var(--text3);font-weight:400;display:block;margin-top:-2px;-webkit-text-fill-color:var(--text3);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.live-pill{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(25,165,138,0.1),rgba(45,107,221,0.1));border:1px solid rgba(25,165,138,0.28);padding:5px 13px;border-radius:var(--pill-r);font-size:11px;font-weight:700;color:#17856e;letter-spacing:0.05em;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#19a58a;animation:pulseDot 1.5s ease-in-out infinite;box-shadow:0 0 0 0 rgba(25,165,138,0.5);}
+@keyframes pulseDot{0%{box-shadow:0 0 0 0 rgba(25,165,138,0.6);}70%{box-shadow:0 0 0 7px rgba(25,165,138,0);}100%{box-shadow:0 0 0 0 rgba(25,165,138,0);}}
+.clock-pill{font-family:'DM Mono',monospace;font-size:12px;color:var(--text3);background:var(--bg2);padding:5px 13px;border-radius:var(--pill-r);border:1px solid var(--border);}
+
+/* Hero */
+.hero{padding:44px 28px 36px;background:linear-gradient(135deg,rgba(232,103,60,0.05) 0%,rgba(201,77,140,0.05) 35%,rgba(124,59,204,0.05) 65%,rgba(45,107,221,0.05) 100%);border-bottom:1px solid var(--border);}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.15;background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 42%,var(--g3) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;max-width:620px;margin-bottom:10px;}
+.hero-sub{color:var(--text2);font-size:15px;font-weight:400;max-width:560px;line-height:1.65;}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:24px 28px;}
+.stat-card{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--card-r);padding:20px 20px 16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform 0.22s cubic-bezier(.34,1.56,.64,1),box-shadow 0.22s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;}
+.stat-card:nth-child(1)::before{background:linear-gradient(90deg,var(--g1),var(--g2));}
+.stat-card:nth-child(2)::before{background:linear-gradient(90deg,var(--g2),var(--g3));}
+.stat-card:nth-child(3)::before{background:linear-gradient(90deg,var(--g3),var(--g4));}
+.stat-card:nth-child(4)::before{background:linear-gradient(90deg,var(--g4),var(--g5));}
+.stat-card:nth-child(5)::before{background:linear-gradient(90deg,var(--g5),var(--g3));}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.stat-value{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--text);line-height:1;}
+.stat-unit{font-size:15px;font-weight:400;color:var(--text2);}
+.stat-note{font-size:11px;color:var(--text3);margin-top:5px;}
+.grad-text{background:linear-gradient(135deg,var(--g1),var(--g2),var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* Controls */
+.controls-wrap{padding:0 28px 16px;}
+.controls-inner{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--card-r);padding:16px 20px;box-shadow:var(--shadow-sm);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.search-wrap{position:relative;flex:1;min-width:220px;}
+.search-wrap input{width:100%;background:var(--bg);border:1.5px solid var(--border2);color:var(--text);padding:10px 14px 10px 38px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:13px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.search-wrap input:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(124,59,204,0.1);}
+.search-wrap input::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;pointer-events:none;}
+select{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);padding:10px 32px 10px 13px;font-family:'DM Sans',sans-serif;font-size:12px;border-radius:13px;cursor:pointer;outline:none;transition:all 0.2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239a8c82'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+select:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(124,59,204,0.1);outline:none;}
+select option{background:white;}
+.view-toggle{display:flex;gap:4px;background:var(--bg2);padding:4px;border-radius:13px;border:1px solid var(--border);}
+.vbtn{padding:7px 15px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--text3);background:transparent;}
+.vbtn.active{background:white;color:var(--text);box-shadow:0 1px 6px rgba(0,0,0,0.1);}
+.export-btn{background:linear-gradient(135deg,var(--g3),var(--g4));border:none;color:white;padding:10px 18px;border-radius:13px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(124,59,204,0.28);transition:all 0.2s;white-space:nowrap;}
+.export-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,59,204,0.38);}
+
+/* Chips */
+.chips-wrap{padding:0 28px 16px;display:flex;gap:8px;flex-wrap:wrap;}
+.chip{padding:6px 15px;border-radius:var(--pill-r);font-size:11px;font-weight:600;letter-spacing:0.04em;border:1.5px solid var(--border2);color:var(--text3);cursor:pointer;transition:all 0.2s;background:var(--surface);backdrop-filter:blur(10px);}
+.chip:hover{border-color:var(--g3);color:var(--g3);background:rgba(124,59,204,0.06);}
+.chip.active{background:linear-gradient(135deg,var(--g3),var(--g4));color:white;border-color:transparent;box-shadow:0 4px 14px rgba(124,59,204,0.28);}
+
+/* Result meta */
+.result-meta{padding:0 28px 12px;display:flex;align-items:center;justify-content:space-between;}
+.result-count{font-size:12px;color:var(--text3);}
+.result-count strong{font-weight:700;background:linear-gradient(135deg,var(--g2),var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sort-info{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
+
+/* Table */
+.table-outer{padding:0 28px 28px;}
+.table-card{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--card-r);box-shadow:var(--shadow-sm);overflow:hidden;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:linear-gradient(135deg,rgba(232,103,60,0.04),rgba(45,107,221,0.04));border-bottom:1px solid var(--border2);}
+th{padding:12px 16px;font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;text-align:left;white-space:nowrap;cursor:pointer;user-select:none;transition:color 0.15s;}
+th:hover{color:var(--g3);}
+th.sort-asc::after{content:' ▲';color:var(--g3);font-size:8px;}
+th.sort-desc::after{content:' ▼';color:var(--g3);font-size:8px;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;cursor:pointer;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:linear-gradient(135deg,rgba(232,103,60,0.025),rgba(124,59,204,0.025));}
+td{padding:13px 16px;vertical-align:middle;}
+td.name-cell{white-space:normal;min-width:170px;}
+.inv-name{font-weight:600;font-size:13px;color:var(--text);}
+.inv-fund{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px;}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:var(--pill-r);font-size:10px;font-weight:600;letter-spacing:0.03em;white-space:nowrap;}
+.tag-pre{background:linear-gradient(135deg,rgba(232,103,60,0.1),rgba(201,77,140,0.07));color:#c9412c;border:1px solid rgba(232,103,60,0.18);}
+.tag-seed{background:linear-gradient(135deg,rgba(201,77,140,0.1),rgba(124,59,204,0.07));color:#a02888;border:1px solid rgba(201,77,140,0.18);}
+.tag-a{background:linear-gradient(135deg,rgba(124,59,204,0.1),rgba(45,107,221,0.07));color:#5828a8;border:1px solid rgba(124,59,204,0.18);}
+.tag-b{background:linear-gradient(135deg,rgba(45,107,221,0.1),rgba(25,165,138,0.07));color:#1855bb;border:1px solid rgba(45,107,221,0.18);}
+.tag-growth{background:linear-gradient(135deg,rgba(25,165,138,0.12),rgba(45,107,221,0.07));color:#107060;border:1px solid rgba(25,165,138,0.2);}
+.tag-equity{background:rgba(25,165,138,0.1);color:#107060;border:1px solid rgba(25,165,138,0.2);}
+.tag-debt{background:rgba(232,103,60,0.1);color:#c9412c;border:1px solid rgba(232,103,60,0.2);}
+.tag-mixed{background:rgba(124,59,204,0.1);color:#5828a8;border:1px solid rgba(124,59,204,0.2);}
+.tag-type{background:rgba(0,0,0,0.04);color:var(--text2);border:1px solid var(--border2);}
+.tag-sector{background:rgba(45,107,221,0.07);border:1px solid rgba(45,107,221,0.16);color:#1855bb;font-size:9px;}
+
+.geo-flag{font-size:16px;margin-right:4px;vertical-align:middle;}
+.cheque-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;background:linear-gradient(135deg,var(--g1),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.aum-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);}
+.val-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);}
+.sector-wrap{display:flex;gap:4px;flex-wrap:wrap;max-width:200px;}
+.stag{display:inline-flex;gap:4px;flex-wrap:wrap;max-width:220px;}
+.contact-link{font-family:'DM Mono',monospace;font-size:10px;}
+.contact-link a{color:var(--g4);text-decoration:none;transition:color 0.15s;}
+.contact-link a:hover{color:var(--g3);}
+
+/* Cards */
+.cards-outer{padding:0 28px 28px;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+.inv-card{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--card-r);padding:20px;box-shadow:var(--shadow-sm);cursor:pointer;position:relative;overflow:hidden;transition:transform 0.24s cubic-bezier(.34,1.56,.64,1),box-shadow 0.24s;}
+.inv-card::after{content:'';position:absolute;inset:0;border-radius:var(--card-r);background:linear-gradient(135deg,rgba(232,103,60,0.05),rgba(124,59,204,0.05));opacity:0;transition:opacity 0.2s;pointer-events:none;}
+.inv-card:hover{transform:translateY(-5px) scale(1.01);box-shadow:var(--shadow-md);}
+.inv-card:hover::after{opacity:1;}
+.card-stripe{position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0;}
+.c-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.c-name{font-weight:700;font-size:14px;color:var(--text);line-height:1.3;}
+.c-type{font-size:10px;color:var(--text3);margin-top:3px;}
+.c-fund{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
+.c-flag{font-size:22px;flex-shrink:0;}
+.c-rows{display:flex;flex-direction:column;gap:9px;}
+.c-row{display:flex;justify-content:space-between;align-items:center;}
+.c-key{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.c-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);text-align:right;}
+.c-sectors{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px;}
+.c-contact{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;}
+.c-contact a{color:var(--g4);text-decoration:none;}
+
+/* Empty */
+.empty-state{text-align:center;padding:70px 20px;color:var(--text3);font-size:13px;}
+.empty-state .emoji{font-size:40px;margin-bottom:12px;}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(26,20,16,0.4);backdrop-filter:blur(14px);align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface-solid);border:1px solid var(--border2);border-radius:26px;width:min(700px,100%);max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn 0.3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes modalIn{from{transform:scale(0.9) translateY(24px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal-hero{padding:28px 28px 22px;background:linear-gradient(135deg,rgba(232,103,60,0.07),rgba(201,77,140,0.07),rgba(124,59,204,0.07));border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;z-index:10;border-radius:26px 26px 0 0;}
+.modal-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);line-height:1.2;}
+.modal-fund{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-top:5px;}
+.modal-close{background:rgba(0,0,0,0.06);border:1px solid var(--border2);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:16px;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;margin-left:16px;}
+.modal-close:hover{background:rgba(0,0,0,0.12);color:var(--text);}
+.modal-body{padding:24px 28px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.mf label{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px;}
+.mf p{font-size:13px;color:var(--text);line-height:1.5;}
+.mf.full{grid-column:1/-1;}
+.m-divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0;}
+.m-portfolio{color:var(--text2);font-size:12px;line-height:1.7;}
+.m-notes{color:var(--text2);font-size:12px;line-height:1.7;font-style:italic;}
+.m-sectors-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.m-contact-link a{color:var(--g4);text-decoration:none;font-size:12px;}
+.m-contact-link a:hover{color:var(--g3);text-decoration:underline;}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.14);border-radius:10px;}
+
+@media(max-width:900px){.stats-row{grid-template-columns:repeat(3,1fr);}.stat-card:nth-child(4),.stat-card:nth-child(5){grid-column:auto;}}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr;}header,.hero,.stats-row,.controls-wrap,.chips-wrap,.result-meta,.table-outer,.cards-outer{padding-left:16px;padding-right:16px;}.modal-grid{grid-template-columns:1fr;}.modal-body{padding:16px;}.modal-hero{padding:18px;}}
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+
+<div class="app">
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">📊</div>
+    <div>
+      <span class="logo-text">InvestorIQ</span>
+      <span class="logo-sub">India · Bangladesh Startup Intelligence</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-pill"><div class="live-dot"></div>LIVE DATA</div>
+    <div class="clock-pill" id="clockDisplay"></div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-title">Active Investor Intelligence<br>India &amp; Bangladesh</div>
+  <div class="hero-sub">Real-time database of VCs, angels, PE funds &amp; accelerators — with cheque sizes, valuations, fund info, instruments and direct contacts.</div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Investors</div>
+    <div class="stat-value" id="stat-total">—</div>
+    <div class="stat-note" id="stat-filtered">All funds &amp; angels</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Tracked AUM</div>
+    <div class="stat-value"><span class="stat-unit">$</span><span id="stat-aum">—</span><span class="stat-unit">B+</span></div>
+    <div class="stat-note">Combined fund size</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Avg Cheque</div>
+    <div class="stat-value"><span class="stat-unit">$</span><span id="stat-cheque">—</span><span class="stat-unit">M</span></div>
+    <div class="stat-note">All stages combined</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">India Focused</div>
+    <div class="stat-value grad-text" id="stat-india">—</div>
+    <div class="stat-note">🇮🇳 Funds &amp; angels</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Bangladesh</div>
+    <div class="stat-value grad-text" id="stat-bd">—</div>
+    <div class="stat-note">🇧🇩 Active investors</div>
+  </div>
+</div>
+
+<div class="controls-wrap">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search investor, fund, sector, partner, portfolio…">
+    </div>
+    <select id="geoFilter">
+      <option value="">🌏 All Markets</option>
+      <option value="India">🇮🇳 India</option>
+      <option value="Bangladesh">🇧🇩 Bangladesh</option>
+      <option value="Both">🌏 Both Markets</option>
+    </select>
+    <select id="stageFilter">
+      <option value="">All Stages</option>
+      <option value="Pre-Seed">Pre-Seed</option>
+      <option value="Seed">Seed</option>
+      <option value="Series A">Series A</option>
+      <option value="Series B">Series B</option>
+      <option value="Series C+">Series C+</option>
+      <option value="Growth">Growth</option>
+      <option value="Late Stage">Late Stage</option>
+    </select>
+    <select id="instrFilter">
+      <option value="">All Instruments</option>
+      <option value="Equity">Equity</option>
+      <option value="Debt">Debt / Venture Debt</option>
+      <option value="Mixed">Mixed</option>
+    </select>
+    <select id="typeFilter">
+      <option value="">All Types</option>
+      <option value="VC">VC Fund</option>
+      <option value="Angel">Angel / Syndicate</option>
+      <option value="PE">Private Equity</option>
+      <option value="Corporate">Corporate VC</option>
+      <option value="Impact">Impact Fund</option>
+      <option value="Accelerator">Accelerator</option>
+    </select>
+    <div class="view-toggle">
+      <button class="vbtn active" id="viewTable">≡ Table</button>
+      <button class="vbtn" id="viewCards">⊞ Cards</button>
+    </div>
+    <button class="export-btn" id="exportBtn">↓ Export CSV</button>
+  </div>
+</div>
+
+<div class="chips-wrap" id="chipsWrap"></div>
+
+<div class="result-meta">
+  <div class="result-count">Showing <strong id="resultCount">—</strong> investors</div>
+  <div class="sort-info" id="sortInfo">Click column headers to sort</div>
+</div>
+
+<div id="tableView">
+  <div class="table-outer">
+    <div class="table-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-col="name">Investor / Fund</th>
+              <th data-col="geo">Market</th>
+              <th data-col="type">Type</th>
+              <th data-col="stage">Stage</th>
+              <th data-col="chequeMin">Cheque Size</th>
+              <th data-col="aum">Fund / AUM</th>
+              <th data-col="instrument">Instrument</th>
+              <th data-col="sector">Sectors</th>
+              <th data-col="valuation">Valuation</th>
+              <th data-col="contact">Contact</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="emptyTable" style="display:none"><div class="emoji">🔍</div>No investors match your filters.</div>
+    </div>
+  </div>
+</div>
+
+<div id="cardsView" style="display:none">
+  <div class="cards-outer">
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="empty-state" id="emptyCards" style="display:none"><div class="emoji">🔍</div>No investors match your filters.</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-hero">
+      <div>
+        <div class="modal-name" id="m-name"></div>
+        <div class="modal-fund" id="m-fund"></div>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" id="modalGrid"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const INVESTORS=[
+  {name:"Peak XV Partners (Sequoia India)",fund:"Peak XV Partners",type:"VC",geo:"India",stages:["Seed","Series A","Series B","Series C+","Growth"],chequeMin:0.5,chequeMax:100,chequeDisplay:"$500K – $100M",aum:"$2.85B+",instrument:"Equity",sectors:["Fintech","Edtech","SaaS","Consumer","Healthtech","D2C"],valuation:"$2M – $500M+",contact:"india@peakxv.com",website:"https://www.peakxv.com",linkedin:"https://linkedin.com/company/peakxv",partner:"Rajan Anandan, Shailendra Singh, Mohit Bhatnagar",portfolio:"BYJU'S, Ola, Meesho, BharatPe, Khatabook, Unacademy",notes:"Largest India-dedicated VC. Also invests in Southeast Asia."},
+  {name:"Accel India",fund:"Accel Growth Fund V",type:"VC",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:0.5,chequeMax:50,chequeDisplay:"$500K – $50M",aum:"$650M",instrument:"Equity",sectors:["SaaS","Fintech","Consumer","B2B","Healthtech","Agritech"],valuation:"$3M – $200M",contact:"india@accel.com",website:"https://www.accel.com/locations/india",linkedin:"https://linkedin.com/company/accel",partner:"Prashanth Prakash, Dinesh Katiyar, Prayank Swaroop",portfolio:"Flipkart, Freshworks, Swiggy, BrowserStack, Cure.fit",notes:"One of the most active early-stage investors in India since 2008."},
+  {name:"Blume Ventures",fund:"Blume Fund IV",type:"VC",geo:"India",stages:["Pre-Seed","Seed","Series A"],chequeMin:0.25,chequeMax:5,chequeDisplay:"$250K – $5M",aum:"$250M",instrument:"Equity",sectors:["Deep Tech","SaaS","Fintech","Climate","Consumer","Gaming"],valuation:"$2M – $30M",contact:"contact@blume.vc",website:"https://blume.vc",linkedin:"https://linkedin.com/company/blume-ventures",partner:"Karthik Reddy, Sanjay Nath, Sajith Pai",portfolio:"Unacademy, Servify, IDfy, Slice, Purplle",notes:"India's leading seed-stage fund. Known for founder-first approach."},
+  {name:"Lightspeed India",fund:"Lightspeed India Partners IV",type:"VC",geo:"India",stages:["Seed","Series A","Series B","Series C+"],chequeMin:1,chequeMax:75,chequeDisplay:"$1M – $75M",aum:"$500M",instrument:"Equity",sectors:["Consumer","SaaS","Fintech","Gaming","Health"],valuation:"$5M – $300M",contact:"india@lsvp.com",website:"https://lsvp.com/india",linkedin:"https://linkedin.com/company/lightspeed-venture-partners",partner:"Bejul Somaia, Hemant Mohapatra, Akshay Sharma",portfolio:"OYO, ShareChat, BYJU'S, Innovaccer, Udaan",notes:"Part of global Lightspeed network; highly active in enterprise and consumer."},
+  {name:"Matrix Partners India",fund:"Matrix India Fund V",type:"VC",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:1,chequeMax:40,chequeDisplay:"$1M – $40M",aum:"$550M",instrument:"Equity",sectors:["Fintech","SaaS","Consumer","B2B Marketplace","Healthtech"],valuation:"$5M – $150M",contact:"info@matrixpartners.in",website:"https://www.matrixpartners.in",linkedin:"https://linkedin.com/company/matrix-partners",partner:"Avnish Bajaj, Vikram Vaidyanathan, Rajinder Balaraman",portfolio:"Razorpay, Ola, Country Delight, mSwipe, Dailyhunt",notes:"Strong fintech and B2B SaaS focus. Very active in Tier 2/3 India plays."},
+  {name:"Elevation Capital",fund:"Elevation Capital Fund IX",type:"VC",geo:"India",stages:["Seed","Series A","Series B","Series C+"],chequeMin:1,chequeMax:60,chequeDisplay:"$1M – $60M",aum:"$670M",instrument:"Equity",sectors:["Fintech","Edtech","Consumer","Agritech","SaaS","Healthtech"],valuation:"$5M – $250M",contact:"info@elevationcapital.com",website:"https://elevationcapital.com",linkedin:"https://linkedin.com/company/elevation-capital",partner:"Mayank Khanduja, Mridul Arora, Deepak Gupta",portfolio:"Paytm, Meesho, ShareChat, Urban Company, Mamaearth",notes:"Formerly SAIF Partners. India-dedicated fund with 20+ year track record."},
+  {name:"Nexus Venture Partners",fund:"Nexus Venture Fund VI",type:"VC",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:0.5,chequeMax:30,chequeDisplay:"$500K – $30M",aum:"$700M",instrument:"Equity",sectors:["Enterprise SaaS","Fintech","Consumer","Infrastructure","Health"],valuation:"$3M – $120M",contact:"team@nexusvp.com",website:"https://nexusvp.com",linkedin:"https://linkedin.com/company/nexus-venture-partners",partner:"Naren Gupta, Jishnu Bhattacharjee, Anup Gupta",portfolio:"Delhivery, Uniphore, Postman, DarwinBox, Rapido",notes:"India-US cross-border specialists. Strong enterprise and developer tool investments."},
+  {name:"Kalaari Capital",fund:"Kalaari Capital Fund IV",type:"VC",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:1,chequeMax:20,chequeDisplay:"$1M – $20M",aum:"$650M",instrument:"Equity",sectors:["Consumer","Fintech","Healthtech","Edtech","Gaming","D2C"],valuation:"$5M – $80M",contact:"contact@kalaari.com",website:"https://www.kalaari.com",linkedin:"https://linkedin.com/company/kalaari-capital",partner:"Vani Kola, Rajesh Raju, Kumar Shiralagi",portfolio:"Dream11, Cure.fit, HomeLane, Myntra, UrbanClap",notes:"India-first fund. Strong gender-lens investing program (CARES)."},
+  {name:"3one4 Capital",fund:"3one4 Capital Rising I",type:"VC",geo:"India",stages:["Pre-Seed","Seed","Series A"],chequeMin:0.3,chequeMax:10,chequeDisplay:"$300K – $10M",aum:"$200M",instrument:"Equity",sectors:["Deep Tech","SaaS","Fintech","Media","Climate","Space"],valuation:"$2M – $40M",contact:"contact@3one4.com",website:"https://3one4.com",linkedin:"https://linkedin.com/company/3one4-capital",partner:"Pranav Pai, Siddarth Pai, Anurag Ramdasan",portfolio:"Licious, Darwinbox, Setu, Open Financial, Fasal",notes:"Thesis-driven fund. Known for detailed research memos and contrarian bets."},
+  {name:"Stellaris Venture Partners",fund:"Stellaris Fund II",type:"VC",geo:"India",stages:["Seed","Series A"],chequeMin:0.5,chequeMax:15,chequeDisplay:"$500K – $15M",aum:"$225M",instrument:"Equity",sectors:["B2B SaaS","Fintech","Consumer Internet","Healthcare","Agritech"],valuation:"$3M – $60M",contact:"team@stellarisvp.com",website:"https://stellarisvp.com",linkedin:"https://linkedin.com/company/stellaris-venture-partners",partner:"Alok Goyal, Ritesh Banglani, Rahul Chowdhri",portfolio:"PlanetSpark, Recko, Jar, Nua, HiLabs",notes:"Ex-Matrix, ex-Helion team. Known for long-term conviction investing."},
+  {name:"Chiratae Ventures",fund:"Chiratae Fund IV",type:"VC",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:0.5,chequeMax:20,chequeDisplay:"$500K – $20M",aum:"$850M",instrument:"Equity",sectors:["Fintech","SaaS","Consumer","Healthtech","Deep Tech"],valuation:"$3M – $100M",contact:"contact@chiratae.com",website:"https://chiratae.com",linkedin:"https://linkedin.com/company/chiratae-ventures",partner:"TC Meenakshisundaram, Sudhir Sethi, Karan Mohla",portfolio:"Flipkart, InMobi, FirstCry, Myntra, CureFit",notes:"Formerly IDG Ventures India. One of oldest India VC firms."},
+  {name:"India Quotient",fund:"India Quotient Fund IV",type:"VC",geo:"India",stages:["Pre-Seed","Seed"],chequeMin:0.1,chequeMax:3,chequeDisplay:"$100K – $3M",aum:"$75M",instrument:"Equity",sectors:["Consumer","Vernacular","Bharat","Fintech","Social"],valuation:"$1M – $15M",contact:"team@indiaqu.com",website:"https://indiaqu.com",linkedin:"https://linkedin.com/company/india-quotient",partner:"Madhukar Sinha, Anand Lunia, Prerna Bhutani",portfolio:"ShareChat, Inshorts, Bharatpe, Slice",notes:"Focused on 'Bharat' — next billion internet users. Very early stage."},
+  {name:"Endiya Partners",fund:"Endiya Partners Fund III",type:"VC",geo:"India",stages:["Seed","Series A"],chequeMin:0.5,chequeMax:10,chequeDisplay:"$500K – $10M",aum:"$120M",instrument:"Equity",sectors:["Deep Tech","Enterprise SaaS","Healthtech","Medtech","Cleantech"],valuation:"$3M – $40M",contact:"info@endiya.com",website:"https://endiya.com",linkedin:"https://linkedin.com/company/endiya-partners",partner:"Ramesh Byrapaneni, Abhishek Srivastava, Sateesh Andere",portfolio:"Darwinbox, Detect Technologies, Aibono, nference",notes:"Deep tech and enterprise focus. Strong Hyderabad presence."},
+  {name:"Venture Catalysts (VCats)",fund:"VCats+ Fund",type:"Angel",geo:"India",stages:["Pre-Seed","Seed"],chequeMin:0.1,chequeMax:3,chequeDisplay:"$100K – $3M",aum:"$500M+",instrument:"Equity",sectors:["Fintech","Consumer","Healthtech","D2C","Edtech","Agritech"],valuation:"$1M – $10M",contact:"contact@venturecatalysts.in",website:"https://venturecatalysts.in",linkedin:"https://linkedin.com/company/venture-catalysts",partner:"Dr Apoorv Ranjan Sharma, Anuj Golecha, Anil Jain",portfolio:"Mivi, Wakefit, Bewakoof, Bombay Shaving Co.",notes:"India's largest angel network with 7,000+ investors."},
+  {name:"Rukam Capital",fund:"Rukam Fund II",type:"VC",geo:"India",stages:["Pre-Seed","Seed"],chequeMin:0.1,chequeMax:2,chequeDisplay:"$100K – $2M",aum:"$45M",instrument:"Equity",sectors:["D2C","Consumer","Fintech","Health","Women-led"],valuation:"$1M – $8M",contact:"team@rukam.vc",website:"https://rukam.vc",linkedin:"https://linkedin.com/company/rukam-capital",partner:"Farida Dohadwala, Archana Jahagirdar",portfolio:"Carmesi, Heaps, Origo, Plum",notes:"Women-led fund focused on gender-smart investing."},
+  {name:"General Atlantic India",fund:"General Atlantic Growth Equity",type:"PE",geo:"India",stages:["Growth","Late Stage"],chequeMin:50,chequeMax:500,chequeDisplay:"$50M – $500M",aum:"$73B (global)",instrument:"Equity",sectors:["Fintech","Consumer","SaaS","Healthcare","Education"],valuation:"$200M – $5B",contact:"india@ga.com",website:"https://www.generalatlantic.com",linkedin:"https://linkedin.com/company/general-atlantic",partner:"Sandeep Naik, Shantanu Rastogi",portfolio:"Byju's, Jio Platforms, Razorpay, Meesho, API Holdings",notes:"Globally one of the most active growth equity funds in India."},
+  {name:"KKR India",fund:"KKR Asia Pacific Fund IV",type:"PE",geo:"India",stages:["Growth","Late Stage"],chequeMin:100,chequeMax:1000,chequeDisplay:"$100M – $1B+",aum:"$553B (global)",instrument:"Mixed",sectors:["Infrastructure","NBFC","Healthcare","Consumer","Tech"],valuation:"$500M – $10B",contact:"india@kkr.com",website:"https://www.kkr.com",linkedin:"https://linkedin.com/company/kkr",partner:"Sanjay Nayar, Gaurav Trehan",portfolio:"JB Chemicals, Avendus, Radiant Life Care, Max Healthcare",notes:"One of the largest PE firms active in India across credit and equity."},
+  {name:"ChrysCapital",fund:"ChrysCapital X",type:"PE",geo:"India",stages:["Growth","Late Stage"],chequeMin:30,chequeMax:300,chequeDisplay:"$30M – $300M",aum:"$4B",instrument:"Equity",sectors:["Healthcare","BFSI","IT Services","Consumer","Manufacturing"],valuation:"$150M – $3B",contact:"info@chrysCapital.com",website:"https://www.chrysCapital.com",linkedin:"https://linkedin.com/company/chrysCapital",partner:"Ashish Dhawan, Kunal Shroff",portfolio:"Mphasis, Intas Pharma, PVR, Mankind Pharma",notes:"India's oldest homegrown PE fund with 25+ year track record."},
+  {name:"True North",fund:"True North Fund VII",type:"PE",geo:"India",stages:["Growth","Late Stage"],chequeMin:20,chequeMax:200,chequeDisplay:"$20M – $200M",aum:"$2.5B",instrument:"Equity",sectors:["Healthcare","Financial Services","Consumer","BFSI"],valuation:"$100M – $1B",contact:"info@truenorth.in",website:"https://www.truenorth.in",linkedin:"https://linkedin.com/company/true-north-india",partner:"Vishal Nevatia, Haresh Chawla",portfolio:"Portea, Nykaa, AU Small Finance Bank, BirlaSoft",notes:"Primarily mid-market buyouts and growth investments."},
+  {name:"Trifecta Capital",fund:"Trifecta Venture Debt Fund III",type:"VC",geo:"India",stages:["Series A","Series B","Growth"],chequeMin:2,chequeMax:30,chequeDisplay:"₹15Cr – ₹200Cr",aum:"₹2,500Cr",instrument:"Debt",sectors:["Fintech","Consumer","SaaS","B2B","Healthtech"],valuation:"$20M+ ARR preferred",contact:"info@trifectacapital.com",website:"https://trifectacapital.com",linkedin:"https://linkedin.com/company/trifecta-capital",partner:"Rahul Khanna, Nilesh Kothari",portfolio:"Ola, Mamaearth, Porter, Whatfix, Licious",notes:"India's pioneering venture debt fund. Non-dilutive capital for VC-backed cos."},
+  {name:"InnoVen Capital India",fund:"InnoVen Capital Debt",type:"VC",geo:"India",stages:["Seed","Series A","Series B","Series C+"],chequeMin:1,chequeMax:20,chequeDisplay:"₹8Cr – ₹150Cr",aum:"₹3,000Cr+",instrument:"Debt",sectors:["All sectors (VC-backed)"],valuation:"Post VC-backed round; $5M+ raised",contact:"india@innovencapital.com",website:"https://www.innovencapital.com",linkedin:"https://linkedin.com/company/innoven-capital-india",partner:"Vinod Murali, Ashish Sharma",portfolio:"Bounce, Ninjacart, Udaan, Meesho, Darwinbox",notes:"JV between Temasek & UOB. Largest venture lender by volume in India."},
+  {name:"Stride Ventures",fund:"Stride Ventures Fund III",type:"VC",geo:"India",stages:["Series A","Series B","Growth"],chequeMin:1,chequeMax:15,chequeDisplay:"₹8Cr – ₹120Cr",aum:"₹1,200Cr",instrument:"Debt",sectors:["Fintech","Consumer","B2B","Healthtech","Agritech"],valuation:"Revenue-generating with VC backing",contact:"info@stride.vc",website:"https://stride.vc",linkedin:"https://linkedin.com/company/stride-ventures",partner:"Ishpreet Gandhi, Apoorva Sharma",portfolio:"Uni Cards, Rentomojo, Captain Fresh, Otipy",notes:"New-age venture debt fund. Flexible structures with revenue sharing."},
+  {name:"Omidyar Network India",fund:"Omidyar Network India Fund",type:"Impact",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:0.5,chequeMax:15,chequeDisplay:"$500K – $15M",aum:"$300M+",instrument:"Equity",sectors:["Fintech","Edtech","Healthtech","Governance","Digital Society"],valuation:"$3M – $80M",contact:"info@omidyar.network",website:"https://omidyar.network/india",linkedin:"https://linkedin.com/company/omidyar-network",partner:"Roopa Kudva, Badri Pillapakkam",portfolio:"Karza Technologies, Aspire For Her, Mitr Learning",notes:"Impact-first investing. Focus on low-income and underserved populations."},
+  {name:"Aavishkaar Capital",fund:"Aavishkaar Fund VII",type:"Impact",geo:"India",stages:["Seed","Series A","Series B"],chequeMin:0.3,chequeMax:10,chequeDisplay:"$300K – $10M",aum:"$500M+",instrument:"Mixed",sectors:["Agriculture","Healthcare","Energy","Financial Inclusion","WASH"],valuation:"$2M – $50M",contact:"invest@aavishkaar.in",website:"https://www.aavishkaar.in",linkedin:"https://linkedin.com/company/aavishkaar",partner:"Vineet Rai, Suresh Krishna",portfolio:"Milk Mantra, Vortex Engineering, Ergos, EM3 Agri",notes:"Pioneer of impact investing in India. Rural and BoP focus."},
+  {name:"Tiger Global Management",fund:"Tiger Global Private Investment Partners XVI",type:"PE",geo:"India",stages:["Series B","Series C+","Growth"],chequeMin:20,chequeMax:400,chequeDisplay:"$20M – $400M",aum:"$58B (global)",instrument:"Equity",sectors:["Fintech","Consumer","SaaS","E-commerce","Logistics"],valuation:"$100M – $5B",contact:"info@tigerglobal.com",website:"https://tigerglobal.com",linkedin:"https://linkedin.com/company/tiger-global-management",partner:"Scott Shleifer",portfolio:"Flipkart, Swiggy, CRED, Razorpay, Groww, BharatPe",notes:"Most prolific multi-stage investor in Indian tech over last decade."},
+  {name:"SoftBank Vision Fund",fund:"SoftBank Vision Fund 2",type:"PE",geo:"India",stages:["Series C+","Growth","Late Stage"],chequeMin:100,chequeMax:2000,chequeDisplay:"$100M – $2B",aum:"$100B+",instrument:"Equity",sectors:["Consumer","Proptech","Fintech","Logistics","AI","Healthtech"],valuation:"$500M – $20B",contact:"india@softbank.com",website:"https://visionfund.com",linkedin:"https://linkedin.com/company/softbank-vision-fund",partner:"Masayoshi Son, Munish Varma",portfolio:"OYO, Ola, Paytm, InMobi, Meesho",notes:"Largest tech investor globally. Known for aggressive valuations."},
+  {name:"Y Combinator (India Batch)",fund:"YC Standard Deal",type:"Accelerator",geo:"India",stages:["Pre-Seed"],chequeMin:0.5,chequeMax:0.5,chequeDisplay:"$500K for 7% equity",aum:"N/A (per-batch)",instrument:"Equity",sectors:["All sectors"],valuation:"Cap at ~$7M",contact:"apply@ycombinator.com",website:"https://ycombinator.com",linkedin:"https://linkedin.com/school/y-combinator",partner:"Garry Tan, Brad Flora",portfolio:"Razorpay, Zepto, ClearTax, Khatabook",notes:"Most impactful global accelerator. India has 150+ alumni."},
+  {name:"Antler India",fund:"Antler India Residency",type:"Accelerator",geo:"India",stages:["Pre-Seed"],chequeMin:0.1,chequeMax:0.35,chequeDisplay:"$100K–$350K for ~10%",aum:"$1.3B (global)",instrument:"Equity",sectors:["All sectors"],valuation:"$1M – $3M",contact:"india@antler.co",website:"https://www.antler.co/india",linkedin:"https://linkedin.com/company/antler-vc",partner:"Nitin Sharma, Rajiv Srivatsa",portfolio:"Multiple pre-product stage companies",notes:"Co-founder matching + pre-product investment. Very early stage."},
+  {name:"Reliance Jio Platforms",fund:"Jio Platforms Strategic Investments",type:"Corporate",geo:"India",stages:["Series B","Growth","Late Stage"],chequeMin:50,chequeMax:1500,chequeDisplay:"$50M – $1.5B",aum:"$20B+ fundraise backed",instrument:"Equity",sectors:["Telecom Tech","Fintech","Retail Tech","AI","Media","E-commerce"],valuation:"$200M – $20B+",contact:"investor.relations@ril.com",website:"https://www.jio.com",linkedin:"https://linkedin.com/company/jio",partner:"Mukesh Ambani, Akash Ambani",portfolio:"Dunzo, JioMart, Haptic (Radisys)",notes:"Strategic arm of Reliance Group. Focus on ecosystem lock-in plays."},
+  {name:"Anchorless Bangladesh",fund:"Anchorless Bangladesh Fund I",type:"VC",geo:"Bangladesh",stages:["Pre-Seed","Seed","Series A"],chequeMin:0.25,chequeMax:5,chequeDisplay:"$250K – $5M",aum:"$34M",instrument:"Equity",sectors:["Fintech","Logistics","Healthtech","Edtech","B2B","Agritech"],valuation:"$2M – $25M",contact:"team@anchorlessbangladesh.com",website:"https://anchorlessbangladesh.com",linkedin:"https://linkedin.com/company/anchorless-bangladesh",partner:"Rahat Ahmed, Sadiq Ahmed",portfolio:"ShopUp, Maya, Shikho, Praava Health",notes:"First dedicated VC fund for Bangladesh. SF-based team with Dhaka presence."},
+  {name:"BD Venture Ltd",fund:"BD Venture Ltd",type:"VC",geo:"Bangladesh",stages:["Seed","Series A"],chequeMin:0.1,chequeMax:2,chequeDisplay:"BDT 1Cr – 20Cr",aum:"BDT 100Cr+",instrument:"Equity",sectors:["Fintech","Agritech","Healthtech","E-commerce","Logistics"],valuation:"$1M – $10M",contact:"info@bdventure.com.bd",website:"https://bdventure.com.bd",linkedin:"https://linkedin.com/company/bd-venture-limited",partner:"Fahim Mashroor, Arif Khan",portfolio:"Chaldal, Shajgoj, iFarmer",notes:"Bangladesh's first institutional VC. Partners with BSEC-registered entities."},
+  {name:"IDLC Venture Capital",fund:"IDLC VC Fund I",type:"VC",geo:"Bangladesh",stages:["Seed","Series A"],chequeMin:0.1,chequeMax:3,chequeDisplay:"BDT 1Cr – 30Cr",aum:"BDT 200Cr",instrument:"Equity",sectors:["Fintech","SME Tech","Manufacturing Tech","Healthtech"],valuation:"$1M – $15M",contact:"vc@idlc.com",website:"https://www.idlc.com/venture-capital",linkedin:"https://linkedin.com/company/idlc-finance-limited",partner:"Arif Khan, Selim R. F. Hussain",portfolio:"Multiple early-stage BD startups",notes:"Licensed BSEC VC. Arm of IDLC Finance (publicly listed NBFC)."},
+  {name:"Startup Bangladesh Ltd",fund:"SBL Government Innovation Fund",type:"Impact",geo:"Bangladesh",stages:["Pre-Seed","Seed"],chequeMin:0.05,chequeMax:0.5,chequeDisplay:"BDT 50L – 5Cr",aum:"BDT 500Cr (govt-backed)",instrument:"Equity",sectors:["All sectors","Agritech","Healthtech","Edtech"],valuation:"$500K – $5M",contact:"info@startupbangladesh.vc",website:"https://startupbangladesh.vc",linkedin:"https://linkedin.com/company/startup-bangladesh-limited",partner:"Tina Jabeen (MD & CEO)",portfolio:"10 Minute School, Shajgoj, Sheba.xyz",notes:"Govt of Bangladesh subsidiary under ICT Division. Also provides non-equity grants."},
+  {name:"Grameenphone Accelerator",fund:"GP Accelerate Program",type:"Accelerator",geo:"Bangladesh",stages:["Pre-Seed","Seed"],chequeMin:0.02,chequeMax:0.15,chequeDisplay:"BDT 20L – 1.5Cr",aum:"N/A",instrument:"Equity",sectors:["Telecom Tech","Fintech","IoT","Healthtech","Edtech"],valuation:"Pre-revenue to early revenue",contact:"gpaccelerator@grameenphone.com",website:"https://gpaccelerator.com",linkedin:"https://linkedin.com/company/grameenphone",partner:"GP Digital Team",portfolio:"MedEasy, SureCash, Doctorola",notes:"Corporate accelerator by Telenor/GP. Provides market access alongside capital."},
+  {name:"BRAC Ventures",fund:"BRAC Social Innovation Lab",type:"Impact",geo:"Bangladesh",stages:["Seed","Series A"],chequeMin:0.1,chequeMax:2,chequeDisplay:"$100K – $2M",aum:"NGO-backed",instrument:"Mixed",sectors:["Social Enterprise","Agritech","Health","Education","Financial Inclusion"],valuation:"$1M – $15M",contact:"socialinnovation@brac.net",website:"https://brac.net",linkedin:"https://linkedin.com/company/brac",partner:"Sir Fazle Hasan Abed Foundation team",portfolio:"bKash (partial), Aarong, BRAC Health",notes:"World's largest NGO-backed investor. Pioneering impact-first investing in BD."},
+  {name:"LightCastle Partners",fund:"LightCastle Angel Syndicate",type:"Angel",geo:"Bangladesh",stages:["Pre-Seed","Seed"],chequeMin:0.05,chequeMax:0.5,chequeDisplay:"BDT 50L – 5Cr",aum:"Angel network",instrument:"Equity",sectors:["Fintech","Agritech","Healthtech","E-commerce","Logistics"],valuation:"$500K – $5M",contact:"contact@lightcastlebd.com",website:"https://lightcastlebd.com",linkedin:"https://linkedin.com/company/lightcastle-partners",partner:"Bijon Islam, Waiz Ahmed",portfolio:"Multiple early-stage BD startups",notes:"Consulting firm operating an angel syndicate. Strong BD market data access."},
+  {name:"Beenext",fund:"Beenext Fund IV",type:"VC",geo:"Both",stages:["Pre-Seed","Seed","Series A"],chequeMin:0.25,chequeMax:5,chequeDisplay:"$250K – $5M",aum:"$450M",instrument:"Equity",sectors:["Fintech","Consumer Internet","B2B","Logistics","Edtech"],valuation:"$2M – $30M",contact:"team@beenext.com",website:"https://beenext.com",linkedin:"https://linkedin.com/company/beenext",partner:"Teruhide Sato, Dirk Van Quaquebeke",portfolio:"BharatPe, Juspay, Slice, ShopUp (BD)",notes:"Japanese-origin fund; one of the few investors in both India & Bangladesh."},
+  {name:"500 Global (India/SAARC)",fund:"500 Global Fund VI",type:"VC",geo:"Both",stages:["Pre-Seed","Seed"],chequeMin:0.15,chequeMax:2,chequeDisplay:"$150K – $2M",aum:"$2.7B (global)",instrument:"Equity",sectors:["All sectors"],valuation:"$1M – $10M",contact:"india@500.co",website:"https://500.co",linkedin:"https://linkedin.com/company/500startups",partner:"Khailee Ng, Pankaj Jain",portfolio:"Grab (early), Mamaearth, HealthifyMe, Voonik",notes:"Global micro-fund. Active scout network across India and Bangladesh."},
+  {name:"Flourish Ventures",fund:"Flourish Fintech Fund",type:"Impact",geo:"Both",stages:["Seed","Series A","Series B"],chequeMin:1,chequeMax:10,chequeDisplay:"$1M – $10M",aum:"$300M+",instrument:"Equity",sectors:["Fintech","Financial Inclusion","Insurtech","Wealthtech"],valuation:"$5M – $80M",contact:"info@flourishventures.com",website:"https://flourishventures.com",linkedin:"https://linkedin.com/company/flourish-ventures",partner:"Tilman Ehrbeck, Emmalyn Shaw",portfolio:"BharatPe, Khatabook, Aspire, Navi",notes:"Omidyar-backed fintech impact fund. Active in emerging markets incl. BD."},
+  {name:"Quona Capital",fund:"Quona Accion Inclusion Fund III",type:"Impact",geo:"India",stages:["Series A","Series B"],chequeMin:2,chequeMax:15,chequeDisplay:"$2M – $15M",aum:"$650M",instrument:"Equity",sectors:["Fintech","Insurtech","MSME Lending","Financial Inclusion"],valuation:"$10M – $100M",contact:"info@quona.com",website:"https://quona.com",linkedin:"https://linkedin.com/company/quona-capital",partner:"Monica Brand Engel, Jonathan Whittle",portfolio:"Juspay, LendingKart, NeoGrowth, CredAvenue",notes:"Impact-VC at intersection of inclusion and fintech scale."},
+  {name:"Westbridge Capital",fund:"Westbridge Crossover Fund IV",type:"PE",geo:"India",stages:["Growth","Late Stage"],chequeMin:20,chequeMax:200,chequeDisplay:"$20M – $200M",aum:"$4B+",instrument:"Equity",sectors:["Public markets crossover","Consumer","IT Services","Healthcare"],valuation:"$100M – $3B",contact:"info@westbridgecap.com",website:"https://westbridgecap.com",linkedin:"https://linkedin.com/company/westbridge-capital",partner:"Sandeep Singhal, Sumir Chadha",portfolio:"Mankind Pharma, NIIT Tech, Mphasis",notes:"Public-private crossover fund. Invests in late-private and post-IPO."}
+];
+
+const CHIPS=["All","Fintech","SaaS","Consumer","Healthtech","Edtech","Agritech","Logistics","Deep Tech","Impact","B2B","D2C","Climate","Financial Inclusion"];
+const GEO_STRIPE={India:"linear-gradient(90deg,#e8673c,#c94d8c)",Bangladesh:"linear-gradient(90deg,#19a58a,#2d6bdd)",Both:"linear-gradient(90deg,#7c3bcc,#2d6bdd)"};
+
+let filtered=[...INVESTORS],sortCol=null,sortDir='asc',activeSector='All';
+
+function clock(){document.getElementById('clockDisplay').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' IST';}
+clock();setInterval(clock,1000);
+
+function updateStats(){
+  document.getElementById('stat-total').textContent=INVESTORS.length;
+  document.getElementById('stat-filtered').textContent=filtered.length+' matching filters';
+  const aum=INVESTORS.reduce((a,b)=>{const m=b.aum.match(/([\d.]+)B/);return a+(m?parseFloat(m[1]):0);},0).toFixed(0);
+  document.getElementById('stat-aum').textContent=aum;
+  document.getElementById('stat-cheque').textContent=(INVESTORS.reduce((a,b)=>a+(b.chequeMin+b.chequeMax)/2,0)/INVESTORS.length).toFixed(1);
+  document.getElementById('stat-india').textContent=INVESTORS.filter(i=>i.geo==='India'||i.geo==='Both').length;
+  document.getElementById('stat-bd').textContent=INVESTORS.filter(i=>i.geo==='Bangladesh'||i.geo==='Both').length;
+}
+
+function renderChips(){
+  const w=document.getElementById('chipsWrap');
+  w.innerHTML=CHIPS.map(s=>`<button class="chip${activeSector===s?' active':''}" data-s="${s}">${s}</button>`).join('');
+  w.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{activeSector=b.dataset.s;applyFilters();}));
+}
+
+function stageTag(stages){return stages.map(s=>{let c='tag-seed';if(s.includes('Pre'))c='tag-pre';else if(s.includes(' A'))c='tag-a';else if(s.includes(' B'))c='tag-b';else if(s.includes('C')||s==='Growth')c='tag-growth';else if(s==='Late Stage')c='tag-growth';return`<span class="tag ${c}">${s}</span>`;}).join('');}
+function instrTag(i){return`<span class="tag tag-${i.toLowerCase()==='debt'?'debt':i.toLowerCase()==='mixed'?'mixed':'equity'}">${i}</span>`;}
+function geoFlag(g){return g==='India'?'🇮🇳':g==='Bangladesh'?'🇧🇩':'🌏';}
+
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const geo=document.getElementById('geoFilter').value;
+  const stg=document.getElementById('stageFilter').value;
+  const ins=document.getElementById('instrFilter').value;
+  const typ=document.getElementById('typeFilter').value;
+  filtered=INVESTORS.filter(inv=>{
+    if(geo&&inv.geo!==geo)return false;
+    if(stg&&!inv.stages.some(s=>s===stg))return false;
+    if(ins&&inv.instrument!==ins&&!(ins==='Debt'&&inv.instrument==='Debt'))return false;
+    if(ins==='Equity'&&inv.instrument!=='Equity')return false;
+    if(ins==='Debt'&&inv.instrument!=='Debt')return false;
+    if(ins==='Mixed'&&inv.instrument!=='Mixed')return false;
+    if(typ&&inv.type!==typ)return false;
+    if(activeSector&&activeSector!=='All'&&!inv.sectors.some(s=>s.includes(activeSector)))return false;
+    if(q){const hay=[inv.name,inv.fund,inv.type,inv.geo,inv.contact,inv.partner,inv.portfolio,...inv.sectors,...inv.stages].join(' ').toLowerCase();if(!hay.includes(q))return false;}
+    return true;
+  });
+  if(sortCol){filtered.sort((a,b)=>{let av=sortCol==='chequeMin'?a.chequeMin:a[sortCol],bv=sortCol==='chequeMin'?b.chequeMin:b[sortCol];if(typeof av==='string')av=av.toLowerCase();if(typeof bv==='string')bv=bv.toLowerCase();if(typeof av==='number')return sortDir==='asc'?av-bv:bv-av;return sortDir==='asc'?av<bv?-1:1:av<bv?1:-1;});}
+  document.getElementById('resultCount').textContent=filtered.length;
+  document.getElementById('stat-filtered').textContent=filtered.length+' matching filters';
+  renderChips();renderTable();renderCards();
+}
+
+function renderTable(){
+  const body=document.getElementById('tableBody'),empty=document.getElementById('emptyTable');
+  if(!filtered.length){body.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  body.innerHTML=filtered.map(inv=>`<tr class="inv-row" data-i="${INVESTORS.indexOf(inv)}">
+    <td class="name-cell"><div class="inv-name">${inv.name}</div><div class="inv-fund">${inv.fund}</div></td>
+    <td><span class="geo-flag">${geoFlag(inv.geo)}</span>${inv.geo}</td>
+    <td><span class="tag tag-type">${inv.type}</span></td>
+    <td><div class="stag">${stageTag(inv.stages)}</div></td>
+    <td class="cheque-val">${inv.chequeDisplay}</td>
+    <td class="aum-val">${inv.aum}</td>
+    <td>${instrTag(inv.instrument)}</td>
+    <td><div class="sector-wrap">${inv.sectors.slice(0,3).map(s=>`<span class="tag tag-sector">${s}</span>`).join('')}${inv.sectors.length>3?`<span style="font-size:9px;color:var(--text3)">+${inv.sectors.length-3}</span>`:''}</div></td>
+    <td class="val-val">${inv.valuation}</td>
+    <td class="contact-link"><a href="mailto:${inv.contact}" onclick="event.stopPropagation()">${inv.contact}</a><br><a href="${inv.website}" target="_blank" onclick="event.stopPropagation()" style="color:var(--text3)">🌐 website</a></td>
+  </tr>`).join('');
+  document.querySelectorAll('.inv-row').forEach(r=>r.addEventListener('click',()=>openModal(parseInt(r.dataset.i))));
+}
+
+function renderCards(){
+  const grid=document.getElementById('cardsGrid'),empty=document.getElementById('emptyCards');
+  if(!filtered.length){grid.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  grid.innerHTML=filtered.map(inv=>`<div class="inv-card" data-i="${INVESTORS.indexOf(inv)}">
+    <div class="card-stripe" style="background:${GEO_STRIPE[inv.geo]||GEO_STRIPE.Both}"></div>
+    <div class="c-head"><div><div class="c-name">${inv.name}</div><div class="c-type">${inv.type} · ${inv.geo}</div><div class="c-fund">${inv.fund}</div></div><div class="c-flag">${geoFlag(inv.geo)}</div></div>
+    <div class="c-rows">
+      <div class="c-row"><span class="c-key">Stage</span><div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">${stageTag(inv.stages)}</div></div>
+      <div class="c-row"><span class="c-key">Cheque</span><span class="c-val cheque-val">${inv.chequeDisplay}</span></div>
+      <div class="c-row"><span class="c-key">Fund / AUM</span><span class="c-val">${inv.aum}</span></div>
+      <div class="c-row"><span class="c-key">Instrument</span>${instrTag(inv.instrument)}</div>
+      <div class="c-row"><span class="c-key">Valuation</span><span class="c-val" style="font-size:10px;color:var(--text3)">${inv.valuation}</span></div>
+    </div>
+    <div class="c-sectors">${inv.sectors.slice(0,4).map(s=>`<span class="tag tag-sector">${s}</span>`).join('')}</div>
+    <div class="c-contact"><a href="mailto:${inv.contact}" onclick="event.stopPropagation()">${inv.contact}</a></div>
+  </div>`).join('');
+  document.querySelectorAll('.inv-card[data-i]').forEach(c=>c.addEventListener('click',()=>openModal(parseInt(c.dataset.i))));
+}
+
+function openModal(idx){
+  const inv=INVESTORS[idx];
+  document.getElementById('m-name').textContent=inv.name;
+  document.getElementById('m-fund').textContent=inv.fund;
+  document.getElementById('modalGrid').innerHTML=`
+    <div class="mf"><label>Geography</label><p>${geoFlag(inv.geo)} ${inv.geo}</p></div>
+    <div class="mf"><label>Investor Type</label><p>${inv.type}</p></div>
+    <div class="mf"><label>Investment Stages</label><p>${inv.stages.join(', ')}</p></div>
+    <div class="mf"><label>Instrument</label><p>${inv.instrument}</p></div>
+    <div class="mf"><label>Cheque Size</label><p class="cheque-val" style="font-size:16px">${inv.chequeDisplay}</p></div>
+    <div class="mf"><label>Fund / AUM</label><p class="aum-val">${inv.aum}</p></div>
+    <div class="mf"><label>Valuation Range</label><p class="val-val">${inv.valuation}</p></div>
+    <div class="mf"><label>Key Partners</label><p>${inv.partner}</p></div>
+    <div class="m-divider"></div>
+    <div class="mf full"><label>Focus Sectors</label><div class="m-sectors-wrap">${inv.sectors.map(s=>`<span class="tag tag-sector">${s}</span>`).join('')}</div></div>
+    <div class="mf full"><label>Notable Portfolio</label><p class="m-portfolio">${inv.portfolio}</p></div>
+    <div class="mf full"><label>Notes</label><p class="m-notes">${inv.notes}</p></div>
+    <div class="m-divider"></div>
+    <div class="mf m-contact-link"><label>Email</label><p><a href="mailto:${inv.contact}">${inv.contact}</a></p></div>
+    <div class="mf m-contact-link"><label>Website</label><p><a href="${inv.website}" target="_blank">${inv.website}</a></p></div>
+    <div class="mf m-contact-link full"><label>LinkedIn</label><p><a href="${inv.linkedin}" target="_blank">${inv.linkedin}</a></p></div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modalOverlay').classList.remove('open'));
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')document.getElementById('modalOverlay').classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modalOverlay').classList.remove('open');});
+
+document.querySelectorAll('th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.dataset.col;
+    if(sortCol===col)sortDir=sortDir==='asc'?'desc':'asc';else{sortCol=col;sortDir='asc';}
+    document.querySelectorAll('th').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
+    th.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
+    document.getElementById('sortInfo').textContent=`Sorted by ${col} (${sortDir})`;
+    applyFilters();
+  });
+});
+
+document.getElementById('viewTable').addEventListener('click',()=>{
+  document.getElementById('tableView').style.display='block';document.getElementById('cardsView').style.display='none';
+  document.getElementById('viewTable').classList.add('active');document.getElementById('viewCards').classList.remove('active');
+});
+document.getElementById('viewCards').addEventListener('click',()=>{
+  document.getElementById('tableView').style.display='none';document.getElementById('cardsView').style.display='block';
+  document.getElementById('viewCards').classList.add('active');document.getElementById('viewTable').classList.remove('active');
+});
+
+['searchInput','geoFilter','stageFilter','instrFilter','typeFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',applyFilters);
+  document.getElementById(id).addEventListener('change',applyFilters);
+});
+
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const h=['Name','Fund','Type','Geography','Stages','Cheque','AUM','Instrument','Sectors','Valuation','Partners','Portfolio','Email','Website','LinkedIn','Notes'];
+  const rows=filtered.map(inv=>[`"${inv.name}"`,`"${inv.fund}"`,inv.type,inv.geo,`"${inv.stages.join(';')}"`,`"${inv.chequeDisplay}"`,`"${inv.aum}"`,inv.instrument,`"${inv.sectors.join(';')}"`,`"${inv.valuation}"`,`"${inv.partner}"`,`"${inv.portfolio}"`,inv.contact,inv.website,inv.linkedin,`"${inv.notes}"`]);
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[h,...rows].map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download=`IN_BD_Investors_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+});
+
+renderChips();applyFilters();updateStats();
+</script>
+</body>
+</html>
