@@ -1827,6 +1827,7 @@ pixeldrain.net##p:has-text(Upgrade your)
 speedtest.net##.lower-content-blend.lower-content
 speedtest.net##.footer
 speedtest.net##body, html:style(background: #141526! important;)
+speedtest.sg##.intro-section, [src="readyserver.png"]
 
 ! Mar 18, 2026 https://proof.ovh.net
 proof.ovh.net###iperf
