@@ -1270,6 +1270,27 @@ fileq.net##.flex-nowrap.align-items-center.header-row.row > .d-lg-none.col-auto
 fileq.net##.mt-2.download-meta:style(margin-left: 120px ! important;)
 fileq.net###downloadbtn:style(margin-left: 40% ! important;)
 
+! https://zdrive.to/dkD3YV67zLQK
+zdrive.to##+js(nowoif, _blank)
+zdrive.to##+js(aeld, /blur|focus|pageshow|visibilitychange/)
+zdrive.to##+js(nano-sib, _0x3fdfd7, *)
+zdrive.to##+js(nano-sib, _0x28fa0e, *)
+zdrive.to##div.border.items-center.flex:has-text(Report)
+zdrive.to##.w-full.hover-snap.btn:has-text(Premium)
+zdrive.to##div.border-t:has-text(Forum)
+zdrive.to##.mt-6.border
+zdrive.to##div.border-t.pt-6.mt-8
+zdrive.to##.py-12.border-t
+
+! https://jioupload.link/EL73gR7qWm9B
+magicly.lat##div.mt-5
+magicly.lat##.footer-bottom
+magicly.lat##.fw-500.w-100.radius.btn-md.btn-primary.btn
+magicly.lat##.card-footer
+trading.tempmaile.me##.post-content-container.containerpanel
+trading.tempmaile.me##.normal
+trading.tempmaile.me##footer
+
 ! Apr 8, 2026 https://luluvdoo.com
 luluvid.com,luluvdoo.com##.block
 luluvid.com,luluvdoo.com##.footer
