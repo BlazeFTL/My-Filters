@@ -469,6 +469,7 @@ main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; widt
 !#endif
 ||cineplexbd.net/news_embed.php$xhr,1p
 
+! File Hosting Sites
 ! https://dailyuploads.net/uqv9dxflkxdk
 dailyuploads.net##.sharetabs, footer, .premFeatures
 dailyuploads.net##.downright, .down_holder, table, .downleft:style(margin-left: auto !important; margin-right: auto !important; float: none !important; width: fit-content !important; display: table !important;)
