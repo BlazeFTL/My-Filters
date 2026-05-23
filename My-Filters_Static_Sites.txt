@@ -237,11 +237,6 @@ youtube.com##.ytp-grid-scrollable:remove-class(ytp-grid-scrollable)
 youtube.com##+js(aeld, wheel, , elements, .html5-video-player )
 savefrom.net##.wrapper, .norton, .terms__string
 
-! Force YouTube to use a larger buffer size and disable "variable" throttling
-www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.gv_enable_buffer_level_logging, true)
-www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.web_player_scheduled_server_buffered_duration_seconds, 300)
-www.youtube.com##+js(set-constant, yt.config_.EXPERIMENT_FLAGS.web_player_v9_buffer_health_threshold_ms, 60000)
-
 ! Jun 29, 2024 https://github.com
 !!#if false
 ! Hide Commit Message On Files Name 3 Lines
