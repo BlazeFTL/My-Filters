@@ -1185,7 +1185,8 @@ mmshunt.com##li.ipsResponsive_pull.ipsSpacer_bottom.ipsBox.cForumRow:has-text(Su
 mmshunt.com###ipsLayout_footer
 
 ! May 11, 2025 https://dropmms.com
-dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar
+dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar, #footer2, #footer1
+dropmms.*##body > button:has-text(Dark Mo)
 dropmms.*##.cAnnouncementsFloat.cAnnouncements
 !dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
 dropmms.*##.tthumbGridview_img:style(height: 150px !important;)
