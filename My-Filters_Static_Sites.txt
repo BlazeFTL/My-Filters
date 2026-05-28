@@ -916,6 +916,8 @@ send.now##.max-width-50:style(white-space: break-spaces! important;)
 send.now##.form-control:style(width: 300px ! important;)
 send.now##.tx-center.card-body:has-text(Upgrade)
 send.now##.alert
+send.now##div.tx-center.card-body:has([href*="upload"])
+send.now##.navbar-right
 
 ! Mar 15, 2026 https://hexload.com
 hexload.com##.animated-button2.mb-4.mt-2.p-3.m-0.container-fluid
@@ -946,6 +948,7 @@ down.fast-down.com,down.mdiaload.com#@#tbody > tr div.share:upward(2)
 ! Maybe Only On down.mdiaload.com
 down.mdiaload.com##div.demand-supply
 down.fast-down.com##[title="Premium Download"]
+down.fast-down.com##.row > center > .create
 
 ! Psa Final Links
 !*$script,domain=get-to.link,redirect-rule=noopjs
