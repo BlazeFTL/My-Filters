@@ -284,7 +284,10 @@ async function runEngine() {
 
     if (alive.length === 0) {
       // All dead — keep first domain as backup
-      processedLines.push('! All Dead Kept One Backup');
+      // Only add the comment if the previous line isn't already the same comment
+      if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup') {
+        processedLines.push('! All Dead Kept One Backup');
+      }
       processedLines.push(`${parsed.domains[0]}${parsed.sep}${parsed.ruleSuffix}`);
     } else if (alive.length < parsed.domains.length) {
       // Some dead — strip them
