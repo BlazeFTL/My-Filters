@@ -137,6 +137,7 @@ function parseLine(line) {
   const t = line.trim();
   if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#')) return null;
 
+  // 1. Cosmetic filters
   const cosMatch = t.match(/^([^#]*)(##|#@#)(.*)$/);
   if (cosMatch) {
     const rawDomains = cosMatch[1];
@@ -149,14 +150,26 @@ function parseLine(line) {
     return { type: 'cosmetic', domains, sep, ruleSuffix, original: t, skipped };
   }
 
-  const netMatch = t.match(/^\|\|([a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9])[\^$\/]/);
+  // 2. Network filters (including exceptions)
+  const netMatch = t.match(/^(@@)?\|\|([^\^\$\/]+)([\^\$\/].*)?$/);
   if (netMatch) {
-    const hn = netMatch[1];
-    if (!isValidHostname(hn)) return null;
-    return { type: 'network', domains: [hn], original: t, skipped: [] };
+    const prefix = netMatch[1] || '';
+    const mainDomain = netMatch[2];
+    const suffix = netMatch[3] || '';
+    let domains = [];
+    if (!isWildcard(mainDomain) && isValidHostname(mainDomain)) domains.push(mainDomain);
+    
+    const optMatch = suffix.match(/([\$\,]domain=)([^$,]+)/);
+    if (optMatch) {
+      const optDomains = optMatch[2].split('|').map(d => d.trim()).filter(d => d && !isWildcard(d) && isValidHostname(d));
+      domains = domains.concat(optDomains);
+    }
+    return { type: 'network', domains, prefix, mainDomain, suffix, original: t, skipped: [] };
   }
 
-  const allTokens = t.split(/[|,]/).map(d => d.trim()).filter(d => d);
+  // 3. Plain list or single domain
+  // Use a split that respects || but splits on single pipes
+  const allTokens = t.split(/(?<!\|)\|(?!\|)|,/).map(d => d.trim()).filter(d => d);
   const skipped = allTokens.filter(d => isWildcard(d));
   const plainDomains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
   if (plainDomains.length > 0 || skipped.length > 0) {
@@ -308,8 +321,7 @@ async function runEngine() {
 
   for (const line of lines) {
     const parsed = parseLine(line);
-    if (!parsed) { processedLines.push(line); continue; }
-    if (parsed.domains.length === 0) { processedLines.push(line); continue; }
+    if (!parsed || parsed.domains.length === 0) { processedLines.push(line); continue; }
 
     const results = [];
     for (const d of parsed.domains) {
@@ -323,19 +335,54 @@ async function runEngine() {
       if (status === 'dead') deadDomains.push(bare);
     }
 
-    if (parsed.type === 'network' || parsed.type === 'plain') {
-      processedLines.push(line); continue;
-    }
-
     const alive = results.filter(r => r.status === 'live').map(r => r.d);
-    if (alive.length === 0) {
-      if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
-        processedLines.push('! All Dead Kept One Backup');
-      processedLines.push(`${parsed.domains[0]}${parsed.sep}${parsed.ruleSuffix}`);
-    } else if (alive.length < parsed.domains.length) {
-      processedLines.push(`${alive.join(',')}${parsed.sep}${parsed.ruleSuffix}`);
-    } else {
-      processedLines.push(line);
+    const isAllDead = alive.length === 0;
+
+    if (parsed.type === 'cosmetic') {
+      if (isAllDead) {
+        if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
+          processedLines.push('! All Dead Kept One Backup');
+        processedLines.push(`${parsed.domains[0]}${parsed.sep}${parsed.ruleSuffix}`);
+      } else if (alive.length < parsed.domains.length) {
+        processedLines.push(`${alive.join(',')}${parsed.sep}${parsed.ruleSuffix}`);
+      } else {
+        processedLines.push(line);
+      }
+    } else if (parsed.type === 'network') {
+      let newMain = parsed.mainDomain;
+      let newSuffix = parsed.suffix;
+      const mainStatus = parsed.domains.includes(parsed.mainDomain) ? results.find(r => r.d === parsed.mainDomain)?.status : 'live';
+      if (mainStatus === 'dead') {
+        processedLines.push(`! Dead: ${line}`);
+      } else {
+        if (newSuffix.includes('domain=')) {
+          const optMatch = newSuffix.match(/([\$\,]domain=)([^$,]+)/);
+          if (optMatch) {
+            const prefix = optMatch[1];
+            const optDomains = optMatch[2].split('|');
+            const filteredOpts = optDomains.filter(d => {
+              if (isWildcard(d) || !isValidHostname(d)) return true;
+              return results.find(r => r.d === d)?.status === 'live';
+            });
+            if (filteredOpts.length === 0) {
+              processedLines.push(`! All $domain dead: ${line}`);
+              continue;
+            } else if (filteredOpts.length < optDomains.length) {
+              newSuffix = newSuffix.replace(optMatch[0], prefix + filteredOpts.join('|'));
+            }
+          }
+        }
+        processedLines.push(`${parsed.prefix}||${newMain}${newSuffix}`);
+      }
+    } else if (parsed.type === 'plain') {
+      if (isAllDead) {
+        processedLines.push(`! Dead: ${line}`);
+      } else if (alive.length < parsed.domains.length) {
+        const sep = line.includes('|') ? '|' : ',';
+        processedLines.push(alive.join(sep));
+      } else {
+        processedLines.push(line);
+      }
     }
   }
 
