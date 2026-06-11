@@ -24,7 +24,7 @@ jobs:
         run: pip install aiohttp
 
       - name: Run dead domain cleaner
-        run: python tools/check_dead_domains.py My-Filters_Static_Sites.txt
+        run: python tools/check_dead_domains.py dead test.txt
 
       - name: Commit result
         run: |
