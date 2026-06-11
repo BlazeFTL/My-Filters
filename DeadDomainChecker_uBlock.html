@@ -74,7 +74,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
         </span>
         <button onclick="copy('deadList')" class="btn-git text-[10px] font-bold text-red-600">COPY</button>
       </div>
-      <textarea id="deadList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="5"></textarea>
+      <textarea id="deadList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="2"></textarea>
     </div>
 
     <div id="resultsUI" class="hidden">
@@ -147,7 +147,13 @@ function parseLine(line) {
     return { type: 'network', domains: [hn], original: t };
   }
 
-  return null;  // everything else (CSS selectors, paths, etc.) — don't touch
+  // ── Plain domain list: comma or pipe separated bare hostnames
+  const plainDomains = t.split(/[|,]/).map(d => d.trim()).filter(isValidHostname);
+  if (plainDomains.length > 0) {
+    return { type: 'plain', domains: plainDomains, original: t };
+  }
+
+  return null;
 }
 
 // ─── DNS + HTTP check ─────────────────────────────────────────────────────────
@@ -273,7 +279,7 @@ async function runEngine() {
       if (status === 'dead') deadDomains.push(bare);
     }
 
-    if (parsed.type === 'network') {
+    if (parsed.type === 'network' || parsed.type === 'plain') {
       // Network rules are one domain per line — keep as-is regardless
       processedLines.push(line);
       continue;
