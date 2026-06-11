@@ -1192,7 +1192,7 @@ dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #spo
 dropmms.*##body > button:has-text(Dark Mo)
 dropmms.*##.cAnnouncementsFloat.cAnnouncements
 !dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
-dropmms.*##.tthumbGridview_img:style(height: 150px !important;)
+dropmms.co##.tthumbGridview_img:style(height: 356px !important; width: 100%! important)
 ! Image Stretch To Screen Mobile
 dropmms.*##.ipsImage, .ipsImage_thumbnailed:style(max-width: 100% !important; width: 100% !important; height: auto !important; display: block !important; margin: 0 auto !important;)
 dropmms.*##.ipsType_richText [data-role="commentContent"] p:style(width: 100% !important; max-width: 100% !important; display: block !important;)
