@@ -2,8 +2,13 @@ name: Clean Dead Domains
 
 on:
   schedule:
-    - cron: '0 2 * * 0'   # Every Sunday 02:00 UTC
+    - cron: '0 2 * * 0'
   workflow_dispatch:
+    inputs:
+      filter_file:
+        description: 'File path or URL to filter list'
+        required: true
+        default: 'My-Filters_Static_Sites.txt'
 
 jobs:
   clean:
@@ -23,8 +28,20 @@ jobs:
       - name: Install aiohttp
         run: pip install aiohttp
 
+      - name: Resolve input file
+        run: |
+          INPUT="${{ github.event.inputs.filter_file || 'My-Filters_Static_Sites.txt' }}"
+          # If it's a URL, download it first
+          if echo "$INPUT" | grep -qE '^https?://'; then
+            FILENAME=$(basename "$INPUT")
+            curl -fsSL "$INPUT" -o "$FILENAME"
+            echo "FILTER_FILE=$FILENAME" >> $GITHUB_ENV
+          else
+            echo "FILTER_FILE=$INPUT" >> $GITHUB_ENV
+          fi
+
       - name: Run dead domain cleaner
-        run: python tools/check_dead_domains.py My-Filters_Static_Sites.txt
+        run: python tools/check_dead_domains.py "$FILTER_FILE"
 
       - name: Commit result
         run: |
