@@ -28,9 +28,10 @@ jobs:
 
       - name: Commit result
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git diff --staged --quiet || git commit -m "chore: dead domain cleaned $(date -u +%Y-%m-%d)"
-          g
-          it push
+
+      - name: Push
+        run: git push
