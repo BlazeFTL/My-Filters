@@ -4,3 +4,4 @@ kvrohtak.in,autosimplify.in###notarobot, #getlink, #rtg-snp2, #tp-wait1, #tp-gen
 !telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) window.location.href = 'https://link.liteshort.com/' + getCK.value; })();")
 
 telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) { setTimeout(() => { window.location.href = 'https://link.liteshort.com/' + getCK.value; }, 1000); } })();")
+x265rips.xyz##header:has-text(Featured)
