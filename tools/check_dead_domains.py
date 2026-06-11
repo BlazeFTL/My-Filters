@@ -100,6 +100,7 @@ async def process(input_path):
         lines = f.readlines()
 
     out = []
+    backup_noted = False
     connector = aiohttp.TCPConnector(limit=5)
     async with aiohttp.ClientSession(connector=connector) as session:
         for line in lines:
@@ -135,9 +136,9 @@ async def process(input_path):
                     out.append(",".join(alive_domains) + rule + "\n")
             else:
                 # All dead — keep first as backup (gorhill style)
-                # Only add comment if previous output line isn't already the same comment
-                if not out or out[-1].rstrip("\n") != "! All Dead Kept One Backup":
+                if not backup_noted:
                     out.append("! All Dead Kept One Backup\n")
+                    backup_noted = True
                 out.append(domains[0] + rule + "\n")
 
     return out
