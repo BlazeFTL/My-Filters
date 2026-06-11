@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #fff; color: #1f2328; }
-.wiki-nav { border-bottom: 1px solid #d0d7de; padding: 12px 20px; display: flex; align-items: center; gap: 10px; background: #f6f8fa; }
+.wiki-nav { border-bottom: 1px solid #d0d7de; padding: 12px 20px; display: flex; align-items: center; justify-content: center; background: #f6f8fa; }
 .btn-git { background: #fff; border: 1px solid #d0d7de; border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 600; box-shadow: 0 1px 0 rgba(27,31,35,.04); cursor: pointer; }
 .btn-git:hover { background: #f3f4f6; }
 .btn-run { background: #1f883d; color: #fff; border: 1px solid rgba(31,35,40,.15); border-radius: 6px; padding: 6px 20px; font-weight: 600; font-size: 14px; cursor: pointer; }
@@ -18,7 +18,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .badge { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; text-transform: uppercase; flex-shrink: 0; }
 .badge-dead { background: #ffebe9; color: #cf222e; }
 .badge-live { background: #dafbe1; color: #1a7f37; }
-.badge-skip { background: #f0f0f0; color: #6e7781; }
+.badge-skip { background: #fff3cd; color: #9a6700; }
 .result-box { border-radius: 6px; border-left: 4px solid; padding: 12px; margin-bottom: 12px; }
 .progress-bar { height: 6px; border-radius: 3px; background: #d0d7de; overflow: hidden; }
 .progress-fill { height: 100%; background: #1f883d; transition: width .2s; border-radius: 3px; }
@@ -26,7 +26,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 </head>
 <body>
 <div class="wiki-nav">
-  <i class="fa-solid fa-bars text-gray-500"></i>
   <span class="font-bold text-[#1a7f37]">uBlockOrigin Filters Domain Checker By BlazeFTL</span>
 </div>
 <main class="max-w-5xl mx-auto p-4 md:p-8">
@@ -77,7 +76,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <textarea id="deadList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="2"></textarea>
     </div>
 
+    <div id="skippedBox" class="hidden result-box" style="background:#fffbeb;border-left-color:#d97706;">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-bold text-amber-700 uppercase">
+          <i class="fa-solid fa-forward mr-1"></i>Skipped (Wildcard)
+          <span class="ml-1 bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px]" id="skippedCount">0</span>
+        </span>
+        <button onclick="copy('skippedList')" class="btn-git text-[10px] font-bold text-amber-600">COPY</button>
+      </div>
+      <textarea id="skippedList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="2"></textarea>
+    </div>
+
     <div id="resultsUI" class="hidden">
+      <div class="flex justify-end mb-2">
+        <button onclick="sortAlpha()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
+        </button>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="result-box bg-[#f0f9ff] border-blue-500">
           <div class="flex justify-between items-center mb-2">
@@ -86,10 +101,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
           </div>
           <textarea id="oc" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none" rows="2"></textarea>
         </div>
-        <div class="result-box bg-[#fff0f6] border-pink-500">
+        <div class="result-box bg-[#f5f0ff]" style="border-left-color:#7c3aed;">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-bold text-pink-800 uppercase">Live (Pipe)</span>
-            <button onclick="copy('op')" class="btn-git text-[10px] font-bold text-pink-600">COPY</button>
+            <span class="text-xs font-bold text-purple-800 uppercase">Live (Pipe)</span>
+            <button onclick="copy('op')" class="btn-git text-[10px] font-bold text-purple-600">COPY</button>
           </div>
           <textarea id="op" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none" rows="2"></textarea>
         </div>
@@ -99,64 +114,57 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
           <span class="text-xs font-bold text-amber-800 uppercase">Processed uBO Filter</span>
           <button onclick="dl()" class="btn-git py-0.5 px-3">Download .txt</button>
         </div>
-        <textarea id="of" readonly class="w-full bg-transparent border-none text-[10px] code-area resize-none p-2" rows="12"></textarea>
+        <textarea id="of" readonly class="w-full bg-transparent border-none text-[10px] code-area p-2" style="height:380px;overflow-y:auto;resize:none;"></textarea>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-// ─── Domain validation ────────────────────────────────────────────────────────
-// A real hostname: letters, digits, hyphens, dots, optional leading ~
-// No slashes, no ^, no $, no brackets, no spaces
 const HOSTNAME_RE = /^~?[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?)+\.?$/;
 
 function isValidHostname(d) {
   const bare = d.startsWith('~') ? d.slice(1) : d;
   if (!bare || !bare.includes('.')) return false;
-  if (bare.endsWith('.')) return false;       // trailing dot = skip
+  if (bare.endsWith('.')) return false;
   return HOSTNAME_RE.test(d);
 }
 
-// ─── Parse a single filter line into { domains, sep, ruleSuffix } or null ────
+function isWildcard(d) { return d.includes('*'); }
+
 function parseLine(line) {
   const t = line.trim();
   if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#')) return null;
 
-  // ── Cosmetic / scriptlet rule:  domain1,domain2##...  or  domain##...
-  //    The domain part is everything before the FIRST ## or #@#
   const cosMatch = t.match(/^([^#]*)(##|#@#)(.*)$/);
   if (cosMatch) {
     const rawDomains = cosMatch[1];
-    const sep        = cosMatch[2];
+    const sep = cosMatch[2];
     const ruleSuffix = cosMatch[3];
-    // Each comma-separated token must look like a hostname
-    const domains = rawDomains.split(',')
-      .map(d => d.trim())
-      .filter(isValidHostname);
-    if (domains.length === 0) return null;   // no valid domains → skip line
-    return { type: 'cosmetic', domains, sep, ruleSuffix, original: t };
+    const allTokens = rawDomains.split(',').map(d => d.trim()).filter(d => d);
+    const skipped = allTokens.filter(d => isWildcard(d));
+    const domains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
+    if (domains.length === 0 && skipped.length === 0) return null;
+    return { type: 'cosmetic', domains, sep, ruleSuffix, original: t, skipped };
   }
 
-  // ── Network rule:  ||hostname^  or  ||hostname^$options
-  //    Only extract the bare hostname — nothing with a path
   const netMatch = t.match(/^\|\|([a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9])[\^$\/]/);
   if (netMatch) {
     const hn = netMatch[1];
     if (!isValidHostname(hn)) return null;
-    return { type: 'network', domains: [hn], original: t };
+    return { type: 'network', domains: [hn], original: t, skipped: [] };
   }
 
-  // ── Plain domain list: comma or pipe separated bare hostnames
-  const plainDomains = t.split(/[|,]/).map(d => d.trim()).filter(isValidHostname);
-  if (plainDomains.length > 0) {
-    return { type: 'plain', domains: plainDomains, original: t };
+  const allTokens = t.split(/[|,]/).map(d => d.trim()).filter(d => d);
+  const skipped = allTokens.filter(d => isWildcard(d));
+  const plainDomains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
+  if (plainDomains.length > 0 || skipped.length > 0) {
+    return { type: 'plain', domains: plainDomains, original: t, skipped };
   }
 
   return null;
 }
 
-// ─── DNS + HTTP check ─────────────────────────────────────────────────────────
 const cache = new Map();
 
 async function validate(d) {
@@ -169,13 +177,11 @@ async function validate(d) {
     if (dns.Status !== 0 || !dns.Answer || dns.Answer.length === 0) {
       cache.set(bare, 'dead'); return 'dead';
     }
-    // Wildcard trap — random subdomain should NOT resolve
     const trap = `xverify${Math.floor(Math.random()*99999)}.${bare}`;
     const wild = await fetch(`https://dns.google/resolve?name=${trap}&type=A`).then(r => r.json());
     if (wild.Status === 0 && wild.Answer && wild.Answer.length > 0) {
-      cache.set(bare, 'dead'); return 'dead';   // wildcard DNS = parked/dead
+      cache.set(bare, 'dead'); return 'dead';
     }
-    // HTTP reachability
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 3500);
     try {
@@ -193,8 +199,8 @@ async function validate(d) {
   return result;
 }
 
-// ─── UI helpers ───────────────────────────────────────────────────────────────
 let processedCount = 0, totalCount = 0;
+let currentLivePool = [];
 
 function updateProgress() {
   const pct = totalCount ? Math.round(processedCount / totalCount * 100) : 0;
@@ -214,7 +220,12 @@ function logDomain(domain, status) {
 function copy(id) { const e = document.getElementById(id); e.select(); document.execCommand('copy'); }
 async function handleFile(i) { if (i.files[0]) document.getElementById('ti').value = await i.files[0].text(); }
 
-// ─── Main engine ──────────────────────────────────────────────────────────────
+function sortAlpha() {
+  const sorted = currentLivePool.slice().sort();
+  document.getElementById('oc').value = sorted.join(',');
+  document.getElementById('op').value = sorted.join('|');
+}
+
 async function runEngine() {
   let input = document.getElementById('ti').value.trim();
   if (!input) return;
@@ -226,23 +237,25 @@ async function runEngine() {
     document.getElementById('ti').value = input;
   }
 
-  // Reset
   cache.clear();
   processedCount = 0;
+  currentLivePool = [];
   const deadDomains = [], livePool = [];
+
   document.getElementById('runBtn').disabled = true;
   document.getElementById('loader').classList.remove('hidden');
   document.getElementById('logBox').classList.remove('hidden');
   document.getElementById('resultsUI').classList.remove('hidden');
   document.getElementById('deadBox').classList.add('hidden');
+  document.getElementById('skippedBox').classList.add('hidden');
   document.getElementById('sg').innerHTML = '';
   document.getElementById('progressLabel').textContent = 'Checking domains…';
 
   const lines = input.split('\n');
   const isUbo = lines.some(l => /##|#@#|\|\|/.test(l));
 
-  // Pre-count unique checkable domains for progress bar
   const uniqueToCheck = new Set();
+  const allSkipped = new Set();
   for (const line of lines) {
     const parsed = parseLine(line);
     if (!parsed) continue;
@@ -250,68 +263,67 @@ async function runEngine() {
       const bare = d.startsWith('~') ? d.slice(1) : d;
       uniqueToCheck.add(bare);
     }
+    if (parsed.skipped) for (const s of parsed.skipped) allSkipped.add(s);
   }
   totalCount = uniqueToCheck.size;
+  const uniqueSkipped = [...allSkipped];
   updateProgress();
+
+  for (const s of uniqueSkipped) logDomain(s, 'skip');
 
   const processedLines = [];
 
   for (const line of lines) {
     const parsed = parseLine(line);
 
-    if (!parsed) {
-      processedLines.push(line);
-      continue;
-    }
+    if (!parsed) { processedLines.push(line); continue; }
 
-    // Check each domain (cache prevents re-querying)
+    if (parsed.domains.length === 0) { processedLines.push(line); continue; }
+
     const results = [];
     for (const d of parsed.domains) {
       const bare = d.startsWith('~') ? d.slice(1) : d;
       const isNew = !cache.has(bare);
       const status = await validate(d);
-
       if (isNew) { processedCount++; updateProgress(); }
       logDomain(bare, status);
       results.push({ d, status });
-
       if (status === 'live') livePool.push(bare);
       if (status === 'dead') deadDomains.push(bare);
     }
 
     if (parsed.type === 'network' || parsed.type === 'plain') {
-      // Network rules are one domain per line — keep as-is regardless
-      processedLines.push(line);
-      continue;
+      processedLines.push(line); continue;
     }
 
-    // Cosmetic / scriptlet rules — rebuild with alive domains only
     const alive = results.filter(r => r.status === 'live').map(r => r.d);
-
     if (alive.length === 0) {
-      // All dead — keep first domain as backup
-      // Only add the comment if the previous line isn't already the same comment
-      if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup') {
+      if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
         processedLines.push('! All Dead Kept One Backup');
-      }
       processedLines.push(`${parsed.domains[0]}${parsed.sep}${parsed.ruleSuffix}`);
     } else if (alive.length < parsed.domains.length) {
-      // Some dead — strip them
       processedLines.push(`${alive.join(',')}${parsed.sep}${parsed.ruleSuffix}`);
     } else {
       processedLines.push(line);
     }
   }
 
-  // Outputs
-  document.getElementById('oc').value = [...new Set(livePool)].join(',');
-  document.getElementById('op').value = [...new Set(livePool)].join('|');
+  const uniqueLive = [...new Set(livePool)];
+  currentLivePool = uniqueLive;
+  document.getElementById('oc').value = uniqueLive.join(',');
+  document.getElementById('op').value = uniqueLive.join('|');
 
   const uniqueDead = [...new Set(deadDomains)];
   if (uniqueDead.length) {
     document.getElementById('deadBox').classList.remove('hidden');
     document.getElementById('deadCount').textContent = uniqueDead.length;
     document.getElementById('deadList').value = uniqueDead.join('\n');
+  }
+
+  if (uniqueSkipped.length) {
+    document.getElementById('skippedBox').classList.remove('hidden');
+    document.getElementById('skippedCount').textContent = uniqueSkipped.length;
+    document.getElementById('skippedList').value = uniqueSkipped.join('\n');
   }
 
   if (isUbo) {
