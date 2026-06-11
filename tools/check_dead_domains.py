@@ -135,7 +135,9 @@ async def process(input_path):
                     out.append(",".join(alive_domains) + rule + "\n")
             else:
                 # All dead — keep first as backup (gorhill style)
-                out.append("! All Dead Kept One Backup\n")
+                # Only add comment if previous output line isn't already the same comment
+                if not out or out[-1].rstrip("\n") != "! All Dead Kept One Backup":
+                    out.append("! All Dead Kept One Backup\n")
                 out.append(domains[0] + rule + "\n")
 
     return out
