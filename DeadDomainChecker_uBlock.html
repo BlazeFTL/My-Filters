@@ -65,6 +65,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <div id="sg" class="space-y-1.5 max-h-32 overflow-y-auto pr-2"></div>
     </div>
 
+    <div id="sortBtnWrap" class="hidden flex justify-end">
+      <button id="sortBtn" onclick="toggleSort()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
+      </button>
+    </div>
+
     <div id="deadBox" class="hidden result-box border-red-400" style="background:#fff5f5;border-left-color:#cf222e;">
       <div class="flex justify-between items-center mb-2">
         <span class="text-xs font-bold text-red-700 uppercase">
@@ -88,11 +94,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
     </div>
 
     <div id="resultsUI" class="hidden">
-      <div class="flex justify-end mb-2">
-        <button onclick="sortAlpha()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
-          <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
-        </button>
-      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="result-box bg-[#f0f9ff] border-blue-500">
           <div class="flex justify-between items-center mb-2">
@@ -200,7 +201,8 @@ async function validate(d) {
 }
 
 let processedCount = 0, totalCount = 0;
-let currentLivePool = [];
+let isSorted = false;
+let currentLivePool = [], currentDeadPool = [], currentSkippedPool = [];
 
 function updateProgress() {
   const pct = totalCount ? Math.round(processedCount / totalCount * 100) : 0;
@@ -220,10 +222,47 @@ function logDomain(domain, status) {
 function copy(id) { const e = document.getElementById(id); e.select(); document.execCommand('copy'); }
 async function handleFile(i) { if (i.files[0]) document.getElementById('ti').value = await i.files[0].text(); }
 
-function sortAlpha() {
-  const sorted = currentLivePool.slice().sort();
-  document.getElementById('oc').value = sorted.join(',');
-  document.getElementById('op').value = sorted.join('|');
+function toggleSort() {
+  isSorted = !isSorted;
+  const btn = document.getElementById('sortBtn');
+
+  const live = isSorted ? currentLivePool.slice().sort() : currentLivePool;
+  document.getElementById('oc').value = live.join(',');
+  document.getElementById('op').value = live.join('|');
+
+  if (currentDeadPool.length) {
+    const dead = isSorted ? currentDeadPool.slice().sort() : currentDeadPool;
+    document.getElementById('deadList').value = dead.join('\n');
+  }
+
+  if (currentSkippedPool.length) {
+    const skipped = isSorted ? currentSkippedPool.slice().sort() : currentSkippedPool;
+    document.getElementById('skippedList').value = skipped.join('\n');
+  }
+
+  btn.innerHTML = isSorted
+    ? '<i class="fa-solid fa-rotate-left"></i> Undo Sort'
+    : '<i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z';
+}
+
+function resetUI() {
+  isSorted = false;
+  currentLivePool = []; currentDeadPool = []; currentSkippedPool = [];
+
+  ['deadBox','skippedBox','resultsUI','filterSection'].forEach(id =>
+    document.getElementById(id).classList.add('hidden'));
+
+  document.getElementById('sortBtnWrap').classList.add('hidden');
+  document.getElementById('sortBtn').innerHTML = '<i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z';
+
+  ['oc','op','deadList','skippedList','of'].forEach(id =>
+    document.getElementById(id).value = '');
+
+  document.getElementById('deadCount').textContent = '0';
+  document.getElementById('skippedCount').textContent = '0';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressText').textContent = '0 / 0 (0%)';
+  document.getElementById('sg').innerHTML = '';
 }
 
 async function runEngine() {
@@ -237,18 +276,15 @@ async function runEngine() {
     document.getElementById('ti').value = input;
   }
 
+  resetUI();
   cache.clear();
   processedCount = 0;
-  currentLivePool = [];
+
   const deadDomains = [], livePool = [];
 
   document.getElementById('runBtn').disabled = true;
   document.getElementById('loader').classList.remove('hidden');
   document.getElementById('logBox').classList.remove('hidden');
-  document.getElementById('resultsUI').classList.remove('hidden');
-  document.getElementById('deadBox').classList.add('hidden');
-  document.getElementById('skippedBox').classList.add('hidden');
-  document.getElementById('sg').innerHTML = '';
   document.getElementById('progressLabel').textContent = 'Checking domains…';
 
   const lines = input.split('\n');
@@ -259,10 +295,7 @@ async function runEngine() {
   for (const line of lines) {
     const parsed = parseLine(line);
     if (!parsed) continue;
-    for (const d of parsed.domains) {
-      const bare = d.startsWith('~') ? d.slice(1) : d;
-      uniqueToCheck.add(bare);
-    }
+    for (const d of parsed.domains) uniqueToCheck.add(d.startsWith('~') ? d.slice(1) : d);
     if (parsed.skipped) for (const s of parsed.skipped) allSkipped.add(s);
   }
   totalCount = uniqueToCheck.size;
@@ -275,9 +308,7 @@ async function runEngine() {
 
   for (const line of lines) {
     const parsed = parseLine(line);
-
     if (!parsed) { processedLines.push(line); continue; }
-
     if (parsed.domains.length === 0) { processedLines.push(line); continue; }
 
     const results = [];
@@ -308,23 +339,27 @@ async function runEngine() {
     }
   }
 
-  const uniqueLive = [...new Set(livePool)];
-  currentLivePool = uniqueLive;
-  document.getElementById('oc').value = uniqueLive.join(',');
-  document.getElementById('op').value = uniqueLive.join('|');
+  currentLivePool = [...new Set(livePool)];
+  currentDeadPool = [...new Set(deadDomains)];
+  currentSkippedPool = uniqueSkipped;
 
-  const uniqueDead = [...new Set(deadDomains)];
-  if (uniqueDead.length) {
+  document.getElementById('sortBtnWrap').classList.remove('hidden');
+
+  if (currentDeadPool.length) {
     document.getElementById('deadBox').classList.remove('hidden');
-    document.getElementById('deadCount').textContent = uniqueDead.length;
-    document.getElementById('deadList').value = uniqueDead.join('\n');
+    document.getElementById('deadCount').textContent = currentDeadPool.length;
+    document.getElementById('deadList').value = currentDeadPool.join('\n');
   }
 
-  if (uniqueSkipped.length) {
+  if (currentSkippedPool.length) {
     document.getElementById('skippedBox').classList.remove('hidden');
-    document.getElementById('skippedCount').textContent = uniqueSkipped.length;
-    document.getElementById('skippedList').value = uniqueSkipped.join('\n');
+    document.getElementById('skippedCount').textContent = currentSkippedPool.length;
+    document.getElementById('skippedList').value = currentSkippedPool.join('\n');
   }
+
+  document.getElementById('resultsUI').classList.remove('hidden');
+  document.getElementById('oc').value = currentLivePool.join(',');
+  document.getElementById('op').value = currentLivePool.join('|');
 
   if (isUbo) {
     document.getElementById('filterSection').classList.remove('hidden');
