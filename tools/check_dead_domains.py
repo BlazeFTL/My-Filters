@@ -5,14 +5,12 @@ import sys
 import os
 import aiohttp
 
-# Exact mirrors of gorhill's config.js
 DNS_QUERIES = [
     "https://cloudflare-dns.com/dns-query?name={hn}&type=A",
     "https://dns.google/resolve?name={hn}&type=A",
 ]
-THROTTLE = 0.25  # 250ms
+THROTTLE = 0.25
 
-# Exact mirrors of gorhill's parkedDomainAuthorities
 PARKED_RE = [
     re.compile(r'^traff-\d+\.hugedomains\.com\.?$'),
     re.compile(r'^\d+\.parkingcrew\.net\.?$'),
@@ -24,11 +22,6 @@ dns_cache = {}
 
 
 async def validate_hostname(session, hn):
-    """
-    Mirrors gorhill's validateHostname():
-    Try each DNS server; return the first result where Status != 2.
-    Returns None if all servers fail or return Status 2.
-    """
     await asyncio.sleep(THROTTLE)
     for url_tpl in DNS_QUERIES:
         url = url_tpl.format(hn=hn)
@@ -47,16 +40,12 @@ async def validate_hostname(session, hn):
 
 
 def check_hostname(result):
-    """
-    Mirrors gorhill's checkHostname().
-    Returns a diagnostic string if bad, None if ok/alive.
-    """
     if not isinstance(result, dict):
-        return None                           # inconclusive → keep
+        return None
     status = result.get("Status")
     if status == 1: return "format error"
     if status == 2: return "dns server failure"
-    if status == 3: return "name error"       # NXDOMAIN — dead
+    if status == 3: return "name error"
     if status == 4: return "not implemented"
     if status == 5: return "refused"
     answers = result.get("Answer") or []
@@ -65,7 +54,7 @@ def check_hostname(result):
         for pat in PARKED_RE:
             if pat.search(data):
                 return "parked"
-    return None                               # Status 0, no parking → alive
+    return None
 
 
 async def is_dead(session, hn):
@@ -77,15 +66,16 @@ async def is_dead(session, hn):
     return dead
 
 
-# Matches comma-separated domain list before ## (cosmetic/scriptlet rules)
-# Gorhill's processExt() handles this via parser.extOptions() -> hn field
+# Cosmetic rules: domain-list##selector
 RULE_RE = re.compile(
     r'^((?:~?[a-zA-Z0-9\-\*]+(?:\.[a-zA-Z0-9\-\*]+)*)(?:,(?:~?[a-zA-Z0-9\-\*]+(?:\.[a-zA-Z0-9\-\*]+)*))*)(##.+)$'
 )
 
+# Network filters: domain= or from= pipe-separated list in options
+NET_OPT_RE = re.compile(r'(?<=[,$])(domain|from)=([^,\s\n]+)')
+
 
 def should_skip(hn):
-    """Mirrors gorhill's per-hostname skip conditions."""
     if hn.endswith('.onion'):
         return True
     if re.match(r'^\d+\.\d+\.\d+\.\d+$', hn):
@@ -93,6 +83,20 @@ def should_skip(hn):
     if '*' in hn:
         return True
     return False
+
+
+async def check_pipe_domains(session, domains_str):
+    domains = domains_str.split("|")
+    checked = []
+    for d in domains:
+        bare = d.lstrip("~")
+        if d.startswith("~") or should_skip(bare):
+            checked.append((d, False))
+            continue
+        dead = await is_dead(session, bare)
+        checked.append((d, dead))
+    alive = [d for d, dead in checked if not dead]
+    return domains, alive
 
 
 async def process(input_path):
@@ -110,36 +114,52 @@ async def process(input_path):
                 out.append(line)
                 continue
 
+            # --- Cosmetic rules (domain,list##selector) ---
             m = RULE_RE.match(raw)
-            if not m:
-                out.append(line)
+            if m:
+                domains_str, rule = m.group(1), m.group(2)
+                domains = [d for d in domains_str.split(",") if d]
+                checked = []
+                for d in domains:
+                    bare = d.lstrip("~")
+                    if should_skip(bare):
+                        checked.append((d, False))
+                        continue
+                    dead = await is_dead(session, bare)
+                    checked.append((d, dead))
+                alive_domains = [d for d, dead in checked if not dead]
+                if alive_domains:
+                    if len(alive_domains) == len(domains):
+                        out.append(line)
+                    else:
+                        out.append(",".join(alive_domains) + rule + "\n")
+                else:
+                    if domains[0] not in backup_commented:
+                        out.append("! All Dead Kept One Backup\n")
+                        backup_commented.add(domains[0])
+                    out.append(domains[0] + rule + "\n")
                 continue
 
-            domains_str, rule = m.group(1), m.group(2)
-            domains = [d for d in domains_str.split(",") if d]
-
-            checked = []
-            for d in domains:
-                bare = d.lstrip("~")
-                if should_skip(bare):
-                    checked.append((d, False))  # skip → treat as alive (keep)
-                    continue
-                dead = await is_dead(session, bare)
-                checked.append((d, dead))
-
-            alive_domains = [d for d, dead in checked if not dead]
-
-            if alive_domains:
-                if len(alive_domains) == len(domains):
-                    out.append(line)                              # nothing changed
+            # --- Network filters with domain= or from= ---
+            m2 = NET_OPT_RE.search(raw)
+            if m2:
+                domains_str = m2.group(2)
+                domains, alive = await check_pipe_domains(session, domains_str)
+                if len(alive) == len(domains):
+                    out.append(line)
+                elif alive:
+                    new_raw = raw[:m2.start(2)] + "|".join(alive) + raw[m2.end(2):]
+                    out.append(new_raw + "\n")
                 else:
-                    out.append(",".join(alive_domains) + rule + "\n")
-            else:
-                # All dead — keep first as backup (gorhill style)
-                if domains[0] not in backup_commented:
-                    out.append("! All Dead Kept One Backup\n")
-                    backup_commented.add(domains[0])
-                out.append(domains[0] + rule + "\n")
+                    first = domains[0]
+                    if first not in backup_commented:
+                        out.append("! All Dead Kept One Backup\n")
+                        backup_commented.add(first)
+                    new_raw = raw[:m2.start(2)] + first + raw[m2.end(2):]
+                    out.append(new_raw + "\n")
+                continue
+
+            out.append(line)
 
     return out
 
