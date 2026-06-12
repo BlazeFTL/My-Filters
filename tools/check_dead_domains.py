@@ -74,6 +74,9 @@ RULE_RE = re.compile(
 # Network filters: domain= or from= pipe-separated list in options
 NET_OPT_RE = re.compile(r'(?<=[,$])(domain|from)=([^,\s\n]+)')
 
+# Basic blocking rules: ||hostname^ or @@||hostname^
+HOSTNAME_RE = re.compile(r'^(@@)?\|\|([a-zA-Z0-9\-\.]+)\^')
+
 
 def should_skip(hn):
     if hn.endswith('.onion'):
@@ -157,6 +160,21 @@ async def process(input_path):
                         backup_commented.add(first)
                     new_raw = raw[:m2.start(2)] + first + raw[m2.end(2):]
                     out.append(new_raw + "\n")
+                continue
+
+            # --- Basic ||hostname^ rules ---
+            m3 = HOSTNAME_RE.match(raw)
+            if m3:
+                hn = m3.group(2)
+                if should_skip(hn):
+                    out.append(line)
+                    continue
+                dead = await is_dead(session, hn)
+                if dead:
+                    out.append("! All Dead Kept One Backup\n")
+                    out.append(line)
+                else:
+                    out.append(line)
                 continue
 
             out.append(line)
