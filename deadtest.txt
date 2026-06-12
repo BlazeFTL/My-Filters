@@ -3,14 +3,7 @@ kvrohtak.in,autosimplify.in###notarobot, #getlink, #rtg-snp2, #tp-wait1, #tp-gen
 ! Instant ByPass
 !telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) window.location.href = 'https://link.liteshort.com/' + getCK.value; })();")
 
-telugujobzhub.in,jobsmbn.in,jobssozo.in,strictstrategies.com,plasmaline.in,24jobkhabar.in,grandyojna.com,rajasthanhelp.com,sssbiotic.com,loan.cryptogully.com,kvrohtak.in,autosimplify.in##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) { setTimeout(() => { window.location.href = 'https://link.liteshort.com/' + getCK.value; }, 1000); } })();")
-x265rips.xyz##header:has-text(Featured)
-x265rips.xyz##.featured.items, .report-video-error, .dooplay_player
-
-*$image,redirect-rule=1x1.gif,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-*$xhr,redirect-rule=noopjs,method=get|post,from=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-@@*$xhr,redirect-rule,method=head,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-@@*$ghide,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-@@*$script,1p,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-@@||profitsfly.com^$script,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-@@/adpartner.min.js$script,domain=starkroboticsfrc.com|sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
+@@||vhit.io/scripts/vhit.js$script,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
+@@*$ghide,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
+||sharecube.pro^$all
+||flyshare.cfd^$all
