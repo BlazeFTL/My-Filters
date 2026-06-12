@@ -5,5 +5,5 @@ kvrohtak.in,autosimplify.in###notarobot, #getlink, #rtg-snp2, #tp-wait1, #tp-gen
 
 @@||vhit.io/scripts/vhit.js$script,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
 @@*$ghide,domain=upfilesgo.com|upfion.com|upfiles.app|upfiles-urls.com
-||sharecube.pro^$all
-||flyshare.cfd^$all
+! ||sharecube.pro^$all
+! ||flyshare.cfd^$all
