@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uBlockOrigin | Domain Checker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #fff; color: #1f2328; }
+.wiki-nav { border-bottom: 1px solid #d0d7de; padding: 12px 20px; display: flex; align-items: center; justify-content: center; background: #f6f8fa; }
+.btn-git { background: #fff; border: 1px solid #d0d7de; border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 600; box-shadow: 0 1px 0 rgba(27,31,35,.04); cursor: pointer; }
+.btn-git:hover { background: #f3f4f6; }
+.btn-run { background: #1f883d; color: #fff; border: 1px solid rgba(31,35,40,.15); border-radius: 6px; padding: 6px 20px; font-weight: 600; font-size: 14px; cursor: pointer; }
+.btn-run:hover { background: #1a7f37; }
+.btn-run:disabled { background: #6e7781; cursor: not-allowed; }
+.code-area { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; }
+.badge { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; text-transform: uppercase; flex-shrink: 0; }
+.badge-dead { background: #ffebe9; color: #cf222e; }
+.badge-live { background: #dafbe1; color: #1a7f37; }
+.badge-skip { background: #fff3cd; color: #9a6700; }
+.result-box { border-radius: 6px; border-left: 4px solid; padding: 12px; margin-bottom: 12px; }
+.progress-bar { height: 6px; border-radius: 3px; background: #d0d7de; overflow: hidden; }
+.progress-fill { height: 100%; background: #1f883d; transition: width .2s; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="wiki-nav">
+  <span class="font-bold text-[#1a7f37]">uBlockOrigin Filters Domain Checker By BlazeFTL</span>
+</div>
+<main class="max-w-5xl mx-auto p-4 md:p-8">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    <div>
+      <h2 class="text-2xl font-semibold">Domain Verification Engine</h2>
+      <p class="text-sm text-gray-500">Quad-Layer Logic: DNS + Wildcard Trap + HTTP/S Fetch</p>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="document.getElementById('fUp').click()" class="btn-git">Upload .txt</button>
+      <input type="file" id="fUp" class="hidden" onchange="handleFile(this)">
+      <button onclick="runEngine()" id="runBtn" class="btn-run">RUN ANALYSIS</button>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <div class="space-y-2">
+      <div class="flex justify-between items-center">
+        <label class="text-[11px] font-bold text-gray-400 uppercase">Input (Paste Link or Text)</label>
+        <span id="inputTypeLabel" class="text-[10px] bg-gray-100 px-2 rounded font-bold text-gray-500">READY</span>
+      </div>
+      <textarea id="ti" class="w-full h-40 p-3 code-area outline-none focus:ring-1 focus:ring-green-500" placeholder="Paste GitHub raw link, local file content, or uBO filters..."></textarea>
+    </div>
+
+    <div id="logBox" class="hidden border rounded-md p-4 bg-white shadow-sm">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-[10px] font-bold text-gray-400 uppercase">Live Verification Log</h3>
+        <div id="loader" class="animate-spin text-green-600 text-xs hidden"><i class="fa-solid fa-circle-notch"></i></div>
+      </div>
+      <div class="mb-3">
+        <div class="flex justify-between text-[10px] text-gray-500 mb-1">
+          <span id="progressLabel">Checking domains...</span>
+          <span id="progressText">0 / 0 (0%)</span>
+        </div>
+        <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div id="sg" class="space-y-1.5 max-h-32 overflow-y-auto pr-2"></div>
+    </div>
+
+    <div id="sortBtnWrap" class="hidden flex justify-end">
+      <button id="sortBtn" onclick="toggleSort()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
+      </button>
+    </div>
+
+    <div id="deadBox" class="hidden result-box border-red-400" style="background:#fff5f5;border-left-color:#cf222e;">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-bold text-red-700 uppercase">
+          <i class="fa-solid fa-skull-crossbones mr-1"></i>Dead Domains
+          <span class="ml-1 bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-[10px]" id="deadCount">0</span>
+        </span>
+        <button onclick="copy('deadList')" class="btn-git text-[10px] font-bold text-red-600">COPY</button>
+      </div>
+      <textarea id="deadList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="2"></textarea>
+    </div>
+
+    <div id="skippedBox" class="hidden result-box" style="background:#fffbeb;border-left-color:#d97706;">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-bold text-amber-700 uppercase">
+          <i class="fa-solid fa-forward mr-1"></i>Skipped (Wildcard)
+          <span class="ml-1 bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px]" id="skippedCount">0</span>
+        </span>
+        <button onclick="copy('skippedList')" class="btn-git text-[10px] font-bold text-amber-600">COPY</button>
+      </div>
+      <textarea id="skippedList" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none p-2" rows="2"></textarea>
+    </div>
+
+    <div id="resultsUI" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="result-box bg-[#f0f9ff] border-blue-500">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-bold text-blue-800 uppercase">Live (Comma)</span>
+            <button onclick="copy('oc')" class="btn-git text-[10px] font-bold text-blue-600">COPY</button>
+          </div>
+          <textarea id="oc" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none" rows="2"></textarea>
+        </div>
+        <div class="result-box bg-[#f5f0ff]" style="border-left-color:#7c3aed;">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-bold text-purple-800 uppercase">Live (Pipe)</span>
+            <button onclick="copy('op')" class="btn-git text-[10px] font-bold text-purple-600">COPY</button>
+          </div>
+          <textarea id="op" readonly class="w-full bg-transparent border-none text-[11px] code-area resize-none" rows="2"></textarea>
+        </div>
+      </div>
+      <div id="filterSection" class="result-box bg-[#fffcf0] border-amber-500 mt-4 hidden">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-amber-800 uppercase">Processed uBO Filter</span>
+          <button onclick="dl()" class="btn-git py-0.5 px-3">Download .txt</button>
+        </div>
+        <textarea id="of" readonly class="w-full bg-transparent border-none text-[10px] code-area p-2" style="height:380px;overflow-y:auto;resize:none;"></textarea>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const HOSTNAME_RE = /^~?[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?)+\.?$/;
+
+function isValidHostname(d) {
+  const bare = d.startsWith('~') ? d.slice(1) : d;
+  if (!bare || !bare.includes('.')) return false;
+  if (bare.endsWith('.')) return false;
+  return HOSTNAME_RE.test(d);
+}
+
+function isWildcard(d) { return d.includes('*'); }
+
+function parseLine(line) {
+  const t = line.trim();
+  if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#') || t.startsWith('@@')) return null;
+
+  const cosMatch = t.match(/^([^#]*)(##|#@#)(.*)$/);
+  if (cosMatch) {
+    const rawDomains = cosMatch[1];
+    const sep = cosMatch[2];
+    const ruleSuffix = cosMatch[3];
+    const allTokens = rawDomains.split(',').map(d => d.trim()).filter(d => d);
+    const skipped = allTokens.filter(d => isWildcard(d));
+    const domains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
+    if (domains.length === 0 && skipped.length === 0) return null;
+    return { type: 'cosmetic', domains, sep, ruleSuffix, original: t, skipped };
+  }
+
+  const netMatch = t.match(/^\|\|([a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9])[\^$\/]/);
+  if (netMatch) {
+    const hn = netMatch[1];
+    if (!isValidHostname(hn)) return null;
+    const domOpt = t.match(/(?:\$|,)domain=([^,\s]+)/);
+    const extraDomains = domOpt
+      ? domOpt[1].split('|').map(d => d.trim()).filter(d => d && !d.startsWith('~') && isValidHostname(d))
+      : [];
+    return { type: 'network', domains: [hn, ...extraDomains], original: t, skipped: [] };
+  }
+
+  // Skip network filter option lines (e.g. *$xhr, domain.com$third-party)
+  if (t.includes('$')) return null;
+
+  const allTokens = t.split(/[|,]/).map(d => d.trim()).filter(d => d);
+  const skipped = allTokens.filter(d => isWildcard(d));
+  const plainDomains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
+  if (plainDomains.length > 0 || skipped.length > 0) {
+    return { type: 'plain', domains: plainDomains, original: t, skipped };
+  }
+
+  return null;
+}
+
+const cache = new Map();
+
+async function validate(d) {
+  const bare = d.startsWith('~') ? d.slice(1) : d;
+  if (cache.has(bare)) return cache.get(bare);
+
+  let result = 'dead';
+  try {
+    const dns = await fetch(`https://dns.google/resolve?name=${bare}&type=A`).then(r => r.json());
+    if (dns.Status !== 0 || !dns.Answer || dns.Answer.length === 0) {
+      cache.set(bare, 'dead'); return 'dead';
+    }
+    const trap = `xverify${Math.floor(Math.random()*99999)}.${bare}`;
+    const wild = await fetch(`https://dns.google/resolve?name=${trap}&type=A`).then(r => r.json());
+    if (wild.Status === 0 && wild.Answer && wild.Answer.length > 0) {
+      cache.set(bare, 'dead'); return 'dead';
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3500);
+    try {
+      await fetch(`https://${bare}`, { mode: 'no-cors', signal: ctrl.signal });
+      clearTimeout(timer); result = 'live';
+    } catch {
+      try {
+        await fetch(`http://${bare}`, { mode: 'no-cors', signal: ctrl.signal });
+        clearTimeout(timer); result = 'live';
+      } catch { result = 'dead'; }
+    }
+  } catch { result = 'dead'; }
+
+  cache.set(bare, result);
+  return result;
+}
+
+let processedCount = 0, totalCount = 0;
+let isSorted = false;
+let currentLivePool = [], currentDeadPool = [], currentSkippedPool = [];
+
+function updateProgress() {
+  const pct = totalCount ? Math.round(processedCount / totalCount * 100) : 0;
+  document.getElementById('progressText').textContent = `${processedCount} / ${totalCount} (${pct}%)`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  if (processedCount >= totalCount && totalCount > 0)
+    document.getElementById('progressLabel').textContent = 'Done';
+}
+
+function logDomain(domain, status) {
+  const el = document.createElement('div');
+  el.className = 'flex items-center gap-3 text-[11px] pb-1 border-b border-gray-50';
+  el.innerHTML = `<span class="badge badge-${status}">${status}</span><span class="text-gray-600 truncate">${domain}</span>`;
+  document.getElementById('sg').prepend(el);
+}
+
+function copy(id) { const e = document.getElementById(id); e.select(); document.execCommand('copy'); }
+async function handleFile(i) { if (i.files[0]) document.getElementById('ti').value = await i.files[0].text(); }
+
+function toggleSort() {
+  isSorted = !isSorted;
+  const btn = document.getElementById('sortBtn');
+
+  const live = isSorted ? currentLivePool.slice().sort() : currentLivePool;
+  document.getElementById('oc').value = live.join(',');
+  document.getElementById('op').value = live.join('|');
+
+  if (currentDeadPool.length) {
+    const dead = isSorted ? currentDeadPool.slice().sort() : currentDeadPool;
+    document.getElementById('deadList').value = dead.join('\n');
+  }
+
+  if (currentSkippedPool.length) {
+    const skipped = isSorted ? currentSkippedPool.slice().sort() : currentSkippedPool;
+    document.getElementById('skippedList').value = skipped.join('\n');
+  }
+
+  btn.innerHTML = isSorted
+    ? '<i class="fa-solid fa-rotate-left"></i> Undo Sort'
+    : '<i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z';
+}
+
+function resetUI() {
+  isSorted = false;
+  currentLivePool = []; currentDeadPool = []; currentSkippedPool = [];
+
+  ['deadBox','skippedBox','resultsUI','filterSection'].forEach(id =>
+    document.getElementById(id).classList.add('hidden'));
+
+  document.getElementById('sortBtnWrap').classList.add('hidden');
+  document.getElementById('sortBtn').innerHTML = '<i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z';
+
+  ['oc','op','deadList','skippedList','of'].forEach(id =>
+    document.getElementById(id).value = '');
+
+  document.getElementById('deadCount').textContent = '0';
+  document.getElementById('skippedCount').textContent = '0';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressText').textContent = '0 / 0 (0%)';
+  document.getElementById('sg').innerHTML = '';
+}
+
+async function runEngine() {
+  let input = document.getElementById('ti').value.trim();
+  if (!input) return;
+
+  if (input.startsWith('https://github.com/')) {
+    const raw = input.replace('github.com','raw.githubusercontent.com').replace('/blob/','/');
+    document.getElementById('ti').value = '…Fetching from GitHub…';
+    input = await fetch(raw).then(r => r.text());
+    document.getElementById('ti').value = input;
+  }
+
+  resetUI();
+  cache.clear();
+  processedCount = 0;
+
+  const deadDomains = [], livePool = [];
+
+  document.getElementById('runBtn').disabled = true;
+  document.getElementById('loader').classList.remove('hidden');
+  document.getElementById('logBox').classList.remove('hidden');
+  document.getElementById('progressLabel').textContent = 'Checking domains…';
+
+  const lines = input.split('\n');
+  const isUbo = lines.some(l => /##|#@#|\|\|/.test(l));
+
+  const uniqueToCheck = new Set();
+  const allSkipped = new Set();
+  for (const line of lines) {
+    const parsed = parseLine(line);
+    if (!parsed) continue;
+    for (const d of parsed.domains) uniqueToCheck.add(d.startsWith('~') ? d.slice(1) : d);
+    if (parsed.skipped) for (const s of parsed.skipped) allSkipped.add(s);
+  }
+  totalCount = uniqueToCheck.size;
+  const uniqueSkipped = [...allSkipped];
+  updateProgress();
+
+  for (const s of uniqueSkipped) logDomain(s, 'skip');
+
+  const processedLines = [];
+
+  for (const line of lines) {
+    const parsed = parseLine(line);
+    if (!parsed) { processedLines.push(line); continue; }
+    if (parsed.domains.length === 0) { processedLines.push(line); continue; }
+
+    const results = [];
+    for (const d of parsed.domains) {
+      const bare = d.startsWith('~') ? d.slice(1) : d;
+      const isNew = !cache.has(bare);
+      const status = await validate(d);
+      if (isNew) { processedCount++; updateProgress(); }
+      logDomain(bare, status);
+      results.push({ d, status });
+      if (status === 'live') livePool.push(bare);
+      if (status === 'dead') deadDomains.push(bare);
+    }
+
+    if (parsed.type === 'network' || parsed.type === 'plain') {
+      processedLines.push(line); continue;
+    }
+
+    const alive = results.filter(r => r.status === 'live').map(r => r.d);
+    if (alive.length === 0) {
+      if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
+        processedLines.push('! All Dead Kept One Backup');
+      processedLines.push(`${parsed.domains[0]}${parsed.sep}${parsed.ruleSuffix}`);
+    } else if (alive.length < parsed.domains.length) {
+      processedLines.push(`${alive.join(',')}${parsed.sep}${parsed.ruleSuffix}`);
+    } else {
+      processedLines.push(line);
+    }
+  }
+
+  currentLivePool = [...new Set(livePool)];
+  currentDeadPool = [...new Set(deadDomains)];
+  currentSkippedPool = uniqueSkipped;
+
+  document.getElementById('sortBtnWrap').classList.remove('hidden');
+
+  if (currentDeadPool.length) {
+    document.getElementById('deadBox').classList.remove('hidden');
+    document.getElementById('deadCount').textContent = currentDeadPool.length;
+    document.getElementById('deadList').value = currentDeadPool.join('\n');
+  }
+
+  if (currentSkippedPool.length) {
+    document.getElementById('skippedBox').classList.remove('hidden');
+    document.getElementById('skippedCount').textContent = currentSkippedPool.length;
+    document.getElementById('skippedList').value = currentSkippedPool.join('\n');
+  }
+
+  document.getElementById('resultsUI').classList.remove('hidden');
+  document.getElementById('oc').value = currentLivePool.join(',');
+  document.getElementById('op').value = currentLivePool.join('|');
+
+  if (isUbo) {
+    document.getElementById('filterSection').classList.remove('hidden');
+    document.getElementById('of').value = processedLines.join('\n');
+  }
+
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('loader').classList.add('hidden');
+}
+
+function dl() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([document.getElementById('of').value], {type:'text/plain'}));
+  a.download = 'blaze_cleansed_filters.txt';
+  a.click();
+}
+</script>
+</body>
+</html>
