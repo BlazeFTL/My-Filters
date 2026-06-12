@@ -138,7 +138,7 @@ function parseLine(line) {
   if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#')) return null;
 
   // Cosmetic filter
-  const cosMatch = t.match(/^([^#]*)(##|#@#)(.*)$/);
+  const cosMatch = t.match(/^([^#]*)(##|#@#|#%#|#@%#)(.*)$/);
   if (cosMatch) {
     const rawDomains = cosMatch[1];
     const sep = cosMatch[2];
@@ -195,21 +195,25 @@ async function validate(d) {
     if (dns.Status !== 0 || !dns.Answer || dns.Answer.length === 0) {
       cache.set(bare, 'dead'); return 'dead';
     }
-    const trap = `xverify${Math.floor(Math.random()*99999)}.${bare}`;
-    const wild = await fetch(`https://dns.google/resolve?name=${trap}&type=A`).then(r => r.json());
-    if (wild.Status === 0 && wild.Answer && wild.Answer.length > 0) {
-      cache.set(bare, 'dead'); return 'dead';
-    }
+
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 3500);
+    let httpOk = false;
     try {
       await fetch(`https://${bare}`, { mode: 'no-cors', signal: ctrl.signal });
-      clearTimeout(timer); result = 'live';
+      httpOk = true;
     } catch {
       try {
         await fetch(`http://${bare}`, { mode: 'no-cors', signal: ctrl.signal });
-        clearTimeout(timer); result = 'live';
-      } catch { result = 'dead'; }
+        httpOk = true;
+      } catch {}
+    }
+    clearTimeout(timer);
+
+    if (httpOk) {
+      result = 'live';
+    } else {
+      result = 'dead';
     }
   } catch { result = 'dead'; }
 
