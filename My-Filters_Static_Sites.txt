@@ -643,7 +643,6 @@ filepress.*##button:has-text(Login)
 gdflix.*###pages:has([href*="copyright"])
 gdflix.*##.btn-primary.btn:has-text(Login)
 gdflix.*##.flex-row.d-flex.ms-auto.navbar-nav
-direct.zencloud.lol##.text-muted.text-center, [href*="t.me/+"]
 
 ! Sep 11, 2024 https://forum.mobilism.org
 !forum.mobilism.org##div.span3:has-text(/Top Books|Reviews/)
@@ -705,7 +704,7 @@ hdhub4u.*##.recent-movies:style(zoom: 0.75 !important;)
 ||hdhub4u.*/wp-content/$xhr,script,domain=hdhub4u.*
 ||hdhub4u.*/wp-includes/$script,domain=hdhub4u.*
 
-! 2022-12-08 Vegamovies Hdhub Old Downloader
+! Vegamovies Hdhub Old Downloader (Dead)
 anyrojgar.com###top_nav, .rd_btn, .soractrl:style(display: block !important;)
 anyrojgar.com###top_nav, .rd_btn, .soractrl, .large:others()
 anyrojgar.com##+js(trusted-click-element, #top_nav)
@@ -764,8 +763,8 @@ pressplayz.to##div.mb-24 > .relative:has-text(Latest TV)
 pressplayz.to##div.w-full.xl\:basis-1\/5.lg\:basis-1\/4.md\:basis-1\/3.basis-1\/2.pl-4.grow-0.shrink-0.min-w-0:has-text(HD)
 pressplayz.to##.grid-list > div:has-text(HD)
 ||disqus.com^$script,domain=pressplay.top|pressplayz.to
-moviesapi.club,bestx.stream,watchx.top##+js(no-fetch-if, googlesyndication)
-moviesapi.club,bestx.stream,watchx.top##+js(set, S_Popup, 10)
+bestx.stream,watchx.top##+js(no-fetch-if, googlesyndication)
+bestx.stream,watchx.top##+js(set, S_Popup, 10)
 ||trackerx.stream^$websocket,domain=watchx.top|bestx.stream|moviesapi.club
 
 ! 2022-08-30 mlsbd
@@ -827,10 +826,10 @@ moviesmod.*,topmovies.*##+js(nowoif)
 modpro.*##.alert, .site-footer, .darkmysite_switch_apple, .entry-meta, font
 modpro.*##+js(nano-stb, /.?/, *)
 modpro.*##+js(nano-sib, /.?/, *)
-moviesmod.*,topmovies.*,video-seed.xyz,modpro.*##+js(acs, document.documentElement, break;case $.)
+moviesmod.*,topmovies.*,modpro.*##+js(acs, document.documentElement, break;case $.)
 !video-seed.xyz##+js(rmnt, script, ;break;case $.)
 !;}}};break;case $.
-video-seed.xyz,modpro.co##+js(nowoif)
+modpro.co##+js(nowoif)
 driveseed.org##.text-muted
 driveseed.org##center > .card > .card-header
 topmovies.*##.excerpt.latestPost:has-text(WEB-DL)
@@ -846,13 +845,6 @@ technews.unblockedgames.world##+js(rpnt, script, /1e3|1e4|1000/gm, 10, condition
 leechpro.blog,modpro.blog##[class*="timed-content-client_show"]:style(display:block !important)
 leechpro.blog,modpro.blog##[class*="timed-content-client_hide"]:style(display:none !important)
 unblockedgames.world##+js(rpnt, script, "googletag.enableServices();", "googletag.enableServices();(function() { const l = document.querySelector('#landing'); if (l) { l.submit(); } else { const s = Array.from(document.getElementsByTagName('script'));  const u = s.map(script => script.textContent.match(/\?go=pepe-[\w-]+/)).filter(m => m).map(m => m[0])[0]; if (u) { window.location.href = 'https://' + location.host + '/' + u; } } })();")
-
-! Latest Movies Fast
-moviediskhd.boats###telegram-modal, .categories, body > center [href^="/"], .md-site-notice, .images-list, .notice, footer, [href="/category/new-bollywood-movies"], .md-ad-card, .telegram-block, .taggs, .wp-tags, .side-header, .side-search, a.side-cat-name, div.artist-mv, .bcrumb
-moviediskhd.boats##h2.header2:has-text(/Trending now|categories/i)
-moviediskhd.boats##h2.header4:has-text(/related movies|search|categories|recent movies/i)
-! Their SaveLinks
-moviemod.news##.alert-success.alert, .headbb, .navbar-filmy, .col > center, p, #insertformFoot
 
 ! From Last
 gdrivedescarga.com##^script[id="jquery-core-js-after"]:has-text(e.preventDefault();)
@@ -900,12 +892,12 @@ go2.pics##+js(rpnt, script, 5000);, 10);)
 ||shrtfly.com/full/?api=*&url$urlskip=?url -base64
 
 ! Jan 23, 2026 https://shortxlinks.com
-mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com###wpsafelinkhuman, #wpsafe-wait1, #wpsafegenerate, #wpsafe-link, #wpsafe-wait2, .container, #wpsafe-generate, [id*="kdsafe-"]:others()
-mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com##+js(rpnt, script, /4;|5;/gms, 0;)
+mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun###wpsafelinkhuman, #wpsafe-wait1, #wpsafegenerate, #wpsafe-link, #wpsafe-wait2, .container, #wpsafe-generate, [id*="kdsafe-"]:others()
+mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun##+js(rpnt, script, /4;|5;/gms, 0;)
 !mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com##+js(nano-sib, timer, *)
-mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com##+js(rpnt, script, 2000, 10)
+mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun##+js(rpnt, script, 2000, 10)
 ! Test Time Skip By Removing "!" From below line
-mtc3.nkrmusic.in.net,mtc2.exam-2025.com,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc1.jobtkz.com,mtc5.flexthecar.com##+js(rpnt, script, /25;/gms, 10;)
+mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun##+js(rpnt, script, /25;/gms, 10;)
 shortxlinks.com##.sponsors-section, .bg_cover.footer-area, .navbar-toggler
 
 ! Psa.Wf File Share
@@ -980,13 +972,6 @@ torrenting.com###headerBar, #navBarOuter:style(zoom: 1.2! Important;)
 ||youtube.com^$domain=torrenting.com,important
 uindex.org###content > p, #reportBtn
 
-! Jul 14, 2024 https://x265rips.*
-x265rips.*##+js(rmnt, script, /advanced_ads_check_adblocker|adsbygoogle\.js/)
-x265rips.*##.wp-tags, .owl-theme.owl-carousel.galeria, #comments, .scrolling.right.sidebar, .mb-text-style-default.mb-corners-pill.mb-size-small.mb-style-flat.mb-button
-x265rips.*##h4 > span
-x265rips.xyz##.featured.items, .report-video-error, .dooplay_player
-x265rips.xyz##header:has-text(Featured)
-
 ! Aug 13, 2024 https://10bitclub.*
 10bitclub.*##.letter_home, .dooplay_player, .comments-area, .wp-tags, #dt_galery, .breadcrumb_bottom.dt-breadcrumb, #report_li
 10bitclub.*##div.sbox:has(.dt_social_single)
@@ -996,11 +981,11 @@ x265rips.xyz##header:has-text(Featured)
 
 ! 2022-08-06 savelinks.me
 !openlinks.xyz,savelinks.*##header, ul, div.view-captcha, .view-warning, footer, #adbox
-openlinks.xyz,savelinks.*##div.row.view-options:has-text(provides)
-openlinks.xyz,savelinks.*##+js(trusted-click-element, button[type="submit"])
-openlinks.xyz,savelinks.*##br:style(font-size: 0px !important;)
-openlinks.xyz,savelinks.*##b
-openlinks.xyz,savelinks.*##+js(rmnt, #text, /\bsession_start\b|on line/)
+savelinks.*##div.row.view-options:has-text(provides)
+savelinks.*##+js(trusted-click-element, button[type="submit"])
+savelinks.*##br:style(font-size: 0px !important;)
+savelinks.*##b
+savelinks.*##+js(rmnt, #text, /\bsession_start\b|on line/)
 
 ! Dec 31, 2024 https://1tamilblasters.*
 1tamilblasters.*##.ipsType_richText.ipsPad.ipsWidget_inner:has([href*="_APK/TB"])
@@ -1226,19 +1211,6 @@ bigwarp.*,vidnest.*##.footer
 !bigwarp.*,vidnest.io###undervideo
 !bigwarp.*,vidnest.io##p > [href] > [src]
 !bigwarp.*,vidnest.io###video-content > [href]
-
-! Dec 29, 2025 https://zapupload.top
-zapupload.top##+js(rmnt, script, fuckAdBlock)
-zapupload.top##+js(rpnt, script, counter_time":15, counter_time":0)
-zapupload.top##+js(rpnt, script, /\d{4}/gms, 10)
-zapupload.top##+js(no-fetch-if, ads)
-zapupload.top##+js(nowoif)
-zapupload.top##+js(nano-sib, /currentTime|counterTime/, *)
-zapupload.top##button[type="submit"]:remove-attr(disabled)
-zapupload.top##.navbar-menu, .mb-0, .mt-5.file-card, .footer, .mt-5.file-links, .theme-toggle, .floating-theme-toggle, .sm.file-details-item
-zapupload.top##.fw-500.w-100.radius.btn-md.btn-primary.btn:has-text(Premium)
-zapupload.top##.mb-3.text-secondary
-zapupload.top##div.col > .file-details-item:has-text(Report)
 
 ! Jan 3, 2026 https://up4fun.top
 up4stream.com,up4fun.top##.up4-footer
@@ -1479,16 +1451,6 @@ apkmirror.com##div.headerFont.table-row:has-text(/armeabi-v7a|Bundle|x86/):not(:
 apkmirror.com##p.notes:has-text(Thank you)
 apkmirror.com##div.f-nowrap.d-flex.appspec-row:has-text(/MD5|Permissions/)
 apkmirror.com##.table-row:has-text(/Android TV|Wear OS/)
-
-! Sep 1, 2024 https://download.happymod.com
-happymod.com##.footer, .footer-copyright, .download-desc, .banner-content, .download-dmca, .short-desc, .table-contents.later
-happymod.com##.has-text-align-left.has-background.has-light-green-cyan-background-color
-happymod.com##a.download-btn:has-text(Fast Do)
-happymod.com##.on.table-contents.later
-happymod.com##div.versions.rbox
-happymod.com##.long:has-text(to dow)
-happymod.com##div.content-li.later h1:has-text(to dow)
-gamekillerapp.com###foot-banner, footer, .h5-download-c-bg, .h5-dowm-btn
 
 ! uptodown.com
 uptodown.com##.help, #virus-total-report, footer, .hotlinks, #horizontal-link-list
@@ -2103,30 +2065,8 @@ vercel-bypass.vercel.app##+js(rpnt, script, /show_9788260\(\).*?\.then/s, show_9
 ! Two Shortners Of RBMods
 ! Earn4Link
 ! Fast Bypass
-health.bgmiproconfig.com,mpnewsite.com##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('url'); if (getCK) window.location.href = decodeURIComponent(getCK.value); })();")
+health.bgmiproconfig.com##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('url'); if (getCK) window.location.href = decodeURIComponent(getCK.value); })();")
 india.mplandrecord.info##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('steplink'); if (getCK) window.location.href = decodeURIComponent(getCK.value); })();")
-india.hindivigyan.in##.dmca
-india.hindivigyan.in##.security-info
-india.hindivigyan.in##.stats
-health.bgmiproconfig.com,loan.reelwealthreport.com,india.hindivigyan.in##+js(no-fetch-if, googlesyndication)
-loan.reelwealthreport.com,india.hindivigyan.in##+js(rpnt, script, /10000|1000|2000/gm, 10, condition, /wpsafelinkCounter|timer/gm)
-loan.reelwealthreport.com,india.hindivigyan.in###wpsafe-link:style(display: block !important;)
-loan.reelwealthreport.com,india.hindivigyan.in###wpsafe-link:others()
-loan.reelwealthreport.com,india.hindivigyan.in###overlay
-health.bgmiproconfig.com,mpnewsite.com###btn7, #btn6, #wpsafegenerate:others()
-health.bgmiproconfig.com,mpnewsite.com###btn7, #btn6, #wpsafe-link:style(display: block !important)
-
-! Link Console
-@@||linksconsole.com/track-activity.php$ping
-techarmor.xyz##+js(no-fetch-if, googlesyndication)
-techarmor.xyz##.my-ad-container:style(clip-path: circle(0) !important;)
-techarmor.xyz##+js(rpnt, script, 1000, 10, condition, startTime)
-linksconsole.com,techarmor.xyz##+js(trusted-set, document.activeElement, { "value": {"tagName": "IFRAME" }}, runAt, 2)
-
-! Bdix PurChase Sites
-! Feb 11, 2026 https://proxybdix.com
-||proxybdix.com^$font,1p
-||fonts.googleapis.com^$stylesheet,domain=proxybdix.com
 
 ! Research PurPose
 !#if cap_html_filtering
@@ -2143,13 +2083,13 @@ cryptowidgets.net##+js(trusted-replace-argument, MutationObserver, 0, noopFunc, 
 cryptowidgets.net##+js(trusted-replace-argument, String.prototype.endsWith, 0, json:"", condition, .js)
 cryptowidgets.net##+js(rpnt, script, document.getElementById(sectionId);, 'document.getElementById(sectionId); Object.defineProperty(document, "hidden", { get: () => document.title.includes("Done") ? false : true }); let isInsideSlTimer = false; const originalTimeout = window.setTimeout; window.setTimeout = function(handler, delay, ...args) { return originalTimeout(function() { isInsideSlTimer = true; try { if (typeof handler === "function") handler.apply(this, args); else new Function(handler)(); } finally { isInsideSlTimer = false; } }, delay, ...args); }; const descriptor = Object.getOwnPropertyDescriptor(Set.prototype, "size"); Object.defineProperty(Set.prototype, "size", { get: function() { const realSize = descriptor.get.call(this); const stack = new Error().stack || ""; if (isInsideSlTimer && stack.includes("/sl/") && stack.split("\n").length <= 6) { if (realSize < 8) { console.log("Bypass: Real " + realSize + " -> Changed to 8"); return 8; } } return realSize; }, configurable: true });')
 
-liln.fun,wii.si,bitwidgets.net,uiio.fun,newsminer.uno,adwyn.uno##+js(trusted-replace-argument, document.querySelector, 0, json:"body", condition, .container-fluid .row)
-liln.fun,wii.si,bitwidgets.net,uiio.fun,newsminer.uno,adwyn.uno##+js(nano-sib, document.hidden, *, 0.02)
-liln.fun,wii.si,bitwidgets.net,uiio.fun,newsminer.uno,adwyn.uno##+js(set, document.hidden, true, runAt, 3)
-liln.fun,wii.si,bitwidgets.net,uiio.fun,newsminer.uno,adwyn.uno##+js(spoof-css, .row, display, block, visibility, visible)
+liln.fun,wii.si,bitwidgets.net,uiio.fun,adwyn.uno##+js(trusted-replace-argument, document.querySelector, 0, json:"body", condition, .container-fluid .row)
+liln.fun,wii.si,bitwidgets.net,uiio.fun,adwyn.uno##+js(nano-sib, document.hidden, *, 0.02)
+liln.fun,wii.si,bitwidgets.net,uiio.fun,adwyn.uno##+js(set, document.hidden, true, runAt, 3)
+liln.fun,wii.si,bitwidgets.net,uiio.fun,adwyn.uno##+js(spoof-css, .row, display, block, visibility, visible)
 
-mortgageloanapplyonline.com,adilcevaztv.com,ismedia.my.id,mareoa.com,scamperstore.online,4kphotoediting.com##+js(rpnt, script, "'IFRAME'", "'BODY'")
-mortgageloanapplyonline.com,adilcevaztv.com,ismedia.my.id,mareoa.com,scamperstore.online,4kphotoediting.com##+js(set, document.hasFocus, trueFunc)
+mortgageloanapplyonline.com,adilcevaztv.com,ismedia.my.id,mareoa.com,scamperstore.online##+js(rpnt, script, "'IFRAME'", "'BODY'")
+mortgageloanapplyonline.com,adilcevaztv.com,ismedia.my.id,mareoa.com,scamperstore.online##+js(set, document.hasFocus, trueFunc)
 
 test.com##form:has(> :matches-css(align-items: center)):style(display: block !important;)
 test.com##+js(spoof-css, *:not(div), visibility, visible, display, block)
@@ -2166,23 +2106,12 @@ test.com##+js(no-xhr-if, adsbygoogle.js, length:12000)
 test.com##+js(rpnt, script, /iframeHeight\s*==\s*(\d+)\s*&&\s*iframeWidth\s*==\s*(\d+)/gm, true)
 test.com##+js(nano-stb, , 4000, 0.02)
 
-! shortsurl.pro/OW713pu39i5
-jeuxenligne.xyz##+js(rpnt, script, "'IFRAME'", "'BODY'")
-jeuxenligne.xyz##+js(rmnt, script, htmls)
-jeuxenligne.xyz##+js(rpnt, script, "isDataSent = false;", "isDataSent = true;")
-jeuxenligne.xyz##+js(rpnt, script, "document.hasFocus() === false", true)
-jeuxenligne.xyz##form > button:remove-attr(onclick)
-
 ! https://earnow.online/Wr5qaY6
 freeoseocheck.com,cryptowidgets.net##+js(trusted-set-attr, html, class, placed-ad)
 saigontravel.top,danangtravel.top##body:remove-attr(style)
-
-solidcoins.net,cookingpumpkin.com,fishingbreeze.com,financewrapper.net##+js(rpnt, script, "document.body.innerHTML = '';")
-exactpay.online##+js(rpnt, script, !document.hasFocus(), true)
-exactpay.online##+js(trusted-set, document.visibilityState, visible)
-
-coinhub.wiki,vitalityvista.net,geekgrove.net##+js(trusted-set, document.activeElement, { "value": {"tagName": "IFRAME" }}, runAt, 2)
-coinhub.wiki,vitalityvista.net,geekgrove.net##+js(set, document.hasFocus, falseFunc)
+! Not EarnNow
+vitalityvista.net,geekgrove.net##+js(trusted-set, document.activeElement, { "value": {"tagName": "IFRAME" }}, runAt, 2)
+vitalityvista.net,geekgrove.net##+js(set, document.hasFocus, falseFunc)
 
 ! Oct 5, 2024 https://viralsbaba.blogspot.com
 viralsbaba.blogspot.com##+js(trusted-click-element, .col-12 > .btn-info.btn, , 800)
@@ -2201,9 +2130,9 @@ upshrink.com##+js(trusted-set, navigator.userAgent, '{"value": "Mozilla/5.0 (iPh
 imagereviser.com##+js(trusted-replace-argument, getComputedStyle, 0, body, condition, getComputedStyle)
 
 ! DevTools Defuse
-financenova.online,utkarshonlinetest.com,financewada.com##+js(trusted-suppress-native-method, Function.prototype.constructor, '"debugger"', abort)
-financenova.online,utkarshonlinetest.com,financewada.com##+js(trusted-replace-argument, Function.prototype.constructor, 0, {"value": "/* debugger */"}, condition, debugger)
-financenova.online,utkarshonlinetest.com,financewada.com##+js(trusted-replace-argument, Function.prototype.constructor, 0, , condition, debugger)
+utkarshonlinetest.com,financewada.com##+js(trusted-suppress-native-method, Function.prototype.constructor, '"debugger"', abort)
+utkarshonlinetest.com,financewada.com##+js(trusted-replace-argument, Function.prototype.constructor, 0, {"value": "/* debugger */"}, condition, debugger)
+utkarshonlinetest.com,financewada.com##+js(trusted-replace-argument, Function.prototype.constructor, 0, , condition, debugger)
 
 ! Apr 18, 2025 https://savefiles.com
 savefiles.com##+js(rpnt, script, /([\s\S]*?)(const video[\s\S\n]*false;\s+\})([\s\S]*)([\s\S]*)/, $2)
@@ -2344,7 +2273,7 @@ smallshorts.com##+js(rpnt, script, 'if (isAndroid)', 'if (false)')
 
 ! Jan 23, 2026 https://linkjust.com
 ! Instant ByPass
-quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,mooonten.com,msic.site,fx-22.com,gold-24.net,forexrw7.com##+js(rpnt, script, document.addEventListener, "'use strict';function attemptRedirect(){var u=window.location.href,m=u.match(/[?&]ViewArticle=([a-zA-Z0-9]+)/);if(!m)return false;var a=m[1],h=window.location.hostname;if(h.indexOf('quest.to-travel.net')!==-1){window.stop();window.location.replace('https://journey.to-travel.net/?ViewArticle='+a);return true}if(h.indexOf('journey.to-travel.net')!==-1){window.stop();window.location.replace('https://gold-24.net/?ViewArticle='+a);return true}if(h.indexOf('gold-24.net')!==-1){window.stop();window.location.replace('https://yjiur.xyz/?ViewArticle='+a);return true}if(h.indexOf('yjiur.xyz')!==-1){setTimeout(function(){window.location.replace('https://linkjust.com/'+a)},500);return true}return false}attemptRedirect();var monitor=setInterval(function(){if(attemptRedirect())clearInterval(monitor)},5);setTimeout(function(){clearInterval(monitor)},3000);document.addEventListener")
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(rpnt, script, document.addEventListener, "'use strict';function attemptRedirect(){var u=window.location.href,m=u.match(/[?&]ViewArticle=([a-zA-Z0-9]+)/);if(!m)return false;var a=m[1],h=window.location.hostname;if(h.indexOf('quest.to-travel.net')!==-1){window.stop();window.location.replace('https://journey.to-travel.net/?ViewArticle='+a);return true}if(h.indexOf('journey.to-travel.net')!==-1){window.stop();window.location.replace('https://gold-24.net/?ViewArticle='+a);return true}if(h.indexOf('gold-24.net')!==-1){window.stop();window.location.replace('https://yjiur.xyz/?ViewArticle='+a);return true}if(h.indexOf('yjiur.xyz')!==-1){setTimeout(function(){window.location.replace('https://linkjust.com/'+a)},500);return true}return false}attemptRedirect();var monitor=setInterval(function(){if(attemptRedirect())clearInterval(monitor)},5);setTimeout(function(){clearInterval(monitor)},3000);document.addEventListener")
 
 ! fc-lc Captcha bypass
 fc-lc.xyz##+js(rpnt, script, 5;, 1;, condition, MIN_SCORE)
