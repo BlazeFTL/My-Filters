@@ -38,6 +38,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <button onclick="document.getElementById('fUp').click()" class="btn-git">Upload .txt</button>
       <input type="file" id="fUp" class="hidden" onchange="handleFile(this)">
       <button onclick="runEngine()" id="runBtn" class="btn-run">RUN ANALYSIS</button>
+      <button onclick="clearInput()" class="btn-git">CLEAR</button>
     </div>
   </div>
 
@@ -237,6 +238,7 @@ function logDomain(domain, status) {
 }
 
 function copy(id) { const e = document.getElementById(id); e.select(); document.execCommand('copy'); }
+function clearInput() { document.getElementById('ti').value = ''; resetUI(); }
 async function handleFile(i) { if (i.files[0]) document.getElementById('ti').value = await i.files[0].text(); }
 
 function toggleSort() {
@@ -341,7 +343,15 @@ async function runEngine() {
     }
 
     if (parsed.type === 'network' || parsed.type === 'plain') {
-      processedLines.push(line); continue;
+      const alive = results.filter(r => r.status === 'live');
+      if (alive.length === 0) {
+        if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
+          processedLines.push('! All Dead Kept One Backup');
+        processedLines.push(parsed.type === 'network' ? line : parsed.domains[0]);
+      } else {
+        processedLines.push(line);
+      }
+      continue;
     }
 
     if (parsed.type === 'network_domlist') {
