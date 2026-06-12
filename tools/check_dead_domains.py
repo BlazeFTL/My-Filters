@@ -171,6 +171,7 @@ async def process(input_path):
                     continue
                 dead = await is_dead(session, hn)
                 if dead:
+                    out.append("! All Dead Kept One Backup\n")
                     out.append("! " + raw + "\n")
                 else:
                     out.append(line)
