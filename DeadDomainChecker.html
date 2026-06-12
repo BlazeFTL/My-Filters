@@ -135,8 +135,9 @@ function isWildcard(d) { return d.includes('*'); }
 
 function parseLine(line) {
   const t = line.trim();
-  if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#') || t.startsWith('@@')) return null;
+  if (!t || t.startsWith('!') || t.startsWith('[') || t.startsWith('#')) return null;
 
+  // Cosmetic filter
   const cosMatch = t.match(/^([^#]*)(##|#@#)(.*)$/);
   if (cosMatch) {
     const rawDomains = cosMatch[1];
@@ -149,20 +150,29 @@ function parseLine(line) {
     return { type: 'cosmetic', domains, sep, ruleSuffix, original: t, skipped };
   }
 
+  // Network filter with domain= or from= pipe-list option
+  // Handles: *$...,domain=d1|d2  @@*$...,domain=d1|d2  @@||host^$...,domain=d1|d2  @@/pat/$...,domain=d1|d2
+  const domOptMatch = t.match(/(?:^|,|\$)(domain|from)=([^,\s]+)/);
+  if (domOptMatch) {
+    const optionKey = domOptMatch[1];
+    const rawDomList = domOptMatch[2].split('|').map(d => d.trim()).filter(d => d);
+    const checkable = rawDomList.filter(d => !d.startsWith('~') && isValidHostname(d));
+    if (checkable.length === 0) return null;
+    return { type: 'network_domlist', domains: checkable, rawDomList, optionKey, original: t, skipped: [] };
+  }
+
+  // Standard || network filter without domain= option
   const netMatch = t.match(/^\|\|([a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9])[\^$\/]/);
   if (netMatch) {
     const hn = netMatch[1];
     if (!isValidHostname(hn)) return null;
-    const domOpt = t.match(/(?:\$|,)domain=([^,\s]+)/);
-    const extraDomains = domOpt
-      ? domOpt[1].split('|').map(d => d.trim()).filter(d => d && !d.startsWith('~') && isValidHostname(d))
-      : [];
-    return { type: 'network', domains: [hn, ...extraDomains], original: t, skipped: [] };
+    return { type: 'network', domains: [hn], original: t, skipped: [] };
   }
 
-  // Skip network filter option lines (e.g. *$xhr, domain.com$third-party)
-  if (t.includes('$')) return null;
+  // Skip @@ exception rules and remaining $-option lines without domain=
+  if (t.startsWith('@@') || t.includes('$')) return null;
 
+  // Plain domain list (comma or pipe separated)
   const allTokens = t.split(/[|,]/).map(d => d.trim()).filter(d => d);
   const skipped = allTokens.filter(d => isWildcard(d));
   const plainDomains = allTokens.filter(d => !isWildcard(d) && isValidHostname(d));
@@ -295,7 +305,7 @@ async function runEngine() {
   document.getElementById('progressLabel').textContent = 'Checking domains…';
 
   const lines = input.split('\n');
-  const isUbo = lines.some(l => /##|#@#|\|\|/.test(l));
+  const isUbo = lines.some(l => /##|#@#|\|\||(?:domain|from)=[^,\s]+\|[^,\s]+/.test(l));
 
   const uniqueToCheck = new Set();
   const allSkipped = new Set();
@@ -332,6 +342,23 @@ async function runEngine() {
 
     if (parsed.type === 'network' || parsed.type === 'plain') {
       processedLines.push(line); continue;
+    }
+
+    if (parsed.type === 'network_domlist') {
+      const liveSet = new Set(results.filter(r => r.status === 'live').map(r => r.d));
+      const newDomList = parsed.rawDomList.filter(entry =>
+        entry.startsWith('~') ? true : liveSet.has(entry)
+      );
+      const livePosCount = newDomList.filter(d => !d.startsWith('~')).length;
+      if (livePosCount === 0) {
+        if (processedLines[processedLines.length - 1] !== '! All Dead Kept One Backup')
+          processedLines.push('! All Dead Kept One Backup');
+        const backup = parsed.rawDomList.find(d => !d.startsWith('~')) || parsed.rawDomList[0];
+        processedLines.push(parsed.original.replace(/(domain|from)=[^,\s]+/, `${parsed.optionKey}=${backup}`));
+      } else {
+        processedLines.push(parsed.original.replace(/(domain|from)=[^,\s]+/, `${parsed.optionKey}=${newDomList.join('|')}`));
+      }
+      continue;
     }
 
     const alive = results.filter(r => r.status === 'live').map(r => r.d);
