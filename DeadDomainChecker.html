@@ -335,8 +335,7 @@ async function runEngine() {
       const bare = d.startsWith('~') ? d.slice(1) : d;
       const isNew = !cache.has(bare);
       const status = await validate(d);
-      if (isNew) { processedCount++; updateProgress(); }
-      logDomain(bare, status);
+      if (isNew) { processedCount++; updateProgress(); logDomain(bare, status); }
       results.push({ d, status });
       if (status === 'live') livePool.push(bare);
       if (status === 'dead') deadDomains.push(bare);
