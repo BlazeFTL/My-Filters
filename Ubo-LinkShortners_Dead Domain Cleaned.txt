@@ -1,0 +1,506 @@
+! https://pndk.to/vCkOKN5RYx
+||beixisys.com^$script,domain=tempatwisata.pro|datapendidikan.com|cekresi.me|go.fakta.id
+||rc.patagonenki.shop^$domain=tempatwisata.pro|datapendidikan.com|cekresi.me|go.fakta.id
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(no-fetch-if, /outbrain\.com|adligature\.com|quantserve\.com|srvtrck\.com|googlesyndication/, {"type": "cors"})
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(nowoif, _blank)
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##button[type="button"], #continue, .separator > div > div > h3, .font-semibold.text-white.bg-primary.inline-block.mx-auto, [src*="captcha"]:others()
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##button[x-on\:click="openPopup"]:not([x-bind\:disabled])
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(nano-sib, /.?/, *)
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(nano-stb, /.?/, *)
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(rpnt, script, /\d{4}/gms, 10, condition, /count/i)
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(rpnt, script, /this\.endAt = Date\.now\(\) \+ \(this\.cd \* 1000\)/gm, this.endAt = Date.now())
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(rpnt, script, /this\.cd = remaining > 0 \? remaining : 0/gm, this.cd = 0)
+go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(rpnt, script, /this\.ab = true/gm, this.ab = false)
+!go.fakta.id,datapendidikan.com,app.cekresi.me,tempatwisata.pro##+js(rpnt, script, /this\.endAt = Date\.now\(\) \+ \(this\.cd \* 1000\)/gm, setTimeout(() => { this.endAt = Date.now() }\, 1))
+! adtival.network
+adtival.network##.z-0.overflow-hidden.relative.w-full.rounded-lg.to-primary-800.from-primary-500.bg-gradient-to-r.p-8.min-h-\[189px\]
+adtival.network##button.py-2.px-6.text-primary-600.rounded-lg.border-primary-600.border-2.bg-white.items-center.flex
+adtival.network##.max-w-screen-lg:style(max-width: initial! Important;)
+adtival.network##.min-h-screen:style(min-height: initial! Important;)
+safelinkearn.com##.d2.anim-up.action-row, .banner-bg
+
+! https://sfl.gl/Rcmdl
+app.khaddavi.net###verify, #second_open_placeholder:others()
+app.khaddavi.net##+js(nano-stb, /.?/, *)
+! Mar 17, 2026 https://sfl.gl
+sfl.gl##.z-0.overflow-hidden.relative.w-full.rounded-lg.to-\[\#0948EA\].from-\[\#5597FF\].bg-gradient-to-r.p-8.min-h-\[189px\]
+
+! https://tfly.link/OWMEa5fcae7b
+tfly.link##+js(trusted-suppress-native-method, eval, '"/chp_?ad/"')
+tfly.link##.box-main > .row [href]
+tfly.link##.text-left
+tfly.link##footer
+tfly.link##center > [href]
+tfly.link##+js(set, blurred, false)
+
+! https://xut.io/0vFSZov
+! Auto Click
+autodime.com,earnmoneymore.com##+js(trusted-create-html, div, <img src="x" onerror="const selectors=['#sl-primary'\, '.sl-action'\, '.iconcaptcha-modal__body'\, '.sl-btn'\, 'a[href*=\'setcookie.php\']']; const isVisible=(el)=>{if(!el)return false; const style=window.getComputedStyle(el); return !!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)&&style.display!=='none'&&style.visibility!=='hidden';}; const processClick=()=>{selectors.forEach(selector=>{const elements=document.querySelectorAll(selector); elements.forEach(btn=>{if(isVisible(btn)&&!btn.disabled){btn.click();}})});}; const observer=new MutationObserver(()=>processClick()); observer.observe(document.body\, {childList:true\, subtree:true\, attributes:true}); processClick();">)
+xut.io##hr + p:has-text(What is xut.io?)
+xut.io##hr + p:has-text(What is xut.io?) ~ *
+xut.io##[class$="-footer"], .sl-pill-right.sl-pill
+!xut.io##.sl-pill-left.sl-pill, .sl-countdown, .get-link:others()
+
+! https://nitro-link.com/51ff
+pxtech.site##+js(rpnt, script, /^([^{])/, (function(){const u=new URLSearchParams(location.search)\,a=u.get('alias')\,s=sessionStorage;if(a){s.setItem('px_alias'\,a);window.stop();location.replace('https://nitro-link.com/'+a);}else{const c=s.getItem('px_alias');if(c){s.removeItem('px_alias');location.replace('https://nitro-link.com/'+c);}}})();, sedCount, 2)
+
+! https://horrorpay.online/geJnS
+aradmag.online###offerOverlay
+aradmag.online##.post
+aradmag.online##.ad-middle
+aradmag.online##.ad-below-timer
+aradmag.online##+js(rpnt, script, step>1, true)
+aradmag.online##+js(rpnt, script,  1000);, 10);)
+! Instant ByPass
+aradmag.online##+js(trusted-create-html, div, <img src='/n5dev.png' onerror='const p=new URLSearchParams(window.location.search);const d=p.get("dex");if(d)window.location.href="http://horrorpay.online/"+d'>)
+
+! https://softurl.in/dZ0Nqj
+! ShortxLinks
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc4.igimsopd.com###wpsafelinkhuman, #wpsafe-wait1, #wpsafegenerate, #wpsafe-link, #wpsafe-wait2, .container, #wpsafe-generate, [id*="kdsafe-"]:others()
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc4.igimsopd.com##+js(rpnt, script, /4;|5;/gms, 0;)
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc4.igimsopd.com##+js(rpnt, script, 2000, 10)
+! Test Time Skip By Removing "!" From below line
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc4.igimsopd.com##+js(rpnt, script, /25;/gms, 10;)
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc4.igimsopd.com##a[href][target=_blank]:remove-attr(href)
+!mtc1.jobtkz.com,mtc4.igimsopd.com,mtc3.jobsvb.in,mtc5.flexthecar.com###wpsafe-wait1:style(cursor: default !important; pointer-events: none !important;)
+! Auto Click
+mtc1.nkrmusic.in.net,mtc1.awaskit.in,mtc1.heygirlish.com,mtc1.sckp.shop,mtc2.shopizo.fun,mtc4.igimsopd.com##+js(trusted-create-html, div, <img src="x" onerror="const selectors=['#wpsafelinkhuman'\, '#wpsafe-generate a'\, '#wpsafe-link a']; const clicked=new Set(); const isVisible=(el)=>{if(!el)return false; const s=getComputedStyle(el); return s.display!=='none'&&el.offsetParent!==null;}; const run=()=>{selectors.forEach(sel=>{const el=document.querySelector(sel); if(el&&isVisible(el)&&!clicked.has(sel)){el.dispatchEvent(new MouseEvent('click'\,{bubbles:true\,cancelable:true\,view:window})); clicked.add(sel);}});}; setInterval(run\, 700); const obs=new MutationObserver(run); obs.observe(document\,{childList:true\,subtree:true\,attributes:true}); run();">)
+shortxlinks.com##.sponsors-section, .bg_cover.footer-area, .navbar-toggler
+softurl.in##.sponsors-section
+softurl.in##footer > .container > .row
+
+! Cuty.io Extra
+||vhit.io/scripts/vhit.js$script,domain=cuttlinks.com
+cety.app,cutlink.net,cutnet.net,cuttlinks.com,cutty.app,exe-links.com,exe-urls.com,exego.app,exnion.com##.premium-option.option-card
+cety.app,cutlink.net,cutnet.net,cuttlinks.com,cutty.app,exe-links.com,exe-urls.com,exego.app,exnion.com##+js(trusted-click-element,'1000, #submit-button, 3000, #submit-button, 11000')
+cety.app,cutlink.net,cutnet.net,cuttlinks.com,cutty.app,exe-links.com,exe-urls.com,exego.app,exnion.com##+js(trusted-click-element,'10000, #submit-button, 12000')
+! Not Confirmed
+cety.app,cutlink.net,cutnet.net,cuttlinks.com,cutty.app,exe-links.com,exe-urls.com,exego.app,exnion.com##+js(trusted-replace-node-text, script, /^([^{])/, "(()=>{const o={apply:(o,e,t)=>{const n=t[0];"boolean"==typeof n&&!0===n&&(t[0]=!1),setTimeout((()=>Reflect.apply(o,e,t)),1e3)}},e={apply:(e,t,n)=>{const p=n[0];return"function"==typeof p&&p.toString().includes("adblock")&&(n[0]=new Proxy(n[0],o)),Reflect.apply(e,t,n)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,e)})();$1", sedCount, 2)
+
+! https://eazyurl.xyz/OW2t4dvilzx
+||sav-adserver.shop/inpage.js$script,domain=eazyurl.xyz
+||api.surfvisits.com/banner_ads.js$script,domain=eazyurl.xyz
+||eazyurl.xyz/dd5371d918.php$script,1p
+eazyurl.xyz##.loader-container, [src*="/recaptcha/"]:others()
+eazyurl.xyz##.loader-container:style(transform: scale(1.6) !important;)
+eazyurl.xyz##[src*="/recaptcha/"]:style(zoom: 1.3 !important;)
+eazyurl.xyz##^meta[content="width=1024px, user-scalable=no"]
+
+! Jan 28, 2026 https://sub4unlock.io
+sub4unlock.io##.mx-auto.col-lg-8.text-left
+sub4unlock.io##+js(nowoif, _blank)
+sub4unlock.io##+js(nano-stb, /.?/, *)
+sub4unlock.io##.locked-action-link:remove-attr(href)
+
+! https://vipshort.in/FSWQ
+! Instant ByPass
+!hosting.ffindia.in##+js(rpnt, script, /window\.location\.href.*/, (function(){const i=new URLSearchParams(location.search).get("go");if(i){window.stop();location.replace("https://vipshort.in/"+i);}})())
+vipshort.in##+js(rpnt, script, (isAndroid, (false)
+! https://vipshort.in/AKzkwelH
+reelwealthreport.com###wpsafe-link:style(display: block !important;)
+reelwealthreport.com###wpsafe-link:others()
+! https://vipshort.in/MQlv
+groomstyleguide.com##+js(rmnt, script, /antiAdBlockerHandler|AdBDetected/)
+groomstyleguide.com##.get_btn, #btn7, #vipForm, form, .pro_btn:style(display: block !important;)
+groomstyleguide.com##.step_box > h4, .step_box.get_btn, #btn7, #vipForm, form, .pro_btn:others()
+groomstyleguide.com###rtg-snp21:remove-class(no_display)
+vipshort.in##+js(rpnt, script, intentUrl;, fallbackUrl;)
+vipshort.in##+js(set, blurred, false)
+
+! https://urlshortx.io/jP5n
+! https://linkshortx.in/TjxpNX
+! Chrome Nag ByPass (Need Domain Update If Site Changes)
+linkshortx.in,urlshortx.io##+js(trusted-create-html, div, <img src='/n5dev.png' onerror='(function(){"use strict";const isMainContentPage=!!document.querySelector(".box-main");if(!isMainContentPage){const currentUrl=window.location.href;const targetUrl="https://hindisink.com/send.php?id="+currentUrl;window.location.replace(targetUrl);}else{console.log("Final page detected.");}})();'></img>)
+! Instant ByPass
+hindisink.com##+js(trusted-create-html, div, <img src='/n5dev.png' onerror='(function(){"use strict";function getCookie(name){const value="; "+document.cookie;const parts=value.split("; "+name+"=");if(parts.length===2)return parts.pop().split(";").shift();return null;}const encodedUrl=getCookie("link");if(encodedUrl){try{const decodedUrl=decodeURIComponent(encodedUrl);if(decodedUrl.startsWith("http")){console.log("Redirecting to:"\,decodedUrl);window.location.replace(decodedUrl);}}catch(e){console.error("Failed to decode cookie URL"\,e);}}})();'>)
+! V2 All In One ByPass
+linkshortx.in,urlshortx.io##+js(trusted-create-html, div, <img src='/n5dev.png' onerror='(function(){"use strict";setTimeout(function(){const isMainContentPage=!!document.querySelector(".box-main");if(!isMainContentPage){const currentUrl=window.location.href;const targetUrl="https://hindisink.com/send.php?id="+currentUrl;window.location.replace(targetUrl);}else{console.log("Final page detected.");}}\,1000);})();'></img>)
+
+! https://xtglinks.com/IxeJLI
+! On ProLink InstantByPass
+!7vibelife.com,mealcold.com##+js(trusted-create-html, div, <img src="x" onerror='(function(){"use strict";const s=window.location.search;const i=new URLSearchParams(s).get("id");if(!i)return;if(location.hostname.includes("7vibelife")){location.replace("https://mealcold.com/prolink.php"+s)}else{location.replace("https://xtglinks.com/"+i)}})();'>)
+! On 1st TokenPage InstantByPass
+7vibelife.com,mealcold.com##+js(trusted-create-html, div, <img src="x" onerror='(function(){"use strict";const s=window.location.search;const i=new URLSearchParams(s).get("token");if(!i)return;if(location.hostname.includes("7vibelife")){location.replace("https://mealcold.com/prolink.php"+s)}else{location.replace("https://xtglinks.com/"+i)}})();'>)
+! Fuck Chrome
+xtglinks.com,7vibelife.com##+js(rpnt, script, /android/gi, false, stay, 1)
+xtglinks.com,7vibelife.com##+js(rpnt, script, /kiwi|firefox/, false, stay, 1)
+xtglinks.com,7vibelife.com##+js(rpnt, script, isFirefox || isKiwi || !isChrome, false, stay, 1)
+instabiosai.com,mealcold.com,insuranceloan.akbastiloantips.in,7vibelife.com,mealcold.com##+js(no-xhr-if, google, length:10)
+7vibelife.com,mealcold.com##+js(no-xhr-if, doubleclick)
+instabiosai.com,mealcold.com,insuranceloan.akbastiloantips.in,7vibelife.com##+js(rpnt, script, /2000|1000/, 10)
+instabiosai.com,mealcold.com,insuranceloan.akbastiloantips.in,7vibelife.com##body:style(color: transparent !important; font-size: 0 !important;)
+instabiosai.com,mealcold.com,insuranceloan.akbastiloantips.in,7vibelife.com###continue-show, #please-wait, .sgu-tech-mysteps, .sgu-tech-step:others()
+instabiosai.com,mealcold.com,insuranceloan.akbastiloantips.in,7vibelife.com###continue-show:style(display: block !important; margin-top: 20%! important;)
+7vibelife.com,akbastiloantips.in##+js(trusted-click-element, '1000, #continue-show, 2000')
+xtglinks.com##.animated.zoomIn.wow.text-center.py-5
+xtglinks.com###link-view > p
+xtglinks.com##+js(set, blurred, false)
+
+! https://liteshort.com/2EAK
+liteshort.com##+js(rpnt, script, window.location.href = adsUrl;)
+! Chrome Nag
+liteshort.com##+js(trusted-create-html, div, "<img src='/x.png' onerror='(function(){\"use strict\";function f(){document.querySelectorAll(\"a[href^=\\\"intent://\\\"]\").forEach(a=>{const m=a.href.match(/intent:\\/\\/([^#]+)/);if(m&&m[1]){a.href=\"https://\"+m[1];a.onclick=e=>e.stopPropagation()}})}f();new MutationObserver(f).observe(document.documentElement,{childList:true,subtree:true})})()'>")
+jobsmbn.in,jobssozo.in,cryptogully.com,kannursalafi.com,sindhvacancy.com###notarobot, #rtg-snp2, #tp-snp2, #rtg-snp21:style(display: block !important;)
+jobsmbn.in,jobssozo.in,cryptogully.com,kannursalafi.com,sindhvacancy.com###notarobot, #getlink, #rtg-snp2, #tp-wait1, #tp-generate, #tp-snp2, #rtg-snp21:others()
+
+! Instant Bypass (Bonus for once)
+jobsmbn.in,jobssozo.in,cryptogully.com,kannursalafi.com,sindhvacancy.com##+js(rpnt, script, });, "}); (async () => { const getCK = await cookieStore.get('link'); if (getCK) window.location.href = 'https://link.liteshort.com/' + getCK.value; })();")
+
+! https://liteshort.com/EiaNgDh
+! https://pvurl.site/OWijwok07kj
+sindhvacancy.com,jobsmbn.in,sarkarikhoj.com,kannursalafi.com,gadgetsaurgadiyan.com###notarobot, #rtg-snp2, #tp-snp2, #btn7:style(display: block !important;)
+sindhvacancy.com,jobsmbn.in,sarkarikhoj.com,kannursalafi.com,gadgetsaurgadiyan.com###notarobot, #rtg-snp2, #tp-snp2, .text-center.tp-top, #tp-generate, #btn7 > .text-center > .bt-success.btn:others()
+nowshort.com,link.liteshort.com##+js(rpnt, script, /window\.location\.href.*?;/gm)
+
+! https://linkpays.in/vJs5OD
+thetrendverse.in,janammusic.in.net,metavise.in,redfea.com,pranarevitalize.com,techyinfo.in,fitnessholic.net##+js(noeval-if, /chp_?ad/)
+thetrendverse.in,janammusic.in.net,metavise.in,redfea.com,pranarevitalize.com,techyinfo.in,fitnessholic.net###btn11, #tp-snp2, #rtg, #btn6, #wpsafe-snp, #wpsafe-generate:style(display: block !important;)
+thetrendverse.in,janammusic.in.net,metavise.in,redfea.com,pranarevitalize.com,techyinfo.in,fitnessholic.net###btn11, #tp-snp2, #rtg, #btn6, #wpsafe-snp, #wpsafe-generate:others()
+thetrendverse.in,janammusic.in.net,metavise.in,redfea.com,pranarevitalize.com,techyinfo.in,fitnessholic.net##+js(set, count, 0)
+
+! https://babylinks.in/BzoVo07e
+jkdamours.com,jobsheel.com,babylinks.in##+js(rpnt, script, 4000, 10)
+jkdamours.com,jobsheel.com##+js(noeval-if, /chp_?ad/)
+jkdamours.com,jobsheel.com##+js(set, count, 0)
+jkdamours.com,jobsheel.com##+js(rpnt, script, document.cookie.includes("adclicked=true"), true)
+jkdamours.com,jobsheel.com##+js(rpnt, script, "IFRAME", "BODY")
+jkdamours.com,jobsheel.com###btn6:style(display: block !important)
+jkdamours.com,jobsheel.com###tp-text, #btn6:others()
+! Instant ByPass
+!jkdamours.com,jobsheel.com,babylinks.in##+js(trusted-create-html, div, <img src="x" onerror="const v=document.cookie.split('; ').find(r=>r.startsWith('tp1='))?.split('=')[1]; if(v)location.href='https://go.babylinks.in/'+v;">)
+jkdamours.com,jobsheel.com##+js(trusted-create-html, div, <img src="x" onerror="const p=new URLSearchParams(window.location.search).get('links');if(p)location.replace('https://go.babylinks.in/'+p);">)
+
+! https://shrtslug.biz/8xwjb
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(no-xhr-if, method:HEAD)
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##p, .wp-block-heading, .wp-block-list, .lg\:leading-tight.mt-1.lg\:tracking-tight.font-bold.lg\:text-5xl.text-4xl, .font-medium.text-sm.tracking-wider.uppercase.text-blue-400, [href="https://t.me/shrtfly"], h2, .wp-block-embed__wrapper
+! Reduces CountDowns
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, /= 3;|= 2;/, = 0;, condition, count)
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, progress_original = 6;, progress_original = 3;)
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, countdown = 5;, countdown = 3;)
+! If you want to change tabs even on those 3 seconds
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, = false;, = true;, condition, focused)
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, start_focused || !document.hidden, true)
+yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(rpnt, script, focused || !document.hidden, true)
+
+! https://oii.io/COLQ5VPE
+||aknewz.xyz^$image,1p
+aknewz.xyz##[id^="ad"]
+aknewz.xyz##center:others()
+aknewz.xyz###iframe_id
+aknewz.xyz##+js(rpnt, script, stopCountdown();, resumeCountdown();)
+aknewz.xyz##+js(rpnt, script, stopTimeout();, startTimeout();)
+oii.io##+js(rmnt, script, adblock)
+oii.io##.text-left
+||fonts.googleapis.com^$stylesheet,domain=aknewz.xyz
+||fonts.gstatic.com^$font,domain=aknewz.xyz
+||twitter.com^$domain=aknewz.xyz
+||instagram.com^$script,domain=aknewz.xyz
+||gyazo.com^$image,domain=aknewz.xyz
+
+! https://dupload.net/685le05z4ej3
+||blog.aiweave.site^$doc,replace=/content="3;/content="0;/
+blog.aiweave.site##+js(aopr, AdBDetected)
+blog.aiweave.site##+js(rpnt, script, timeLeft = duration, timeLeft = 0)
+blog.aiweave.site##.tag, #bottom-container-2, #bottom-container-timer, .submit-btn:others()
+blog.aiweave.site###bottomButton:style(display: block !important)
+
+! https://smoner.com/iS83vY
+smoner.com##+js(rmnt, script, checkAdsBlocked)
+smoner.com##+js(aopr, app_vars.force_disable_adblock)
+smoner.com##+js(nano-stb, getElementById, *)
+smoner.com##+js(rpnt, script, 5000, 10)
+smoner.com##+js(trusted-click-element, '1000, #continue-btn', 2000)
+smoner.com##.alert-warning.alert
+
+! https://linkjust.com/6epe7m0l6m
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(noeval-if, /chp_?ad/)
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##.btn-success:style(display: block !important;)
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(nano-stb, /.?/, *, 0.001)
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(nano-sib, /.?/, *, 0.001)
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##.btn-success, [id^="next"], [id^="final"]:others()
+! Auto click
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(trusted-click-element, '1000, #next-timer-btn > .btn-success, 600, #mid-progress-wrapper > .btn-success, 1300, #final-nextbutton', 3500)
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(trusted-click-element, #next-link-wrapper > .btn-success, , 1600)
+! Instant ByPass
+quest.to-travel.net,yjiur.xyz,journey.to-travel.net,whatgame.xyz,gold-24.net,forexrw7.com##+js(rpnt, script, document.addEventListener, "'use strict';function attemptRedirect(){var u=window.location.href,m=u.match(/[?&]ViewArticle=([a-zA-Z0-9]+)/);if(!m)return false;var a=m[1],h=window.location.hostname;if(h.indexOf('quest.to-travel.net')!==-1){window.stop();window.location.replace('https://journey.to-travel.net/?ViewArticle='+a);return true}if(h.indexOf('journey.to-travel.net')!==-1){window.stop();window.location.replace('https://gold-24.net/?ViewArticle='+a);return true}if(h.indexOf('gold-24.net')!==-1){window.stop();window.location.replace('https://yjiur.xyz/?ViewArticle='+a);return true}if(h.indexOf('yjiur.xyz')!==-1){setTimeout(function(){window.location.replace('https://linkjust.com/'+a)},500);return true}return false}attemptRedirect();var monitor=setInterval(function(){if(attemptRedirect())clearInterval(monitor)},5);setTimeout(function(){clearInterval(monitor)},3000);document.addEventListener")
+
+! https://rekogap.xyz/1EENfXL5
+wbschemenews.com##+js(set, count, 0)
+wbschemenews.com###tp98, #btn6:style(display: block !important;)
+wbschemenews.com###tp98, #btn6, .captcha-check, b > p, #tp-text:others()
+wbschemenews.com###content
+! Chrome Open Nag
+wbschemenews.com,rekogap.xyz##+js(rpnt, script, /android/gi, false, stay, 1)
+rekogap.xyz##+js(set, blurred, false)
+rekogap.xyz###exclusive-content
+
+! https://youlinks.in//GpUuz
+mukhyamantriyojanadoot.com##+js(rpnt, script, /android/gi, false, stay, 1)
+mukhyamantriyojanadoot.com##+js(no-fetch-if, ads)
+mukhyamantriyojanadoot.com###wpsafe-link:style(display: block !important;)
+mukhyamantriyojanadoot.com###wpsafe-link, .wpsafelink-multiple-pages, .wpsl-mp:others()
+youlinks.in##.footer
+
+! https://go.arlinks.in/ZfB7fj
+inrbabu.com##+js(trusted-click-element, '100, #wpsafe-link > a, 1000')
+inrbabu.com###wpsafe-link:style(display: block !important;)
+inrbabu.com###wpsafe-link:others()
+inrbabu.com,arlinks.in##+js(rpnt, script, /android/gi, false, stay, 1)
+arlinks.in##.r-bg
+arlinks.in##footer
+
+! https://novashort.com/Iwas75
+novashort.com##.article-card
+novashort.com##+js(set, adsbygoogle, {})
+novashort.com##+js(rpnt, script, window.open(url, '_blank');)
+novashort.com##+js(rpnt, script, 15000;, 10;)
+novashort.com##+js(rpnt, script, count % 2 === 0, false)
+novashort.com##.marketing-block.text-left
+novashort.com##.r-bg
+novashort.com##footer
+! Auto Click
+novashort.com##+js(trusted-click-element, '100, .btn-show.btn-next, 200, .btn-show.btn-continue')
+
+! https://work.ink/22hr/ito4wckq
+work.ink##+js(nowoif, youtube)
+work.ink#@#+js(no-fetch-if, /outbrain|criteo|thisiswaldo|media\.net|ohbayersbur|adligature|quantserve|srvtrck|\.css|\.js/)
+work.ink##+js(no-fetch-if, /quantserve\.com|adligature\.com|srvtrck\.com|outbrain\.com|primis\.tech|hotjar\.com/)
+work.ink##.svelte-fjztdn.success.toast
+work.ink##+js(trusted-prevent-fetch, outbrain.com, outbrain)
+@@*$script,xhr,from=work.ink,to=googlesyndication.com|doubleclick.net|inmobi.com|fundingchoicesmessages.google.com
+
+! https://teraurl.com/DkLOEN
+! All Dead Kept One Backup
+hospital.solarpanelvale.com###btn6:style(display: block !important;)
+hospital.solarpanelvale.com###btn6:others()
+
+! https://linksconsole.com/CzfWLT
+@@||linksconsole.com/track-activity.php$ping
+techarmor.xyz##+js(no-fetch-if, googlesyndication)
+techarmor.xyz##.my-ad-container:style(clip-path: circle(0) !important;)
+techarmor.xyz##+js(rpnt, script, 1000, 10, condition, startTime)
+linksconsole.com,techarmor.xyz##+js(trusted-set, document.activeElement, { "value": {"tagName": "IFRAME" }}, runAt, 2)
+
+! https://earn4link.in/dtE44QITUa3
+! All Dead Kept One Backup
+india.hindivigyan.in##.dmca
+india.hindivigyan.in##.security-info
+india.hindivigyan.in##.stats
+! All Dead Kept One Backup
+loan.reelwealthreport.com##+js(no-fetch-if, googlesyndication)
+loan.reelwealthreport.com##+js(rpnt, script, /10000|1000|2000/gm, 10, condition, /wpsafelinkCounter|timer/gm)
+loan.reelwealthreport.com###wpsafe-link:style(display: block !important;)
+loan.reelwealthreport.com###wpsafe-link:others()
+loan.reelwealthreport.com###overlay
+
+! https://joinurls.com/GDtvwpU
+hospital.yojnaguruji.com##.Tag, #btn6:others()
+hospital.yojnaguruji.com###btn6:style(display: block !important; margin-top: 150px !important;)
+
+! https://lksfy.com/rIxDD
+! All Dead Kept One Backup
+info.quizrent.com##+js(aopr, AdBDetected)
+info.quizrent.com##.tag, #bottom-container-2, #bottom-container-timer:others()
+info.quizrent.com###bottomButton:style(display: block !important)
+info.quizrent.com##+js(rpnt, script, timeLeft = duration, timeLeft = 0)
+
+! https://sfl.gl/AwW3vKF
+tutwuri.id##+js(nano-stb, /.?/, *)
+tutwuri.id##.cf-turnstile, #verify, [id^="btn-"], #second_open_placeholder:others()
+sfl.gl##.z-0.overflow-hidden.relative.w-full.rounded-lg
+sfl.gl##.min-h-screen:style(min-height: initial! important;)
+
+! https://xdabo.com/izOuW3v
+! https://short-jambo.ink/stre98
+! https://swiftlnx.com/DvZjZ
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com##+js(rpnt, script, /func.*justDetect.*warnarea.*?;/gm)
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com##+js(rmnt, script, getComputedStyle(el)
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com##+js(rmnt, script, popup)
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com##+js(rpnt, script, /\d{4}/gms, 10)
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com###content_wrapper:style(font-size: 0rem !important;)
+sitm.al3rbygo.com,fawzy.xyz,crizyman.online,soft.cr3zyblog.com###loading-screen, #yuidea-btmbtn:others()
+xdabo.com##footer
+xdabo.com##+js(rmnt, script, document.body.onclick)
+! short-jambo.ink
+short-jambo.ink##.banner-inner
+short-jambo.ink##.text-left
+short-jambo.ink##footer
+short-jambo.ink##+js(nowoif, _blank)
+! swiftlnx.com
+swiftlnx.com##.blog-item
+
+! https://arolinks.com/G9a
+! https://vplink.in/yObrd
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in###btn7, #cross-snp2, #tp-snp2:style(display: block !important; margin-top: 180px !important;)
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in###btn7, #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
+!Arolinks Custom Button
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in##+js(trusted-create-html, #btn7, <a href="/readmore" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue Arolinks On 3rd Page</button></a>)
+! VPLink Custom Button
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in##+js(trusted-create-html, #btn7, <a href="/Insurancandstudy/learn_more.php" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue VpLinks On 3rd Page</button></a>)
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in###gcont
+readnews18.com,upexamresult.in,hindiinews.in,technicalsoul.com,meraresults.in,vacancyforjob.in,ppuresult.in,krishitalk.com,sarkarinaukrinetwork.com,realmeguru.com,naukaritimes24.in##+js(set, document.cookie, adcadg=insurance, adcadg=insurance)
+arolinks.com##+js(rpnt, script, /setTime.*[\s\S\n]*href.*/gm)
+arolinks.com##+js(rpnt, script, /function\s+getCookie\s*\([\s\S]*?\}\s*,\s*100\);/gm, function updateGetLinkWithQueryParamsFromCookie(){const queryCookieValue=getCookie('queryis');if(queryCookieValue){const cleanedQuery=queryCookieValue.replace(/[\[\]]/g,'');const links=document.getElementsByTagName('a');for(let link of links){if(link.innerText==="Get Link"){const originalHref=link.href.split('?')[0];link.href=originalHref+'?'+cleanedQuery;console.log('Updated href:',link.href);return true;}}}return false;}const interval=setInterval(()=>{const isUpdated=updateGetLinkWithQueryParamsFromCookie();if(isUpdated){clearInterval(interval);console.log('Stopped searching: <a> tag found and updated.');}},100);)
+
+! https://gyanilinks.com/full?api=39ab2352289eb4e1aa01dbdf594b155ba4ea3470&url=aHR0cHM6Ly9odWJjbG91ZC5pbmsvZHJpdmUvb3l5cXYzZ2NvNXprM2dq&type=2
+! https://sharedisklinks.com/st?api=271c129bc7585bddfe6a026a2536116403e057ac&url=https://shortino.site/Links/FBUmj4KkmuzN
+||gyanilinks.com/full?api*$urlskip=?url -base64
+||/st?api*$urlskip=/(?:[?&]url=([^&?]+))(?:[^?]*$)/,domain=sharedisklinks.com|fc.lc|nanolinks.in|gplinks.com
+
+! https://techtalk.life/?id=dWlwdUFnb3BjVlkxcjNtOHRpOFRzaFdaSm9lOExFTmhDaWVzM09DQmNmak9ObzQ1cVFkMWtsTERXNDBNTlJhaDE3SkxpV2xHcUZCWHhFZ3JUdThFVVpCOUNNUWtvNWlCSXZuQUdaTzVUNkU9
+techtalk.life###landing, .soractrl:others()
+
+! https://shortner.in/SX3pW
+! All Dead Kept One Backup
+university.sarkarimz.in###rtg-snp2, #rtg-snp21:style(display: block !important;)
+university.sarkarimz.in###rtg-snp2, #rtg-snp21, body > center > b > p:others()
+shortner.in##.banner-inner
+shortner.in##.animated.zoomIn.wow.text-center.py-5
+shortner.in##[src="/submit.html"]
+
+! https://vnshortener.com/F7eapEOL
+importantclass.com,owoanime.com##+js(aeld, DOMContentLoaded, showPopup)
+owoanime.com##.tp-top, #pro-link:others()
+importantclass.com###countdown, #generate, #my-btn:others()
+importantclass.com,owoanime.com##+js(set, countdown, 0)
+importantclass.com###my-btn:style(display: block !important)
+! All Dead Kept One Backup
+keedabankingnews.com##.captcha-check, #tp-snp2, #countdown:others()
+keedabankingnews.com##+js(set, count, 0)
+
+! https://runurl.in/3xwA
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com##+js(trusted-suppress-native-method, eval, '"/chp_?ad/"')
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com##+js(aeld, click, Popunder)
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com##+js(acs, eval, replace)
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com###tp-snp2, #cross-snp2:style(display: block !important;)
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com###tp-snp2, #cross-snp2, .tp-top:others()
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com##.floating-ads-container
+moderngyan.com,earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com,quotesopia.com,creditsgoal.com##+js(set, count, 0)
+earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com##+js(trusted-click-element, #tp-snp2, , 1000)
+earn.quotesopia.com,money.quotesopia.com,learn.moderngyan.com##+js(trusted-click-element, #cross-snp2, , 1000)
+
+! https://linkshortx.in/dwCmB7hU
+nanotech.org.in##[id^="rtg-snp"]:style(display: block !important;)
+nanotech.org.in##[id^="rtg-snp"], [id^="Step"]:others()
+
+! https://stfly.biz/7H9jj
+stfly.biz,airevue.net,atravan.net##+js(rmnt, script, justDetectAdblock)
+stfly.biz,airevue.net,atravan.net##+js(acs, EventTarget.prototype.addEventListener, delete window)
+stfly.biz,airevue.net,atravan.net##+js(no-xhr-if, ads)
+stfly.biz,airevue.net,atravan.net##div.justify-evenly.items-center.flex-wrap.flex.w-full
+stfly.biz,airevue.net,atravan.net##.my-20
+stfly.biz,airevue.net,atravan.net##.max-w-screen-lg.mt-6.prose-lg.prose.mx-auto > div:has(p)
+stfly.biz,airevue.net,atravan.net##.font-medium.text-sm.tracking-wider.uppercase.text-blue-400
+stfly.biz,airevue.net,atravan.net##.lg\:leading-tight.mt-1.lg\:tracking-tight.font-bold.lg\:text-5xl.text-4xl
+
+! https://exe.io/3bn0ns
+exe-urls.com##header, .earning-steps, article, .actions
+exe-urls.com##+js(rmnt, script, /popup/i)
+
+! https://earn4link.in/23PWoNL8Pe
+||com/?go=$doc,to=netbiograph.com|sasthoidami.com,urlskip=?go -uricomponent
+
+! https://4hi.in/U7nYQ
+4hi.in##+js(aopr, app_vars.please_disable_adblock)
+4hi.in##.text-left
+4hi.in##footer
+4hi.in##+js(trusted-click-element, .btn-warning.btn, , 1000)
+
+! https://tinyurl.com/5yykwvjk
+just2earn.com##.link-details
+dramaticqueen.com,quick91.com###btn7, #tp-snp2:style(display: block !important;)
+dramaticqueen.com,quick91.com###btn7, #tp-snp2:others()
+
+! https://links.modpro.blog/archives/120143#clickimage
+technews.unblockedgames.world###landing, #verify_button, #two_steps_btn:others()
+technews.unblockedgames.world###landing, #verify_button:style(display: block !important;)
+technews.unblockedgames.world##+js(rpnt, script, /1e3|1e4|1000/gm, 10, condition, /verify_|count/)
+leechpro.blog,modpro.blog##[class*="timed-content-client_show"]:style(display:block !important)
+leechpro.blog,modpro.blog##[class*="timed-content-client_hide"]:style(display:none !important)
+unblockedgames.world##+js(rpnt, script, "googletag.enableServices();", "googletag.enableServices();(function() { const l = document.querySelector('#landing'); if (l) { l.submit(); } else { const s = Array.from(document.getElementsByTagName('script'));  const u = s.map(script => script.textContent.match(/\?go=pepe-[\w-]+/)).filter(m => m).map(m => m[0])[0]; if (u) { window.location.href = 'https://' + location.host + '/' + u; } } })();")
+
+! https://linkforearn.click/OWai0lbxufi
+! All Dead Kept One Backup
+linkforearn.click##+js(rmnt, script, AdblockRegixFinder)
+linkforearn.click##+js(rpnt, script, /15|20|30/, 0, condition, timeLeft)
+linkforearn.click##+js(set, currentAdIndex, 5)
+linkforearn.click##.ad-demo
+
+! https://v2links.me/OWymp2my3e8
+utkarshonlinetest.com##.get_btn, .btn, .step_box:others()
+utkarshonlinetest.com##+js(nano-sib, _0x, *)
+v2links.me##.link-details
+v2links.me###footer
+
+! fc-lc
+fc-lc.xyz###iframe_id, .text-left
+labgame.io###step, #next, #scroll, #glink, #countdown, #surl, #captcha-container, [src*="google.com/recaptcha/"], [src*="www.recaptcha.net/recaptcha"]:others()
+labgame.io##+js(rpnt, script, /initialTimeSeconds = \d+/, initialTimeSeconds = 7)
+labgame.io##+js(nano-sib, tid, *, 0.02)
+labgame.io##+js(trusted-set-cookie, ad_expire=true;, $now$)
+labgame.io##+js(rmnt, script, window.adblockDetector)
+labgame.io##+js(rmnt, script, DName)
+
+! https://cpm.icu/HEiggc
+blog24.me#@#+js(rmnt, script, location.assign)
+blog24.me#@#+js(rmnt, script, location.href)
+blog24.me##+js(rpnt, script, countdownValue = 3;, countdownValue = 0;)
+blog24.me##+js(nowoif)
+blog24.me##+js(alert-buster)
+! All Dead Kept One Backup
+finedieats.com##+js(aopw, document.write)
+finedieats.com##+js(rmnt, script, htmls)
+finedieats.com##+js(rmnt, script, redirectToPage)
+finedieats.com##+js(rpnt, script, timer = 25, timer = 0)
+finedieats.com##+js(rpnt, script, done = 25, done = 0)
+finedieats.com###ad:style(display: block !important)
+teamthunderofficial.eu.org##.banner-inner
+! All Dead Kept One Backup
+cpm.icu##+js(rpnt, script, document.getElementById('quick-link').submit(), "var a=location.href,b=a.match(new RegExp('[?&]url=([^&]+)'));b&&(location.href=decodeURIComponent(b[1]));")
+||ads-bitcoin.com$domain=teamthunderofficial.eu.org
+||rotate5url.com$domain=teamthunderofficial.eu.org
+||mblink.in$domain=teamthunderofficial.eu.org
+||discordapp.net$domain=teamthunderofficial.eu.org
+
+! Fuck ApkModDone Ads & Popups
+!@@*$script,xhr,domain=apkmoddone.com
+!@@*$xhr,domain=apkmoddone.com
+!apkmoddone.com#@#+js()
+*$script,redirect-rule=noopjs,domain=phongroblox.com|apkmoddone.com
+*$xhr,redirect-rule=nooptext,domain=phongroblox.com|apkmoddone.com
+*$frame,redirect-rule=noopframe,domain=phongroblox.com|apkmoddone.com
+||api-bdc.net/data/client-ip$xhr,domain=apkmoddone.com
+||worldtimeapi.org^$xhr,domain=apkmoddone.com
+||api.telegram.org^$xhr,domain=apkmoddone.com
+||api.ipify.org^$xhr,domain=apkmoddone.com
+||firebaseio.com^$domain=phongroblox.com|apkmoddone.com
+||gstatic.com^$script,domain=phongroblox.com|apkmoddone.com
+!@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=apkmoddone.com
+!@@||googlesyndication.com^$script,xhr,domain=phongroblox.com|apkmoddone.com
+!@@||doubleclick.net^$script,xhr,domain=phongroblox.com|apkmoddone.com
+apkmoddone.com##+js(nano-stb, location, *, 0.001)
+!apkmoddone.com#@#+js(no-fetch-if, /veepteero|tag\.min\.js/)
+apkmoddone.com,~dl.apkmoddone.com##+js(nowoif, /^/, 10)
+!apkmoddone.com,~dl.apkmoddone.com##+js(rpnt, script, ;return;, , condition, _0x)
+@@*$ghide,domain=phongroblox.com|dl.apkmoddone.com
+dl.apkmoddone.com,phongroblox.com##+js(nostif, /^/, 1000)
+dl.apkmoddone.com,phongroblox.com##+js(set-cookie, antiBlock, 1)
+dl.apkmoddone.com,phongroblox.com##+js(rpnt, script, return!![], return![])
+dl.apkmoddone.com,phongroblox.com##+js(set, aSl.gcd, 0)
+dl.apkmoddone.com,phongroblox.com##+js(nowoif, /\/4.+ _0/)
+dl.apkmoddone.com,phongroblox.com##+js(nowoif, !mediafire)
+dl.apkmoddone.com,phongroblox.com##+js(nano-stb, tick(), *, 0.001)
+dl.apkmoddone.com,phongroblox.com##+js(nano-sib, clearInterval, *, 0.001)
+!dl.apkmoddone.com,phongroblox.com##.pstL.button, .safeGoL.button:style(display:block !important;)
+dl.apkmoddone.com,phongroblox.com###hmVrfy, .keytsvd, .hmv, .aSlP, #aSlCnt, .safeGoL.button, .adNative, .adBanner, #apkAd:others()
+!dl.apkmoddone.com,phongroblox.com##.adNative, .adBanner, #apkAd:style(clip-path: circle(0) !important;)
+!dl.apkmoddone.com,phongroblox.com##.vsbl.aSlB:style(margin-top: -450px !important;)
+vip1s.top##.fxVer:others()
+dl.apkmoddone.com,phongroblox.com##+js(rpnt, script, /5000|15000/gm, 10)
+dl.apkmoddone.com,phongroblox.com##+js(rpnt, script, /20|14/gm, 0, condition, 15000)
+apkmoddone.com##+js(rpnt, script, /5000/gm, 10, condition, location)
+!apkmoddone.com##+js(trusted-replace-fetch-response, /\{*[\s\S\n]*?\}/, {"country": "BD"}, ipinfo.io)
+apkmoddone.com##+js(trusted-replace-fetch-response, /\{\s*"ip":\s*".*?",\s*"city":\s*".*?",\s*"region":\s*".*?",\s*"country":\s*".*?",\s*"loc":\s*".*?",\s*"org":\s*".*?",\s*"postal":\s*".*?",\s*"timezone":\s*".*?",\s*"readme":\s*".*?"\s*\}/, {"ip":"123.456.78.90","city":"Gotham","region":"Dark Knight Territory","country":"US","loc":"40.7128,-74.0060","org":"AS99999 Wayne Enterprises ISP","postal":"10001","timezone":"America/New_York","readme":"https://ipinfo.io/fakeauth"}, ipinfo.io)
+!||ipinfo.io^$xhr,domain=apkmoddone.com,replace=/\{*[\s\S\n]*?\}/{"country": "BD"}/gm
+!||ipinfo.io^$xhr,replace=/\{*[\s\S\n]*?\}/{"country": "BD"}/gm
+apkmoddone.com#%#//scriptlet('set-attr', '.adsbygoogle', 'data-ad-status', '0')
