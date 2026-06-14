@@ -2249,11 +2249,11 @@ pcom.page.link,merchant.pathao.com##+js(trusted-set, navigator.userAgent, '{"val
 ! https://indianshortner.in/AxW1nfy
 !link4earn.*,indianshortner.*,djstar.in##+js(rpnt, script, /window\.location.*(chrome|intent).*?;/gm, , stay, 1)
 !link4earn.*,indianshortner.*,djstar.in##+js(rpnt, script, /#Intent.*?end/gm)
-link4earn.*,indianshortner.*,djstar.in##+js(rpnt, script, window.location.href = intentUrl;, , stay, 1)
-link4earn.*,indianshortner.*,djstar.in##+js(rpnt, script, /#Intent;scheme=https;package=com\.android\.chrome;end/, , stay, 1)
-link4earn.*,indianshortner.*,djstar.in##+js(rpnt, script, intent://, https://, stay, 1)
+link4earn.*,indianshortner.*##+js(rpnt, script, window.location.href = intentUrl;, , stay, 1)
+link4earn.*,indianshortner.*##+js(rpnt, script, /#Intent;scheme=https;package=com\.android\.chrome;end/, , stay, 1)
+link4earn.*,indianshortner.*##+js(rpnt, script, intent://, https://, stay, 1)
 !*$document,replace=/window\.location\.href = intentUrl;//gm,domain=link4earn.*|indianshortner.*|djstar.in
-link4earn.*,indianshortner.*,djstar.in##+js(nano-stb, location.href, 2000)
+link4earn.*,indianshortner.*##+js(nano-stb, location.href, 2000)
 indianshortner.com,link4earn.com##.animated.zoomIn.wow.text-center.py-5, .blog-item
 
 ! Remove Google Ad Reward
