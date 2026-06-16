@@ -2047,15 +2047,15 @@ scriptgrowagarden.com##+js(trusted-click-element, #notarobot > #notarobot, , , l
 !famemingles.com,vidhia.in,crimejasoos.in###gcont, .inside-article
 
 ! AROLINKS Suurp
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2:style(display: block !important)
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, "'IFRAME'", "'BODY'")
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-sib, /.?/, *, 0.02)
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-stb, , *, 0.02)
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(cookie-remover, iotes)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2:style(display: block !important)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, "'IFRAME'", "'BODY'")
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-sib, /.?/, *, 0.02)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-stb, , *, 0.02)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(cookie-remover, iotes)
 !dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, /\d{4}/gms, 10)
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '10000, button#cross-snp2', 15000)
-dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '1000, #btn7', 15000)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '10000, button#cross-snp2', 15000)
+entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '1000, #btn7', 15000)
 
 !arolinks.com,vplink.in##+js(nano-stb, /.?/, *)
 arolinks.com##+js(set, blurred, false)
