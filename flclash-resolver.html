@@ -85,14 +85,12 @@ textarea:focus{border-color:#1976D2;box-shadow:0 0 0 3px rgba(25,118,210,.1)}
         <div class="ck-val ck-org" id="cbnet">--:--</div>
       </div>
       <span class="offset-badge" id="offsetBadge"></span>
-      <span class="auto-txt">auto-refreshes<br>every 10s</span>
+      <span class="auto-txt">auto-refreshes<br>every 1 min</span>
     </div>
     <div class="adj-row">
-      <button class="chip csub" onclick="adjustMin(-30)">−30 min</button>
       <button class="chip csub" onclick="adjustMin(-1)">−1 min</button>
       <div class="adj-sep"></div>
       <button class="chip cadd" onclick="adjustMin(+1)">+1 min</button>
-      <button class="chip cadd" onclick="adjustMin(+30)">+30 min</button>
       <button class="chip crst" id="resetBtn" onclick="resetOffset()" style="display:none">↺ Reset</button>
     </div>
   </div>
@@ -137,8 +135,9 @@ let offset=0;
 const pad=n=>String(n).padStart(2,'0');
 
 function now(){
-  const d=new Date(Date.now()+offset*60000);
-  return{hh:d.getHours(),mm:d.getMinutes(),dd:d.getDate()};
+  const utc=Date.now()+offset*60000+(new Date().getTimezoneOffset()*60000);
+  const bd=new Date(utc+6*3600000);
+  return{hh:bd.getHours(),mm:bd.getMinutes(),dd:bd.getDate()};
 }
 
 function resolve(raw){
@@ -213,7 +212,7 @@ function doCopy(){
 }
 
 updateClock();run();
-setInterval(()=>{updateClock();run();},10000);
+setInterval(()=>{updateClock();run();},60000);
 </script>
 </body>
 </html>
