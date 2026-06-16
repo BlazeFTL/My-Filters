@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlClash Resolver</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f0f0f;color:#e8e8e8;font-family:'JetBrains Mono','Fira Mono',monospace;padding:20px 16px;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto}
+.head-sub{font-size:11px;letter-spacing:.15em;color:#ff4d4d;margin-bottom:4px}
+.head{font-size:20px;font-weight:700;color:#fff;margin-bottom:20px}
+.clock{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 16px;margin-bottom:16px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.macro-label{font-size:10px;color:#555;margin-bottom:2px}
+.macro-val{font-size:18px;font-weight:700}
+.red{color:#ff4d4d}.orange{color:#ff9900}
+.auto{margin-left:auto;font-size:10px;color:#444}
+label{font-size:10px;color:#555;letter-spacing:.1em;display:block;margin-bottom:6px}
+textarea{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;color:#ccc;font-family:inherit;font-size:12px;padding:12px;border-radius:8px;resize:vertical;outline:none;line-height:1.6}
+.out-area{background:#111;border:1px solid #1e3a1e;color:#7ec87e}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+button,a.btn{background:#1a1a1a;border:1px solid #2a2a2a;font-family:inherit;font-size:11px;padding:5px 14px;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:background .2s}
+button.copy{color:#666}
+button.copy.ok{background:#1a3a1a;color:#4caf50}
+a.dl{color:#ff9900;border-color:#332200}
+button.plus{color:#aaa;border-color:#333;font-size:13px}
+.mb{margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head-sub">FLCLASH</div>
+  <div class="head">Macro Resolver</div>
+
+  <div class="clock">
+    <div><div class="macro-label">[@TIME]</div><div class="macro-val red" id="ctime">--:--</div></div>
+    <div><div class="macro-label">[@HH+3:dd+9]</div><div class="macro-val orange" id="cbnet">--:--</div></div>
+    <div class="row" style="margin:0;gap:8px">
+      <button class="plus" onclick="adjustMin(-1)">− 1min</button>
+      <button class="plus" onclick="adjustMin(+1)">+ 1min</button>
+    </div>
+    <div class="auto" id="refinfo">auto-refreshes every 10s</div>
+  </div>
+
+  <div class="mb">
+    <label>RAW CONFIG</label>
+    <textarea id="input" rows="10" placeholder="Paste YAML/JSON with [@TIME] / [@HH+3:dd+9] macros..." oninput="run()"></textarea>
+  </div>
+
+  <div id="outbox" style="display:none">
+    <div class="row">
+      <label style="margin:0">OUTPUT</label>
+      <div class="btn-row">
+        <button class="copy" id="copybtn" onclick="doCopy()">COPY</button>
+        <a class="btn dl" id="dlbtn" href="#" download="flclash-config.yaml">↓ DOWNLOAD</a>
+      </div>
+    </div>
+    <textarea class="out-area" id="output" rows="14" readonly></textarea>
+  </div>
+</div>
+
+<script>
+let offset = 0;
+
+function pad(n){return String(n).padStart(2,'0')}
+
+function now(){
+  const d=new Date(Date.now()+offset*60000);
+  return {hh:d.getHours(),mm:d.getMinutes(),dd:d.getDate()};
+}
+
+function resolve(raw){
+  const {hh,mm,dd}=now();
+  return raw
+    .replace(/\[@TIME\]/g,`${pad(hh)}:${pad(mm)}`)
+    .replace(/\[@HH([+-]\d+):dd([+-]\d+)\]/g,(_,hO,dO)=>{
+      const h=((hh+parseInt(hO))%24+24)%24;
+      return `${pad(h)}:${pad(dd+parseInt(dO))}`;
+    });
+}
+
+function updateClock(){
+  const {hh,mm,dd}=now();
+  document.getElementById('ctime').textContent=`${pad(hh)}:${pad(mm)}`;
+  document.getElementById('cbnet').textContent=`${pad(hh+3)}:${pad(dd+9)}`;
+}
+
+function run(){
+  const raw=document.getElementById('input').value;
+  if(!raw.trim()){document.getElementById('outbox').style.display='none';return;}
+  const out=resolve(raw);
+  document.getElementById('output').value=out;
+  document.getElementById('outbox').style.display='block';
+  const dl=document.getElementById('dlbtn');
+  dl.href='data:text/yaml;charset=utf-8,'+encodeURIComponent(out);
+}
+
+function adjustMin(d){offset+=d;updateClock();run();}
+
+function doCopy(){
+  const ta=document.getElementById('output');
+  ta.select();
+  document.execCommand('copy');
+  const b=document.getElementById('copybtn');
+  b.textContent='✓ COPIED';b.classList.add('ok');
+  setTimeout(()=>{b.textContent='COPY';b.classList.remove('ok');},1500);
+}
+
+updateClock();
+run();
+setInterval(()=>{updateClock();run();},10000);
+</script>
+</body>
+</html>
