@@ -66,7 +66,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <div id="sg" class="space-y-1.5 max-h-32 overflow-y-auto pr-2"></div>
     </div>
 
-    <div id="sortBtnWrap" class="hidden flex justify-end">
+    <div id="sortBtnWrap" class="hidden flex justify-between items-center">
+      <div id="resultsSummary" class="text-[11px] font-medium text-gray-500"></div>
       <button id="sortBtn" onclick="toggleSort()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
         <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
       </button>
@@ -402,6 +403,8 @@ async function runEngine() {
   currentSkippedPool = uniqueSkipped;
 
   document.getElementById('sortBtnWrap').classList.remove('hidden');
+  document.getElementById('resultsSummary').textContent =
+    `${currentLivePool.length} live · ${currentDeadPool.length} dead · ${currentSkippedPool.length} skipped`;
 
   if (currentDeadPool.length) {
     document.getElementById('deadBox').classList.remove('hidden');
