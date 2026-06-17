@@ -65,7 +65,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       </div>
       <div id="sg" class="space-y-1.5 max-h-32 overflow-y-auto pr-2"></div>
       <div id="sortBtnWrap" class="hidden flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-        <div id="resultsSummary" class="text-[11px] font-medium text-gray-500"></div>
+        <div id="resultsSummary" class="text-[12px] text-gray-600"></div>
         <button id="sortBtn" onclick="toggleSort()" class="btn-git text-[10px] font-bold text-gray-600 flex items-center gap-1.5">
           <i class="fa-solid fa-arrow-down-a-z"></i> Sort A–Z
         </button>
@@ -402,8 +402,8 @@ async function runEngine() {
   currentSkippedPool = uniqueSkipped;
 
   document.getElementById('sortBtnWrap').classList.remove('hidden');
-  document.getElementById('resultsSummary').textContent =
-    `${currentLivePool.length} live · ${currentDeadPool.length} dead · ${currentSkippedPool.length} skipped`;
+  document.getElementById('resultsSummary').innerHTML =
+    `<span class="font-bold text-green-600">${currentLivePool.length}</span> Live &nbsp;·&nbsp; <span class="font-bold text-red-600">${currentDeadPool.length}</span> Dead &nbsp;·&nbsp; <span class="font-bold text-gray-500">${currentSkippedPool.length}</span> Skipped`;
 
   if (currentDeadPool.length) {
     document.getElementById('deadBox').classList.remove('hidden');
