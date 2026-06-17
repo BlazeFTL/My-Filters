@@ -218,6 +218,18 @@ async function validate(d) {
   return result;
 }
 
+async function runPool(items, limit, worker) {
+  let idx = 0;
+  async function next() {
+    while (idx < items.length) {
+      const i = idx++;
+      await worker(items[i], i);
+    }
+  }
+  const workers = Array.from({ length: Math.min(limit, items.length) }, next);
+  await Promise.all(workers);
+}
+
 let processedCount = 0, totalCount = 0;
 let isSorted = false;
 let currentLivePool = [], currentDeadPool = [], currentSkippedPool = [];
@@ -323,6 +335,11 @@ async function runEngine() {
 
   for (const s of uniqueSkipped) logDomain(s, 'skip');
 
+  await runPool([...uniqueToCheck], 12, async (bare) => {
+    const status = await validate(bare);
+    processedCount++; updateProgress(); logDomain(bare, status);
+  });
+
   const processedLines = [];
 
   for (const line of lines) {
@@ -333,9 +350,7 @@ async function runEngine() {
     const results = [];
     for (const d of parsed.domains) {
       const bare = d.startsWith('~') ? d.slice(1) : d;
-      const isNew = !cache.has(bare);
-      const status = await validate(d);
-      if (isNew) { processedCount++; updateProgress(); logDomain(bare, status); }
+      const status = await validate(bare);
       results.push({ d, status });
       if (status === 'live') livePool.push(bare);
       if (status === 'dead') deadDomains.push(bare);
