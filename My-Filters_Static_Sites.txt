@@ -2405,7 +2405,7 @@ dropgalaxy.com,financemonk.net##div.downloadPage.premium.page.pt-5.container:has
 dropgalaxy.com,financemonk.net##.mt-5.col-md-12:has-text(Direct)
 dropgalaxy.com,financemonk.net##.btn-danger.btn-lg.btn-block.btn:has-text(Premium)
 dropgalaxy.com,financemonk.net##.downloadPage.page.pt-5.container > center:has([src="https://assets.financemonk.net/images/dgpromo.jpg"])
-!||assets.financemonk.net^$script,xhr
+!||assets.financemonk.net^$script,xhr,image
 
 ! Shit Games
 dodi-repacks.site##[id^=post-]:has-text(/- Hades II |- Baldurâs Gate|- cities:|- The sims|- elden ring|- silent hill|- Stranded Deep|- Cronos:|- Lies of P:|- Blood of mehran|- little nightmare|- Tormented Souls|- Jurassic World Evolution|- Farming|- Europa Universalis|- Scum:|- WWE|- eFootball|- Crusader Kings|- Dragon Age|- Tokyo Xtreme Racer|- Agatha Christie|- Lollipop Chainsaw|- Sex Formula|- Age of Empires|- Total War:|- Stronghold Crusader:|- The Guild|- Titan Quest|- Cyberpunk 2077|- Last Epoch|- The Hundred Line|- Tempest Rising|- Broken Arrow|- Abyssus|- Of Ash and Steel|- Hearts of Iron IV:|- METAL GEAR SOLID Î:|- Dispatch:|INAZUMA ELEVEN: Victory Road|- Until Dawn|- Mount & Blade|- Monster Hunter Stories|- Routine \(|- Tainted Grail: The Fall of Avalon|- Company of Heroes|- FIFA 2|- Captain Blood/i)
