@@ -109,10 +109,13 @@ ublock- https://raw.githubusercontent.com/BlazeFTL/My-Filters/
 Explore the latest builds and interactive tools directly on GitHub Pages:
 
 * **[CodeMirror 6 Migration Final](https://blazeftl.github.io/My-Filters/CodeMirror6V2Final.html)** – The stable, final implementation of the filter editor using the CodeMirror 6 engine.
-* **[uAsset Test Tool](https://blazeftl.github.io/My-Filters/uAssetEditorCM6.html)** – The stable, final implementation of the filter editor using the CodeMirror 6 engine for all **ublock files**
+* **[uAsset Filter Editor CM6](https://blazeftl.github.io/My-Filters/uAssetEditorCM6.html)** – The stable, final implementation of the filter editor using the CodeMirror 6 engine for all **ublock files**
+* **[Dead Domain Checker](https://blazeftl.github.io/My-Filters/DeadDomainChecker.html)** – Tool for validating and checking dead/parked domains in filter lists.
 * **[Shortener Thread Manager 27472](https://blazeftl.github.io/My-Filters/27472_ShortnerThreadAllComments.html)** – Specialized tool for aggregating and displaying comments within thread 27472.
 * **[Shortener Thread Manager User 27472](https://blazeftl.github.io/My-Filters/27472_ShortnerThreadAllCommentsUser.html)** – User-focused version of the comment manager for thread 27472.
 * **[Shortener Thread Manager 17361](https://blazeftl.github.io/My-Filters/17361_ShortnerThreadAllComments.html)** – Specialized tool for aggregating and displaying comments within thread 17361.
 * **[Shortener Thread Manager User 17361](https://blazeftl.github.io/My-Filters/17361_ShortnerThreadAllCommentsUser.html)** – User-focused version of the comment manager for thread 17361.
 * **[Live Editor (Final Build)](https://blazeftl.github.io/My-Filters/LiveEditorNoWrapFinal.html)** – High-performance editor with "No Wrap" configuration for enhanced code readability.
----
+* **[Investor Dashboard (Dark v1)](https://blazeftl.github.io/My-Filters/investor-dashboard-dark-v1.html)** – Dark-themed investor dashboard, version 1.
+* **[Investor Dashboard (Light v2)](https://blazeftl.github.io/My-Filters/investor-dashboard-v2-light.html)** – Light-themed investor dashboard, version 2.
+* **[FlClash Resolver](https://blazeftl.github.io/My-Filters/flclash-resolver.html)** – Resolver tool for FlClash configuration.
