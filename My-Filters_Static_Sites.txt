@@ -1050,7 +1050,7 @@ eporner.com##.mb, .mbhd:style(width: 49.5% !important; max-width: 49.5% !importa
 eporner.com##[class*="vjs"]:style(visibility: visible !important;)
 eporner.com##.vjs-play-progress, .vjs-progress-holder, .video-js .vjs-play-progress.vjs-slider-bar:hover:style(font-size: 1.8rem! important;)
 eporner.com##.video-js .vjs-progress-control:hover .vjs-progress-holder:style(font-size: 2.3rem! important;)
-eporner.com##[class^=vjs-progress-]:style(margin-bottom: 10px! important;)
+eporner.com##[class^=vjs-progress-]:style(margin-bottom: 25px! important;)
 
 ! 2024-01-10 spankbang.com
 spankbang.com##.rt, .fl, .upload_button.link, .tagline, .upload, [href="/tv/"], [href="/info/tos"], [href="/info/privacy"], [href="/info/links"], [href="/info/contact"], .download-list.download-promo
