@@ -2432,3 +2432,5 @@ unknowncheats.me##div.info:has-text(Join)~*
 unknowncheats.me##div.info:has-text(Join)
 unknowncheats.me##td:style(font: initial! important;)
 unknowncheats.me##.alt2 > *:style(font: initial! important;)
+
+game-repack.site##.widget_search.widget_block.widget
