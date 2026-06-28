@@ -1745,6 +1745,12 @@ nexusmods.com###upsell-cards:style(margin-left: 230px! important;)
 nexusmods.com##div[class*="relative"][class*="min-h-"]:has(img[alt][src*="banner"])
 nexusmods.com##.sm\:last\:rounded-b.sm\:backdrop-blur-md.sm\:p-4.sm\:bg-surface-translucent-low.sm\:rounded-t
 
+! https://www.unknowncheats.me
+unknowncheats.me##div.info:has-text(Join)~*
+unknowncheats.me##div.info:has-text(Join)
+unknowncheats.me##td:style(font: initial! important;)
+unknowncheats.me##.alt2 > *:style(font: initial! important;)
+
 ! Feb 8, 2025 https://creatus.com.bd
 creatus.com.bd##.block-description.block-content
 creatus.com.bd##.block-wrapper
@@ -2425,11 +2431,3 @@ xpshort.com##+js(set, document.hasFocus, trueFunc)
 xpshort.com##+js(set, document.hidden, false)
 xpshort.com##.banner, footer, .navbar-default.navbar
 xpshort.com##+js(trusted-click-element, '10000, .btn-success', , 12000)
-
-! https://www.unknowncheats.me
-unknowncheats.me##div.info:has-text(Join)~*
-unknowncheats.me##div.info:has-text(Join)
-unknowncheats.me##td:style(font: initial! important;)
-unknowncheats.me##.alt2 > *:style(font: initial! important;)
-
-game-repack.site##.widget_search.widget_block.widget
