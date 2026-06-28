@@ -1,6 +1,5 @@
 ! Title: BlazeFTL - My Filters
 ! Last modified: %timestamp%
-! Expires: 6 hours
 ! Description: Personal filters of BlazeFTL for uBlock Origin
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! Homepage: https://github.com/BlazeFTL/My-Filters
