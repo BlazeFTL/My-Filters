@@ -1808,6 +1808,8 @@ google.com###rc-anchor-over-quota, .rc-anchor-pt.rc-anchor-over-quota-pt
 @@||google.com^$xhr,ping,image,domain=google.com
 hcaptcha.com##.anchor-links
 cloudflare.com###terms
+cloudflare.com##[href*="/help"]
+cloudflare.com##[href*="privacypolicy/"]
 chatgpt.com##.rtl\:translate-x-1\/2.ltr\:-translate-x-1\/2.lg\:start-1\/2.gap-2.items-center.flex-col.flex.start-0.absolute.pointer-events-none
 chatgpt.com##.pe-2\.5.ps-2.py-1\.5.cursor-default.-me-2\.5.-ms-2.-my-1\.5.__menu-item-trailing-btn
 pixeldrain.net##p:has-text(Upgrade your)
