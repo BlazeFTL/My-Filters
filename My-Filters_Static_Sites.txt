@@ -2433,3 +2433,26 @@ xpshort.com##+js(set, document.hasFocus, trueFunc)
 xpshort.com##+js(set, document.hidden, false)
 xpshort.com##.banner, footer, .navbar-default.navbar
 xpshort.com##+js(trusted-click-element, '10000, .btn-success', , 12000)
+
+! Jun 30, 2026 https://ankergames.net
+ankergames.net##.portal-ring-inner.rounded-full.inset-\[15\%\].absolute
+ankergames.net##.flex-shrink-0.xl\:gap-x-5.lg\:gap-x-4.md\:gap-x-3.sm\:gap-x-2.gap-x-1\.5.text-sm.items-center.justify-end.flex.navbar-icons > .sm\:block.hidden
+ankergames.net##.md\:inline-flex.hidden.relative
+ankergames.net##li.lg\:block.hidden.cf-guest-only
+ankergames.net##li.shrink-0.relative:not(:has-text(/Recent|Collect|Top|Tren/))
+ankergames.net##.px-4.sm\:gap-4.gap-3.sm\:justify-center.sm\:flex-wrap.sm\:flex.grid-cols-2.grid
+ankergames.net##.lg\:ml-auto.group.relative.lg\:inline-block.hidden
+ankergames.net##.dark\:hover\:bg-blue-500\/20.dark\:border-blue-500\/40.dark\:text-blue-300.hover\:bg-blue-500\/10.transition.text-blue-600.tracking-wide.uppercase.font-semibold.text-xs.py-1\.5.px-3.border-blue-300\/70.border.rounded-full.gap-2.items-center.inline-flex
+ankergames.net##.grow.gap-3.lg\:justify-start.justify-center.items-center.flex-wrap.flex > .gap-2.lg\:justify-start.justify-center.items-center.flex-wrap.flex
+ankergames.net##.hover\:bg-\[\#22354d\].duration-200.transition-all.bg-\[\#1b2838\].rounded-lg.py-2\.5.px-4.gap-3.items-center.inline-flex.group
+ankergames.net##.sm\:py-12.py-8.sm\:px-4.px-0
+ankergames.net##.mb-6.mt-5.gap-2.flex-wrap.flex
+ankergames.net##.shadow-inner.py-4.px-5.dark\:to-slate-900\/60.dark\:via-slate-900\/75.dark\:from-slate-900\/70.to-white\/80.via-white\/90.from-white\/70.bg-gradient-to-br.dark\:border-slate-800\/60.border-slate-200\/70.border.rounded-3xl
+ankergames.net##.space-y-6.shadow-lg.md\:p-7.p-6.backdrop-blur.dark\:bg-slate-900\/85.bg-white\/85.dark\:border-slate-800\/70.border-slate-200\/70.border.rounded-3xl > .md\:grid-cols-2.gap-4.grid
+ankergames.net##.mt-auto.custom-container.lg\:py-10.w-full
+ankergames.net##.border-slate-700\/50.border-t.pt-4.mt-4
+ankergames.net##.z-20.h-32.right-0.left-0.top-0.absolute.smoke-top
+ankergames.net##.shadow-lg.dark\:border-slate-700\/30.border-gray-200\/30.border.dark\:bg-slate-900\/80.bg-white\/80.overflow-hidden.rounded-xl.relative
+ankergames.net##.dark\:border-amber-700\/30.border-amber-200.border.dark\:bg-amber-900\/20.bg-amber-50.rounded-lg.mb-6.px-4.py-3
+ankergames.net##.font-medium.dark\:text-gray-300.text-gray-700.text-lg.text-center
+ankergames.net##.mb-6.h-8
