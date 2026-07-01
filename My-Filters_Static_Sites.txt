@@ -23,7 +23,7 @@ reddit.com##+js(aeld, touchmove)
 reddit.com##nav>div:has(>[href="https://redditinc.com"])
 !reddit.com##ul:has(faceplate-tracker[noun="advertise"])
 reddit.com##.pb-md.px-md.mb-0.mt-md.xs\:hidden:has-text(Related Ans)
-reddit.com##faceplate-tracker.contents:has-text(/Advertise|Pro/)
+reddit.com##faceplate-tracker.contents:has-text(/Advertise/)
 reddit.com###get-app-button
 reddit.com###right-sidebar-container>.legal-links, faceplate-tracker[source="earn"], faceplate-tracker[noun="premium_menu"], faceplate-tracker[source="achievements"], #reddit-trending-searches-partial-container, span[data-part="advertise"], [noun="gen_guides_sidebar"], faceplate-tracker[noun="gen_guides_sidebar"], .left-nav-create-community-button, reddit-recent-pages
 reddit.com##[noun="games_drawer"], [noun="games_drawer"]+hr
