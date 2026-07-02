@@ -1748,8 +1748,6 @@ nexusmods.com##.sm\:last\:rounded-b.sm\:backdrop-blur-md.sm\:p-4.sm\:bg-surface-
 ! https://www.unknowncheats.me
 unknowncheats.me##div.info:has-text(Join)~*
 unknowncheats.me##div.info:has-text(Join)
-unknowncheats.me##td:style(font: initial! important;)
-unknowncheats.me##.alt2 > *:style(font: initial! important;)
 
 ! Feb 8, 2025 https://creatus.com.bd
 creatus.com.bd##.block-description.block-content
