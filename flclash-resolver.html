@@ -109,7 +109,7 @@ textarea:focus{border-color:#1976D2;box-shadow:0 0 0 3px rgba(25,118,210,.1)}
       <input type="file" id="fileInput" accept=".txt,.yaml,.yml" onchange="loadFile(event)">
       <span class="file-chip" id="fileName">No file selected</span>
     </div>
-    <textarea id="input" rows="10" placeholder="Or paste YAML / JSON with [@TIME] / [@HH+3:dd+9] macros here…" oninput="run()"></textarea>
+    <textarea id="input" rows="10" placeholder="Or paste YAML / JSON with [@TIME] / [@HH+3] / [@HH+3:dd+9] / [@dd-1] macros here…" oninput="run()"></textarea>
   </div>
 
   <div class="card" id="outbox" style="display:none">
@@ -140,21 +140,32 @@ function now(){
   return{hh:bd.getHours(),mm:bd.getMinutes(),dd:bd.getDate()};
 }
 
-function resolve(raw){
+// Supports any combo/order of HH, mm, dd tokens with optional +/- offset,
+// joined by ':' inside [@ ... ]. e.g. [@HH+1] [@dd-1] [@HH+3:dd+9] [@mm+15:HH+1]
+const MACRO_RE=/\[@((?:HH|mm|dd)(?:[+-]\d+)?(?::(?:HH|mm|dd)(?:[+-]\d+)?)*)\]/g;
+
+function resolveMacro(inner){
   const{hh,mm,dd}=now();
+  return inner.split(':').map(tok=>{
+    const m=tok.match(/^(HH|mm|dd)([+-]\d+)?$/);
+    const unit=m[1],off=m[2]?parseInt(m[2]):0;
+    if(unit==='HH')return pad(((hh+off)%24+24)%24);
+    if(unit==='mm')return pad(((mm+off)%60+60)%60);
+    return dd+off;
+  }).join(':');
+}
+
+function resolve(raw){
+  const{hh,mm}=now();
   return raw
     .replace(/\[@TIME\]/g,`${pad(hh)}:${pad(mm)}`)
-    .replace(/\[@HH([+-]\d+):dd([+-]\d+)\]/g,(_,hO,dO)=>{
-      const h=((hh+parseInt(hO))%24+24)%24;
-      return`${pad(h)}:${pad(dd+parseInt(dO))}`;
-    });
+    .replace(MACRO_RE,(_,inner)=>resolveMacro(inner));
 }
 
 function updateClock(){
   const{hh,mm,dd}=now();
   document.getElementById('ctime').textContent=`${pad(hh)}:${pad(mm)}`;
-  const adjH=((hh+3)%24+24)%24;
-  document.getElementById('cbnet').textContent=`${pad(adjH)}:${pad(dd+9)}`;
+  document.getElementById('cbnet').textContent=resolveMacro('HH+3:dd+9');
 }
 
 function run(){
