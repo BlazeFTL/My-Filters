@@ -548,7 +548,7 @@ mega4upload.net###downloadForm > .mb-3.text-center [name*="prem"]
 mega4upload.net##.g-recaptcha > div > div > [src]:style(margin-top: -180px !important; margin-left: 40px !important;)
 
 ! https://modsfire.com/15TtYJD8IGjbKhA
-modsfire.com##.inf-down, .report-button.file-block, .step, .report-btn.modlist-btn, .disc-tabbing-wrp, .subscription-footer.footer
+modsfire.com##.inf-down, .report-button.file-block, .step, .report-btn.modlist-btn, .disc-tabbing-wrp, .subscription-footer.footer, .download-wrp
 modsfire.com##.links-explore-wrp
 modsfire.com##.download-sec:style(padding-bottom: 100% ! important;)
 modsfire.com##+js(rpnt, script,  5000;, 10;, condition, progressTime)
