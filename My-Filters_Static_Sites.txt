@@ -1172,7 +1172,7 @@ mmshunt.com##li.ipsResponsive_pull.ipsSpacer_bottom.ipsBox.cForumRow:has-text(Su
 mmshunt.com###ipsLayout_footer
 
 ! May 11, 2025 https://dropmms.com
-dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar, #footer2, #footer1
+dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar, #footer2, #footer1, .pc-direct-dl-container
 dropmms.*##body > button:has-text(Dark Mo)
 dropmms.*##.cAnnouncementsFloat.cAnnouncements
 !dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
@@ -2454,3 +2454,5 @@ ankergames.net##.shadow-lg.dark\:border-slate-700\/30.border-gray-200\/30.border
 ankergames.net##.dark\:border-amber-700\/30.border-amber-200.border.dark\:bg-amber-900\/20.bg-amber-50.rounded-lg.mb-6.px-4.py-3
 ankergames.net##.font-medium.dark\:text-gray-300.text-gray-700.text-lg.text-center
 ankergames.net##.mb-6.h-8
+
+cuttty.com,cety.app,cutlink.net,cutnet.net,cuttlinks.com,exe-links.com,exe-urls.com,exego.app,exeygo.com,exnion.com##.premium-option.option-card
