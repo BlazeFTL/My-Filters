@@ -1469,7 +1469,7 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##article.z0Id3hCfOz1tS09UM.ZQPufq8frP.post:nth-of-type(3)
 4pda.to##td > a[href][target="_blank"] > img[src]
 4pda.to##article[class^="post"][itemscope=""] >[class][itemscope=""]:has(iframe)
-4pda.to##a[href][target="_blank"] > img[src$=".jpg"]
+!4pda.to##a[href][target="_blank"] > img[src$=".jpg"]
 4pda.to##a[role="button"][href][class][style*="margin-right:"]
 !4pda.to##div[itemprop="description"] > p > a[href] > img
 4pda.to##.menu-main-mobile > li.menu-main-item > [href^="https://4pda.to/huawei/"]
