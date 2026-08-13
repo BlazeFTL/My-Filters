@@ -845,6 +845,12 @@ leechpro.blog,modpro.blog##[class*="timed-content-client_show"]:style(display:bl
 leechpro.blog,modpro.blog##[class*="timed-content-client_hide"]:style(display:none !important)
 unblockedgames.world##+js(rpnt, script, "googletag.enableServices();", "googletag.enableServices();(function() { const l = document.querySelector('#landing'); if (l) { l.submit(); } else { const s = Array.from(document.getElementsByTagName('script'));  const u = s.map(script => script.textContent.match(/\?go=pepe-[\w-]+/)).filter(m => m).map(m => m[0])[0]; if (u) { window.location.href = 'https://' + location.host + '/' + u; } } })();")
 
+! XdMovies Shortner AV1 X265
+latestnewsonline.sbs##.features-section
+latestnewsonline.sbs##.footer
+latestnewsonline.sbs##+js(nano-stb, tick, *)
+latestnewsonline.sbs##+js(aeld, , handleVisibilityChange)
+
 ! From Last
 gdrivedescarga.com##^script[id="jquery-core-js-after"]:has-text(e.preventDefault();)
 !#if !cap_html_filtering
