@@ -484,10 +484,8 @@ mediafire.com##.center:style(margin-right: 20%! important;)
 mediafire.com##.header:style(margin-left: 35%! important;)
 
 ! https://up-4ever.net/r4p6xsjkulb8
-up-4ever.net##.h-100.card > .card-body:has-text(Fast Down)
-up-4ever.net##.p-3.card-body:has-text(/File Type|Share File/)
-up-4ever.net##.mb-0 > div.row:not(:has-text(Normal))
-up-4ever.net##div.mb-5.col-lg-6.col-12 > .card, #app-footer, .mb-4.z-index-3.bg-white.tp-price-table, .pb-8.faq-area, .mt-5.shadow.card, .mb-5.g-3.row > .col-lg-4.col-12 > .h-100.card > .card-body, .btn-light-danger.btn-sm.btn, .col-lg-8.col-12 > .h-100.card > .card-body
+up-4ever.net##.u4-x.u4f, .u4dl-choice--prem.u4dl-choice, .u4dl-spotcol.u4dl-choice, .u4dl-pick, .u4dl-infosec, .u4dl-cmpsec, .u4dl-faqsec, .u4-pagehead, section[style*="padding:0 0 60px"], section[style="padding:36px 0 0;"], .uW1-band, .uW1-detailshare, .uW1-acts
+up-4ever.net##div.uW1 section[style*="padding-top:48px"]:has(div.u4-wrap)
 !*$script,3p,denyallow=cloudflare.com,domain=up-4ever.net
 
 ! https://file-upload.org/hw28m24um4a3
