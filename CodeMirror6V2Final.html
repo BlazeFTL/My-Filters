@@ -655,7 +655,10 @@ window.spSearch = function() {
   const q = document.getElementById('spFind').value;
   if (!q) {
     document.getElementById('spCount').textContent = '';
-    view.dispatch({ effects: setSearchQuery.of(buildSearchQuery('')) });
+    view.dispatch({
+      selection: { anchor: view.state.selection.main.head },
+      effects: setSearchQuery.of(buildSearchQuery('')),
+    });
     return;
   }
   try {
