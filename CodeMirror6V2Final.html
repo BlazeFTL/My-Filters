@@ -207,6 +207,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 .cm-editor.cm-focused { outline:none !important; }
 .cm-scroller { overflow:auto !important; }
 .cm-content  { padding:8px 12px 250px 8px !important; }
+.cm-content, .cm-line { word-break:break-all !important; overflow-wrap:anywhere !important; }
 .cm-lineNumbers .cm-gutterElement {
   font-family:'Roboto Mono',monospace;
   font-size:var(--fn); color:var(--text3);
@@ -327,7 +328,7 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
     </div>
     <span id="spCount" style="font-size:11px;font-weight:600;color:var(--primary);white-space:nowrap;min-width:52px;text-align:right"></span>
     <button id="spToggleReplace" onclick="spToggleReplaceRow()">Replace</button>
-    <button class="sp-close-btn" onclick="closeSearchPanel()">✕</button>
+    <button class="sp-close-btn" onclick="spClearOrClose()">✕</button>
   </div>
   <div class="sp-replace-row" id="spReplaceRow" style="display:none">
     <input id="spReplace" type="text" placeholder="Replace with…" onkeydown="spRepKey(event)" autocomplete="off" spellcheck="false" />
@@ -589,6 +590,17 @@ window.closeSearchPanel = function() {
   view.focus();
 };
 
+window.spClearOrClose = function() {
+  const findEl = document.getElementById('spFind');
+  if (findEl.value) {
+    findEl.value = '';
+    spSearch();
+    findEl.focus();
+  } else {
+    closeSearchPanel();
+  }
+};
+
 window.spToggleReplaceRow = function() {
   spState.replaceVisible = !spState.replaceVisible;
   document.getElementById('spReplaceRow').style.display = spState.replaceVisible ? 'flex' : 'none';
@@ -621,14 +633,14 @@ function countMatchesAndFirst(q) {
     const query = buildSearchQuery(q);
     if (!query.valid) return { count: 0, firstPos: -1 };
     const cursor = query.getCursor(view.state.doc);
-    let count = 0, firstPos = -1;
+    let count = 0, firstPos = -1, firstTo = -1;
     while (!cursor.next().done) {
-      if (count === 0) firstPos = cursor.value.from;
+      if (count === 0) { firstPos = cursor.value.from; firstTo = cursor.value.to; }
       count++;
     }
-    return { count, firstPos };
+    return { count, firstPos, firstTo };
   } catch(e) {
-    return { count: 0, firstPos: -1 };
+    return { count: 0, firstPos: -1, firstTo: -1 };
   }
 }
 
@@ -648,12 +660,18 @@ window.spSearch = function() {
   }
   try {
     const query = buildSearchQuery(q);
-    view.dispatch({ effects: setSearchQuery.of(query) });
-    // Immediately scroll to + highlight first match as user types
-    const { count, firstPos } = countMatchesAndFirst(q);
+    const { count, firstPos, firstTo } = countMatchesAndFirst(q);
     document.getElementById('spCount').textContent = count === 0 ? 'No matches' : count + ' matches';
     if (firstPos >= 0) {
-      scrollMatchToCenter(firstPos);
+      view.dispatch({
+        selection: { anchor: firstPos, head: firstTo },
+        effects: [
+          setSearchQuery.of(query),
+          EditorView.scrollIntoView(firstPos, { y: 'center', yMargin: 80 }),
+        ],
+      });
+    } else {
+      view.dispatch({ effects: setSearchQuery.of(query) });
     }
   } catch(e) {}
 };
