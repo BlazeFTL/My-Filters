@@ -867,7 +867,7 @@ pahe.plus##footer, .text-left, #link-view > [href], .box-main > [href]
 teknoasian.com##+js(rpnt, script, 'Date.now() - LLACAT_D < 200', false)
 teknoasian.com##+js(nowoif)
 teknoasian.com##+js(nano-sib, /.?/, *)
-teknoasian.com##ul, li, p, #sidebar, .penci-header-text-white.penci-single-style-8.container-single, .single-breadcrumb.penci-breadcrumb.container, h2, h1, h3, .penci-google-adsense-2, .post-tags, .post-pagination, #footer-section, .penci-home-popular-posts.container, #ez-toc-container
+teknoasian.com##.right-sidebar.penci_sidebar.container,.penci-home-popular-posts.container,p,ul,li,[href*="s0-greate"],#sidebar,.post-pagination,.single-breadcrumb.penci-breadcrumb.container,.penci-move-title-above.post-image,#footer-section
 
 ! Jun 18, 2024 https://psa.wf
 psa.wf##.group.hu-pad.page-title, .one-half.grid.footer-widget-1, .wpd-rating-title
@@ -1102,6 +1102,7 @@ noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.c
 noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##div[style]:has(> ins)
 noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##div[style]:has(> [id*="_ad_native_"])
 noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##div[style="width:100%;height:100px;margin:15px auto 0"]
+noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##div[style*="background-color"]:has(> iframe.ifa-postload)
 noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##.jw-reset.jw-button-color.jw-icon-rewind.jw-icon
 noodlemagazine.com,mat6tube.*,actionviewphotography.com,exporntoons.net,sibtok.com,tyler-brown.com,ukdevilz.com,whatisareverseauction.com##+js(nano-stb, i, 1100)
 
@@ -1271,6 +1272,10 @@ luluvid.com,luluvdoo.com##.block
 luluvid.com,luluvdoo.com##.footer
 savefiles.com##body > footer
 vidara.to##.gap-2.align-items-center.flex-wrap.d-flex, .mb-3.nav-fill.tabs.nav, .tab-content, .footer
+
+! https://uploadao.com/paj3trh6gjdn/SlimCuteGf.zip
+uploadao.com##.dl-wait-nudge, .dl0-choice--premium.dl0-choice, .dl0-choice-icon--muted.dl0-choice-icon, .dl0-choice-perks--muted.dl0-choice-perks, .dl0-choice-title--muted.dl0-choice-title, .dl0-compare-wrap, .dl0-wait-badge, .dl1-ad-banner, .dl2-ad-btn, .dl2-nudge, .dl2-success, .download-meta .text-muted, .footer, .premium-page-wrap.page
+uploadao.com##.p-0.block:has(.active.nav-link)
 
 ! 2022-10-12 http://vkspeed.com
 ||watchporn.to/contents/*$media,1p
@@ -1470,12 +1475,8 @@ farsroid.com##.site-header:style(top: initial! important;)
 ! Sep 3, 2025 https://4pda.to
 ||4pda.to/s/*:|$xmlhttprequest
 4pda.to##div[id][class][style*="min-height:"]
-4pda.to##article.z0Id3hCfOz1tS09UM.ZQPufq8frP.post:nth-of-type(3)
-4pda.to##td > a[href][target="_blank"] > img[src]
 4pda.to##article[class^="post"][itemscope=""] >[class][itemscope=""]:has(iframe)
-!4pda.to##a[href][target="_blank"] > img[src$=".jpg"]
 4pda.to##a[role="button"][href][class][style*="margin-right:"]
-!4pda.to##div[itemprop="description"] > p > a[href] > img
 4pda.to##.menu-main-mobile > li.menu-main-item > [href^="https://4pda.to/huawei/"]
 4pda.to##.copyright
 4pda.to##+js(nano-setTimeout-booster, zat_tick)
