@@ -833,9 +833,18 @@ function positionCommitBar() {
     bar.style.bottom = '0px';
   }
 }
+function syncViewport() {
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    document.body.style.height = vv.height + 'px';
+    window.scrollTo(0, 0);
+  }
+  positionCommitBar();
+  requestAnimationFrame(() => view.dispatch({ effects: EditorView.scrollIntoView(view.state.selection.main.head) }));
+}
 if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', positionCommitBar);
-  window.visualViewport.addEventListener('scroll', positionCommitBar);
+  window.visualViewport.addEventListener('resize', syncViewport);
+  window.visualViewport.addEventListener('scroll', syncViewport);
 }
 
 window.saveFile = async function() {
