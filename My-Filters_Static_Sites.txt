@@ -548,6 +548,7 @@ mega4upload.net##.g-recaptcha > div > div > [src]:style(margin-top: -180px !impo
 ! https://modsfire.com/15TtYJD8IGjbKhA
 modsfire.com##.inf-down, .report-button.file-block, .step, .report-btn.modlist-btn, .disc-tabbing-wrp, .subscription-footer.footer, .download-wrp
 modsfire.com##.links-explore-wrp
+modsfire.com##mf-offer
 modsfire.com##.download-sec:style(padding-bottom: 100% ! important;)
 modsfire.com##+js(rpnt, script,  5000;, 10;, condition, progressTime)
 modsfire.com##+js(rpnt, script, /btn\.click\(function\(\)\s*\{[\s\S]*?\}\);/, window.location.href = btnHref;)
@@ -627,6 +628,12 @@ dropbox.com##+js(set-session-storage-item, has_seen_interstitial, true)
 dropbox.com##.ReactModalPortal:has(a[href*="/buy/plus"]):has(a[href*="/try/teams"])
 dropbox.com##.ReactModalPortal:has(img[src*="/will/mobile-qr-code"])
 dropbox.com##._learningCenterHeaderMobile_1qej8_23
+
+! Sep 1, 2026 https://fuckingfast.co
+fuckingfast.co##.mb-7.p-0.text-center
+fuckingfast.co##.text-center.mx-auto.max-w-2xl > p
+fuckingfast.co##.text-center.mx-auto.max-w-2xl > div:has-text(happen in)
+fuckingfast.co##.text-gray-500.mt-14.text-center
 
 ! Jul 4, 2024 https://appdrive.dev
 driveseed.*,appdrive.*##.ads-btns, [src*=".gif"]
@@ -1180,8 +1187,6 @@ mmshunt.com###ipsLayout_footer
 dropmms.*##.ipsClearfix.ipsPadding.ipsResponsive_pull.ipsBox.ipsPageHeader, #sponsrad, #xclk, #sidebar1, #postada, #ipsLayout_footer, #elMobileBreadcrumb, .ipsList_inline.ipsTags, #header1, [id*="a-ads"], [id^="a-ads"], #ipsLayout_mainArea > p[id], #pc-btn-bar, #footer2, #footer1, .pc-direct-dl-container
 dropmms.*##body > button:has-text(Dark Mo)
 dropmms.*##.cAnnouncementsFloat.cAnnouncements
-!dropmms.*##.tthumbGridview_img:style(height: 350px !important; width: 150px! important;)
-dropmms.co##.tthumbGridview_img:style(height: 356px !important; width: 100%! important)
 ! Image Stretch To Screen Mobile
 dropmms.*##.ipsImage, .ipsImage_thumbnailed:style(max-width: 100% !important; width: 100% !important; height: auto !important; display: block !important; margin: 0 auto !important;)
 dropmms.*##.ipsType_richText [data-role="commentContent"] p:style(width: 100% !important; max-width: 100% !important; display: block !important;)
@@ -1479,6 +1484,9 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##a[role="button"][href][class][style*="margin-right:"]
 4pda.to##.menu-main-mobile > li.menu-main-item > [href^="https://4pda.to/huawei/"]
 4pda.to##.copyright
+4pda.to##div.makepost_link
+4pda.to##.second-menu
+4pda.to##.menu-main > li.menu-main-item > [href^="https://4pda.to/honor/"]
 4pda.to##+js(nano-setTimeout-booster, zat_tick)
 4pda.to##+js(no-xhr-if, /m2?_)
 4pda.*##+js(no-setTimeout-if, removeAttr, setTimeout)
@@ -1491,9 +1499,9 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##body #ZAPiSRQwSS > .W47 > .Z3B > #ZAPf6wXc + #z225Mg6#z225Mg6#z225Mg6#z225Mg6 { background-image: none !important; }
 4pda.to###ZAPiSRQwSeei8N, #Xc3qz0VTZ, #yTfLNJIgiKlz1 { background-image: none !important; }
 4pda.to##article[class^="post "]:has(a[target="_blank"] > img[src$=".jpg"]):has(img[src$=".gif"])
-4pda.to##div.makepost_link
-4pda.to##.second-menu
-4pda.to##.menu-main > li.menu-main-item > [href^="https://4pda.to/honor/"]
+4pda.to##rst[style*="ZMW:dUq"][style*="padding:0px"]
+4pda.to##body[itemtype="http://schema.org/WebPage"] > * > a[target="_blank"] > img[border="0"]
+4pda.to##div > div[itemprop="description"] > p > a[title] > img[itemprop="image"]
 
 ! Aug 9, 2025 https://en.softonic.com
 softonic.com##+js(nano-stb, /.?/, *)
