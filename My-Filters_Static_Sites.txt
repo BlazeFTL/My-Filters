@@ -336,6 +336,10 @@ github.com##:matches-path(/AdguardTeam/Scriptlets) div.rgh-conversation-activity
 github.com##:matches-path(/selfmusing/RVX-Lite-Modules) .flex-justify-center.my-5.flex-md-row.flex-column.d-flex:has-text(Music M)
 github.com##:matches-path(/selfmusing/RVX-Lite-Modules) .position-relative.Box-row--drag-hide.d-flex:has-text(/Youtube|unable to/i)
 !!#endif
+! Refined Github
+github.com###rgh-extensible-nav-agents
+github.com###rgh-extensible-nav-security-and-quality
+github.com###rgh-extensible-nav-insights
 
 ! Nov 24, 2025 https://cs.rin.ru White Theme
 ! Hide Div PostBody Post Extra Shit
@@ -1221,6 +1225,9 @@ bigwarp.*,vidnest.*##.footer
 !bigwarp.*,vidnest.io##p > [href] > [src]
 !bigwarp.*,vidnest.io###video-content > [href]
 
+! https://playmate.to/watch/HTzRVnthCOBBK
+playmate.to##.watch-comments, .pub-footer-full, .watch-header-actions, .watch-nav, .watch-meta
+
 ! Jan 3, 2026 https://up4fun.top
 up4stream.com,up4fun.top##.up4-footer
 up4stream.com,up4fun.top##.TAmTPHhTth
@@ -1464,6 +1471,7 @@ apkmirror.com##div.headerFont.table-row:has-text(/armeabi-v7a|Bundle|x86/):not(:
 apkmirror.com##p.notes:has-text(Thank you)
 apkmirror.com##div.f-nowrap.d-flex.appspec-row:has-text(/MD5|Permissions/)
 apkmirror.com##.table-row:has-text(/Android TV|Wear OS/)
+apkmirror.com##+js(rpnt, script, 3000, 10)
 
 ! uptodown.com
 uptodown.com##.help, #virus-total-report, footer, .hotlinks, #horizontal-link-list
@@ -1809,6 +1817,30 @@ www.youtube.com##:matches-path(/@teguhdwi/videos) ytd-rich-item-renderer.ytd-ric
 ! AI Upgrade Nag
 gemini.google.com##.ng-star-inserted.adv-upsell.buttons-container
 gemini.google.com##zs-advanced-upsell.ng-star-inserted
+
+! Sep 4, 2026 https://aistudio.google.com
+aistudio.google.com##div.ng-star-inserted.input.turn > ms-console-turn > .ng-star-inserted.disabled.snapshot-container > button.ms-button-borderless.mat-mdc-tooltip-trigger
+aistudio.google.com##.ms-button-primary.gradient.button-crossfade.ifl-button.mat-mdc-tooltip-trigger, div.mat-mdc-menu-content > button.mat-mdc-menu-item.mat-focus-indicator.mat-mdc-tooltip-trigger[aria-label="Add from Drive"], div.mat-mdc-menu-content > button.mat-mdc-menu-item.mat-focus-indicator.mat-mdc-tooltip-trigger[aria-label="Use Camera"]
+aistudio.google.com##.active.ms-button-borderless[href="/apps?source=showcase"]
+aistudio.google.com##.ng-star-inserted.nav_items_nav_mode.flat-left-nav > a.ms-button-borderless
+aistudio.google.com##ms-navbar-upgrade-card.ng-star-inserted
+aistudio.google.com##button.ng-star-inserted.ms-button-borderless.mat-mdc-tooltip-disabled.toggle-button.mat-mdc-tooltip-trigger
+aistudio.google.com##.active.ng-star-inserted.ms-button-borderless[href="/library"]
+aistudio.google.com##div.section-header:nth-of-type(3)
+aistudio.google.com##a.ms-button-borderless[href="/apps?source=showcase"]
+aistudio.google.com##.active-override.active.ms-button-borderless.playground-link
+aistudio.google.com##.ng-star-inserted.ms-button-borderless[href="/library"]
+aistudio.google.com##div.section-header:nth-of-type(1)
+aistudio.google.com##.ng-star-inserted.snapshot-container > button.ms-button-borderless.mat-mdc-tooltip-trigger:nth-of-type(1)
+aistudio.google.com##.ng-star-inserted.feedback-container
+aistudio.google.com##div.mat-mdc-dialog-title.mdc-dialog__title.panel-header.ng-star-inserted.title-template > ms-horizontal-scroll.background-surface.ng-star-inserted > div.scroll-container > div.content-container > button.ms-button-filter-chip.ng-star-inserted:has-text(/Share|Version|Secret/)
+aistudio.google.com##button.ng-star-inserted.ms-button-borderless.hide-on-small.mat-mdc-tooltip-trigger[aria-label="Copy app"]
+aistudio.google.com##.drawer-buttons > button:not(:has(span.material-symbols-outlined:has-text(group)))
+aistudio.google.com##.drawer-buttons > button:nth-child(3):style(margin-left: 250px !important;)
+! Sep 16, 2026 https://aistudio.google.com
+aistudio.google.com##ms-nav-items-v2 > .ng-star-inserted.flat-left-nav > a.ms-button-borderless
+aistudio.google.com##div.ng-tns-c420803386-1.icon-box
+
 ! Allow Google Tracking For Captcha
 www.google.*#@#+js(set-constant, rwt, noopFunc)
 www.google.*#@#+js(set-attr, c-wiz[data-p] [data-query] a[target="_blank"][role="link"], rlhc, 1)
