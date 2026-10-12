@@ -679,6 +679,23 @@ akmods.*,akmods-apk.co##br:remove()
 akmods.*,akmods-apk.co##.entry-content.post-body > p:first-child
 akmods.*,akmods-apk.co##.feed-share
 akmods.*,akmods-apk.co##+js(rpnt, script, /1000|7000/g, 10, condition, countdownInterval)
+! Their New Shortner
+
+! https://stsh.in/r6cmijc8
+povathemes.com##.wb-deliver-head, #hop-continue-form, .wb-gate, .wb-slot.wb-head:others()
+stsh.in##.dl-wait-promise
+stsh.in##.dl-report
+stsh.in,stashbay.net##main.dl:has(.dl-wait) > .dl-in:not(.dl-wait)
+stsh.in,stashbay.net##.dl-auto-download:style(position:absolute!important;width:0!important;height:0!important;border:0!important)
+stsh.in,stashbay.net##main.dl:has(.dl-wait):style(min-height:0!important;padding:12px 0 0!important;gap:0!important)
+stsh.in,stashbay.net##.dl-wait:style(min-height:0!important;height:auto!important;gap:10px!important;grid-template-rows:none!important;grid-auto-rows:min-content!important;align-content:start!important;margin:0!important;padding-block:0!important)
+stsh.in,stashbay.net##.dl-wait > *:style(margin-block:0!important;min-height:0!important)
+stsh.in,stashbay.net##.dl-wait-kicker:style(padding-block:0!important)
+stsh.in,stashbay.net##.dl-wait-center:style(gap:16px!important;padding-block:0!important)
+stsh.in,stashbay.net##.dl-final-action:style(min-height:0!important;height:auto!important;gap:8px!important;padding:0!important)
+stsh.in,stashbay.net##.dl-final-ticket:style(margin:0!important)
+stsh.in,stashbay.net##.dl-final-contents:style(margin:0!important)
+stsh.in,stashbay.net##.dl-wait-foot:style(margin:0!important)
 
 ! Movies Start
 ! Hdhub4u
