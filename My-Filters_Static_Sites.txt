@@ -40,7 +40,7 @@ reddit.com##:root:has(.home-revamp-large) .main:not(:has([view-type="compactView
 reddit.com##.mb-xs.nd\:pb-2xl.nd\:visible.box-border.bg-\[color\:var\(--shreddit-content-background\)\].nd\:pt-xs.pt-xs.xs\:rounded-4.xs\:px-xs.xs\:-mx-xs.xs\:mt-xs.block:style(width: 66vw ! important;)
 reddit.com##.text-tone-1.bg-\[color\:var\(--shreddit-content-background\)\].xs\:px-0.px-md.block:style(width: 64vw ! important;)
 reddit.com##.text-center.items-center.flex-col.py-lg.px-md.flex:style(width: 66vw ! important;)
-reddit.com##article.m-0.w-full:style(width: 66vw ! important;)
+reddit.com##article.m-0.w-full:style(width: 56vw ! important;)
 reddit.com##faceplate-batch:style(width: 64vw ! important;)
 !#endif
 reddit.com##shreddit-comment.relative:style(padding: initial ! important;)
