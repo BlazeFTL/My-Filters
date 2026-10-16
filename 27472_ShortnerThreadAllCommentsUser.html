@@ -241,6 +241,20 @@ box-shadow:0 2px 6px rgba(21,101,192,0.45);
 }
 .btn-ok:hover { box-shadow:0 3px 10px rgba(21,101,192,0.6); }
 .btn-ok .ic { font-weight:700; }
+/* ── APP BAR CHIPS (uniform) ────────────────────────────── */
+#barRight { gap:6px; }
+#cacheAge, #reloadBtn, #helpBtn, #barStats {
+height:30px; box-sizing:border-box; border-radius:15px;
+background:rgba(255,255,255,0.15); color:#fff;
+border:1px solid rgba(255,255,255,0.3);
+font-family:'Roboto',sans-serif; font-size:12px; font-weight:500;
+line-height:1; letter-spacing:0.2px; opacity:1;
+padding:0 10px; margin:0; white-space:nowrap;
+align-items:center; justify-content:center;
+}
+#cacheAge.show, #reloadBtn.show { display:inline-flex; }
+#barStats { display:inline-flex; font-weight:600; }
+#helpBtn { width:30px; padding:0; font-size:14px; font-weight:700; }
 /* ── GUIDE POPUP ────────────────────────────────────────── */
 #guideOverlay {
 position:fixed; inset:0; z-index:1000;
