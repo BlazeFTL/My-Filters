@@ -47,6 +47,16 @@ transition:background 0.15s; display:none;
 }
 #reloadBtn.show { display:block; }
 #reloadBtn:active { background:rgba(255,255,255,0.3); }
+#helpBtn {
+width:28px; height:28px; border-radius:50%; flex-shrink:0;
+background:rgba(255,255,255,0.18); color:white;
+border:1px solid rgba(255,255,255,0.35);
+font-size:14px; font-weight:700; cursor:pointer;
+font-family:'Roboto',sans-serif; padding:0;
+display:flex; align-items:center; justify-content:center;
+transition:background 0.15s;
+}
+#helpBtn:active { background:rgba(255,255,255,0.3); }
 #barStats {
 font-size:13px; font-weight:600;
 white-space:nowrap; flex-shrink:0;
@@ -201,7 +211,7 @@ position:fixed; bottom:24px; left:50%;
 transform:translateX(-50%) translateY(64px);
 background:#323232; color:white; border-radius:6px;
 padding:10px 20px; font-size:13px; font-weight:500;
-transition:transform 0.22s ease; z-index:500;
+transition:transform 0.22s ease; z-index:1100;
 white-space:nowrap; box-shadow:var(--shadow2); pointer-events:none;
 max-width:calc(100vw - 40px); text-align:center;
 }
@@ -218,6 +228,53 @@ text-transform:uppercase;
 }
 .btn:active { transform:scale(0.96); opacity:0.85; }
 .btn-primary { background:var(--primary); color:white; border:none; box-shadow:var(--shadow); }
+.btn-never {
+background:#FFF5F5; color:var(--danger);
+border:1.5px solid #EF9A9A; border-radius:8px;
+}
+.btn-never:hover { background:#FFEBEE; border-color:var(--danger); }
+.btn-never .ic { font-size:13px; }
+.btn-ok {
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+border-radius:8px; padding:8px 22px;
+box-shadow:0 2px 6px rgba(21,101,192,0.45);
+}
+.btn-ok:hover { box-shadow:0 3px 10px rgba(21,101,192,0.6); }
+.btn-ok .ic { font-weight:700; }
+/* ── GUIDE POPUP ────────────────────────────────────────── */
+#guideOverlay {
+position:fixed; inset:0; z-index:1000;
+background:rgba(0,0,0,0.55);
+display:none; align-items:center; justify-content:center; padding:16px;
+}
+#guideOverlay.show { display:flex; }
+#guideBox {
+background:var(--surface); border-radius:12px;
+width:100%; max-width:520px; max-height:calc(100vh - 32px);
+display:flex; flex-direction:column; overflow:hidden;
+box-shadow:0 8px 32px rgba(0,0,0,0.35);
+animation:guideIn 0.2s ease;
+}
+@keyframes guideIn { from { transform:translateY(16px); opacity:0; } to { transform:none; opacity:1; } }
+#guideHead {
+background:var(--primary); color:white;
+padding:14px 18px; font-size:17px; font-weight:500; letter-spacing:0.3px;
+flex-shrink:0;
+}
+#guideBody { padding:16px 18px; overflow-y:auto; font-size:13.5px; line-height:1.7; flex:1; }
+#guideBody p { margin:0 0 10px; }
+#guideBody h4 { font-size:14px; font-weight:700; margin:14px 0 6px; }
+#guideBody ol { padding-left:20px; margin:0 0 6px; }
+#guideBody li { margin:4px 0; }
+#guideBody a { color:var(--primary); font-weight:500; }
+#guideBody code { background:var(--code-bg); border:1px solid var(--code-border); border-radius:3px; font-family:'Roboto Mono',monospace; font-size:12px; padding:1px 5px; }
+#guideBody .g-note { background:var(--primary-light); border-left:4px solid var(--primary); border-radius:4px; padding:8px 12px; margin:0 0 12px; font-weight:500; }
+#guideBody .g-old { padding-top:10px; border-top:1px solid var(--border); }
+#guideFoot {
+display:flex; justify-content:flex-end; align-items:center; gap:8px;
+padding:10px 14px; border-top:1px solid var(--border);
+background:var(--surface2); flex-shrink:0; flex-wrap:wrap;
+}
 </style>
 </head>
 <body>
@@ -228,6 +285,7 @@ text-transform:uppercase;
 <div class="bar-sub">uAssets · #27472</div>
 </div>
 <div id="barRight">
+<button id="helpBtn" onclick="openGuide()" title="How to use">?</button>
 <span id="cacheAge"></span>
 <button id="reloadBtn" onclick="reloadCache()">↺ Reload</button>
 <div id="barStats">Loading…</div>
@@ -273,15 +331,65 @@ oninput="onSearchInput()" disabled autocorrect="off" autocapitalize="off" />
 
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <button id="scrollBottom" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">↓</button>
+
+<!-- GUIDE POPUP -->
+<div id="guideOverlay" role="dialog" aria-modal="true" aria-labelledby="guideHead">
+<div id="guideBox">
+<div id="guideHead">🔍 Search Before Posting</div>
+<div id="guideBody">
+<p>I have created an easy way for you guys to find already posted solutions without having to go through GitHub's "load more" buttons nuisance.</p>
+<p class="g-note">Always search here first. If something has multiple answers, look at the dates and pick the latest one.</p>
+<p class="g-old"><b>Old Thread (Now Closed):</b> <a href="https://blazeftl.github.io/My-Filters/17361_ShortnerThreadAllCommentsUser.html" target="_blank" rel="noopener">Archive Search Tool↗️</a></p>
+<h4>Usage:</h4>
+<ol>
+<li>Search the initial starting link (e.g., <code>tpi.li</code>) or <code>gplinks</code> in the search bar.</li>
+<li>All <code>tpi.li</code> posts and replies will show up with solutions provided by contributors.</li>
+<li>Just copy the filters into your <b>"My Filters"</b> and add new domains if needed. <a href="https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-12216181" target="_blank" rel="noopener">Tutorial ↗</a></li>
+</ol>
+</div>
+<div id="guideFoot">
+<button class="btn btn-never" onclick="closeGuide(true)"><span class="ic">🚫</span> Never show again</button>
+<button class="btn btn-primary btn-ok" onclick="closeGuide(false)"><span class="ic">✓</span> Understood</button>
+</div>
+</div>
+</div>
+
 <div id="toast"></div>
 
 <script>
 // ── Config ───────────────────────────────────────────────
 const CACHE_RAW = 'https://raw.githubusercontent.com/BlazeFTL/My-Filters/refs/heads/master/disc_27472_cache.json';
+const GUIDE_KEY = 'uadisc27472_guide_hidden';
 
 let allItems = [];
 let currentFilter = 'all';
 let currentQuery = '';
+
+// ── Guide popup ──────────────────────────────────────────
+function guideHidden() {
+  try { return localStorage.getItem(GUIDE_KEY) === '1'; } catch(e) { return false; }
+}
+
+window.openGuide = function() {
+  document.getElementById('guideOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('guideBody').scrollTop = 0;
+};
+
+window.closeGuide = function(never) {
+  document.getElementById('guideOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  if (never) {
+    try { localStorage.setItem(GUIDE_KEY, '1'); } catch(e) {}
+    toast('Hidden. Tap ? to reopen', 'info');
+  }
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('guideOverlay').classList.contains('show')) closeGuide(false);
+});
+
+if (!guideHidden()) openGuide();
 
 // ── Format age from timestamp ────────────────────────────
 function formatAge(ts) {
