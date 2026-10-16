@@ -1517,6 +1517,7 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##+js(no-xhr-if, /m2?_)
 4pda.*##+js(no-setTimeout-if, removeAttr, setTimeout)
 4pda.*##+js(abort-on-property-read, document.referrer)
+4pda.to##td:has(> a[target="_blank"] > img[src^="https://4pda.to/s/"])
 ||4pda.to/ad/www/images/$image
 ||4pda.to/er/*/m2?_=
 ! Sep 3, 2025 https://4pda.to
