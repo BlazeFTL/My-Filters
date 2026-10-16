@@ -1513,20 +1513,16 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##div.makepost_link
 4pda.to##.second-menu
 4pda.to##.menu-main > li.menu-main-item > [href^="https://4pda.to/honor/"]
+4pda.to##td:has(> a[target="_blank"] > img[src^="https://4pda.to/s/"])
 4pda.to##+js(nano-setTimeout-booster, zat_tick)
 4pda.to##+js(no-xhr-if, /m2?_)
 4pda.*##+js(no-setTimeout-if, removeAttr, setTimeout)
 4pda.*##+js(abort-on-property-read, document.referrer)
-4pda.to##td:has(> a[target="_blank"] > img[src^="https://4pda.to/s/"])
 ||4pda.to/ad/www/images/$image
 ||4pda.to/er/*/m2?_=
 ! Sep 3, 2025 https://4pda.to
-4pda.to##div[id][class][fsbrrm7]:has(img[src*="/s/"][width="0"][height="0"])
 4pda.to##article[class^="post "][itemscope][data-ztm]:has(img[src*=".gif"])
-4pda.to##body #ZAPiSRQwSS > .W47 > .Z3B > #ZAPf6wXc + #z225Mg6#z225Mg6#z225Mg6#z225Mg6 { background-image: none !important; }
-4pda.to###ZAPiSRQwSeei8N, #Xc3qz0VTZ, #yTfLNJIgiKlz1 { background-image: none !important; }
 4pda.to##article[class^="post "]:has(a[target="_blank"] > img[src$=".jpg"]):has(img[src$=".gif"])
-4pda.to##rst[style*="ZMW:dUq"][style*="padding:0px"]
 4pda.to##body[itemtype="http://schema.org/WebPage"] > * > a[target="_blank"] > img[border="0"]
 4pda.to##div > div[itemprop="description"] > p > a[title] > img[itemprop="image"]
 
