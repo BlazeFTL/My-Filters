@@ -18,53 +18,53 @@
 }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif; min-height:100vh; }
-#topWrap { display:contents; }
-#appBar { background:var(--primary); color:#fff; padding:14px 16px 16px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow2); position:relative; z-index:1; }
-.bar-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; min-width:0; }
-.bar-title { font-size:20px; font-weight:500; letter-spacing:0.2px; line-height:1.2; }
-.bar-sub { font-size:12px; opacity:0.75; margin-top:3px; }
-#barStats { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-.stat { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.16); border-radius:16px; padding:5px 12px 5px 9px; font-size:13px; font-weight:500; white-space:nowrap; }
-.stat svg { width:18px; height:18px; fill:currentColor; }
+#topWrap { position:sticky; top:0; z-index:200; }
+#appBar { background:var(--primary); color:#fff; padding:7px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.bar-left { min-width:0; flex:1 1 auto; display:flex; flex-direction:column; gap:3px; }
+.bar-line { display:flex; align-items:center; gap:8px; min-width:0; }
+.bar-title { font-size:16px; font-weight:500; letter-spacing:0.2px; white-space:nowrap; }
+#barStats { display:flex; align-items:center; flex-wrap:wrap; gap:2px 12px; font-size:11px; opacity:0.92; }
+.stat { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.stat svg { width:14px; height:14px; fill:currentColor; opacity:0.9; }
 .stat b { font-weight:700; }
-.stat.muted { padding:5px 12px; opacity:0.85; }
-#barCacheText { display:inline-flex; align-items:center; gap:4px; font-size:12px; opacity:0.8; white-space:nowrap; }
-#barCacheText:empty { display:none; }
-#barCacheText svg { width:15px; height:15px; fill:currentColor; }
-#barActions { display:none; gap:8px; }
+#barActions { display:none; align-items:center; gap:6px; flex-shrink:0; }
 #barActions.show { display:flex; }
 .act {
-flex:1; display:inline-flex; align-items:center; justify-content:center; gap:6px; height:40px;
-border-radius:20px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.12); color:#fff;
-font:500 13px 'Roboto',sans-serif; letter-spacing:0.3px; cursor:pointer; transition:background 0.15s, transform 0.1s;
+display:inline-flex; align-items:center; justify-content:center; gap:5px; height:32px; padding:0 11px;
+border-radius:16px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.12); color:#fff;
+font:500 12.5px 'Roboto',sans-serif; letter-spacing:0.2px; cursor:pointer; transition:background 0.15s, transform 0.1s;
 }
-.act svg { width:20px; height:20px; fill:currentColor; }
+.act svg { width:18px; height:18px; fill:currentColor; }
 .act:active { background:rgba(255,255,255,0.3); transform:scale(0.97); }
 .act:disabled { opacity:0.5; pointer-events:none; }
 .act.spin:disabled { opacity:1; }
 .act.spin svg { animation:spin 1s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
+@media (max-width:520px) {
+.act { flex-direction:column; gap:1px; width:48px; height:42px; padding:0; border-radius:12px; font-size:10px; }
+.act svg { width:20px; height:20px; }
+}
 #patPill {
-display:inline-flex; align-items:center; gap:6px; flex-shrink:0; white-space:nowrap;
-background:rgba(255,255,255,0.16); border-radius:16px; padding:5px 10px 5px 9px;
-cursor:pointer; user-select:none; font-size:13px; font-weight:500; transition:background 0.15s;
+display:inline-flex; align-items:center; gap:4px; flex-shrink:0; white-space:nowrap;
+background:rgba(255,255,255,0.16); border-radius:12px; padding:2px 7px 2px 6px;
+cursor:pointer; user-select:none; font-size:11px; font-weight:500; transition:background 0.15s;
 }
 #patPill:active { background:rgba(255,255,255,0.3); }
-#patPill svg { width:18px; height:18px; fill:currentColor; }
+#patPill svg { width:14px; height:14px; fill:currentColor; }
 #patPillState { display:inline-flex; }
 #patPillState svg { fill:#EF9A9A; }
 #patPill.pat-set #patPillState svg { fill:#A5D6A7; }
-.search-icon svg { width:20px; height:20px; fill:currentColor; display:block; }
+.search-icon svg { width:18px; height:18px; fill:currentColor; display:block; }
 #searchClear svg { width:14px; height:14px; fill:currentColor; }
 .btn svg { width:18px; height:18px; fill:currentColor; }
 .card-link svg { width:13px; height:13px; fill:currentColor; }
 #scrollTop svg, #scrollBottom svg { width:24px; height:24px; fill:currentColor; }
-#searchBar { position:sticky; top:0; z-index:200; background:var(--surface); border-bottom:1px solid var(--border); padding:8px 12px; box-shadow:var(--shadow); }
+#searchBar { background:var(--surface); border-bottom:1px solid var(--border); padding:6px 10px; box-shadow:var(--shadow2); }
 .search-wrap { position:relative; }
 #searchInput {
 width:100%; background:var(--surface2); border:1.5px solid var(--border);
 border-radius:8px; color:var(--text); font-family:'Roboto',sans-serif;
-font-size:15px; padding:10px 50px 10px 40px; outline:none;
+font-size:14px; padding:8px 50px 8px 36px; outline:none;
 transition:border-color 0.15s, box-shadow 0.15s;
 }
 #searchInput:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); background:#fff; }
@@ -199,19 +199,18 @@ pointer-events:none; max-width:calc(100vw - 40px); text-align:center;
 
 <div id="topWrap">
 <div id="appBar">
-<div class="bar-row">
-<div>
+<div class="bar-left">
+<div class="bar-line">
 <div class="bar-title">Discussion Search</div>
-<div class="bar-sub">uAssets · Discussion #27472</div>
-</div>
 <div id="patPill" onclick="togglePat()" title="Tap to manage PAT"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg><span id="patPillText">PAT</span><span id="patPillState"></span></div>
 </div>
-<div class="bar-row">
-<div id="barStats"><span class="stat muted">Not loaded</span></div>
-<span id="barCacheText"></span>
+<div id="barStats"><span class="stat">Not loaded</span></div>
 </div>
 <div id="barActions">
 <button class="act" id="refreshBtn" onclick="startFetch()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Refresh</span></button>
+<button class="act" onclick="saveToGithub()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Refresh</span></button>
+<button class="act" onclick="saveToGithub()"><svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg><span>Save</span></button>
+<button class="act" onclick="clearCache()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Refresh</span></button>
 <button class="act" onclick="saveToGithub()"><svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg><span>Save</span></button>
 <button class="act" onclick="clearCache()"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg><span>Clear</span></button>
 </div>
@@ -505,9 +504,8 @@ function loadFromData(items, ts, scrollToBottom) {
   $('searchInput').disabled = false;
   const comments = items.filter(i => !i.isReply).length;
   const replies = items.length - comments;
-  $('barStats').innerHTML = `<span class="stat">${icon(IC_COMMENT)}<b>${comments}</b> Comments</span><span class="stat">${icon(IC_REPLY)}<b>${replies}</b> Replies</span>`;
+  $('barStats').innerHTML = `<span class="stat">${icon(IC_COMMENT)}<b>${comments}</b> Comments</span><span class="stat">${icon(IC_REPLY)}<b>${replies}</b> Replies</span><span class="stat">${icon(IC_TIME)}${ageText(ts)}</span>`;
   $('barActions').classList.add('show');
-  $('barCacheText').innerHTML = `${icon(IC_TIME)}<span>${ageText(ts)}</span>`;
   if (currentQuery || currentFilter !== 'all') applyFilterAndSearch();
   else renderResults(allItems, '', scrollToBottom);
 }
