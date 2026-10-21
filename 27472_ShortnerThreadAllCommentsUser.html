@@ -223,13 +223,14 @@ line-height:1.5; text-decoration:none; word-break:normal; color:var(--primary-da
 /* ── GITHUB LINK ────────────────────────────────────────── */
 .card-link {
 position:relative; display:inline-flex; align-items:center; justify-content:center;
-width:28px; height:19px; flex-shrink:0; color:var(--text2); text-decoration:none;
+gap:4px; height:19px; padding:0 8px; flex-shrink:0; white-space:nowrap;
+font-size:11px; font-weight:500; line-height:1; color:var(--primary); text-decoration:none;
 border:1px solid var(--border2); border-radius:12px;
 transition:background 0.15s, border-color 0.15s, color 0.15s;
 }
 .card-link::after { content:''; position:absolute; inset:-9px -6px; }
 .card-link svg { width:12px; height:12px; }
-.card-link:hover, .card-link:active { color:var(--primary); background:var(--primary-light); border-color:var(--primary); }
+.card-link:hover, .card-link:active { color:var(--primary-dark); background:var(--primary-light); border-color:var(--primary); }
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
@@ -723,7 +724,7 @@ function buildCard(item, query, asReply) {
       <div class="card-badges">
         ${item.isReply ? '<span class="badge badge-reply">Reply</span>' : ''}
         ${isBlaze ? '<span class="badge badge-blaze">Collaborator</span>' : ''}
-        <a class="card-link" href="${escH(item.url)}" target="_blank" rel="noopener" title="View on GitHub" aria-label="View on GitHub">${ICON_EXT}</a>
+        <a class="card-link" href="${escH(item.url)}" target="_blank" rel="noopener" title="View on GitHub">View on GitHub ${ICON_EXT}</a>
       </div>
     </div>
     <div class="card-body">${renderMarkdown(item.body, query)}</div>`;
