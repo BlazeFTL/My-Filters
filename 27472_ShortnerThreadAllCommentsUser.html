@@ -151,8 +151,9 @@ background:transparent; border:none; padding:12px 14px 0;
 position:relative; z-index:1;
 }
 .thread-replies .avatar { box-shadow:0 0 0 3px var(--reply-bg); }
-.thread-replies .card-body { padding:6px 14px 12px 50px; }
+.thread-replies .card-body { padding:6px 14px 4px 50px; }
 .thread-replies .badge-reply { display:none; }
+.thread-replies .card-footer { padding-left:50px; }
 .thread-group .result-card:hover { box-shadow:none; }
 .thread-replies .card-body pre { background:#E6EAEF; border-color:#CDD3DA; }
 .thread-replies .card-body :not(pre) > code { background:#E6EAEF; border-color:#CDD3DA; }
@@ -177,7 +178,7 @@ padding:12px 14px 0; background:transparent;
 .badge-blaze { background:transparent; color:var(--text2); border:1px solid var(--border2); border-radius:12px; padding:1px 8px; text-transform:none; font-size:11px; font-weight:500; letter-spacing:0; }
 .card-date { font-size:12px; color:var(--text2); white-space:nowrap; text-decoration:underline; text-decoration-color:var(--border2); text-underline-offset:3px; }
 .card-date:hover { color:var(--primary); }
-.card-body { padding:6px 14px 14px; font-size:13px; line-height:1.7; color:var(--text); word-break:break-word; overflow-x:auto; }
+.card-body { padding:6px 14px 4px; font-size:13px; line-height:1.7; color:var(--text); word-break:break-word; overflow-x:auto; }
 .card-body h1,.card-body h2,.card-body h3 { font-weight:600; margin:12px 0 6px; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:4px; }
 .card-body h1 { font-size:16px; } .card-body h2 { font-size:15px; } .card-body h3 { font-size:14px; }
 .card-body p { margin:6px 0; }
@@ -200,8 +201,8 @@ padding:12px 14px 0; background:transparent;
 .card-body .gh-alert-important{ background:#EDE7F6; border-color:#6A1B9A; }
 .card-body .gh-alert-caution { background:#FFEBEE; border-color:#C62828; }
 .card-body .gh-alert-title { font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-.card-body details { margin:6px 0; }
-.card-body summary { padding:4px 0; cursor:pointer; font-weight:500; font-size:13px; user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
+.card-body details { margin:2px 0; }
+.card-body summary { padding:2px 0; cursor:pointer; font-weight:500; font-size:13px; user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
 .card-body summary::before { content:'▶'; font-size:10px; transition:transform 0.2s; }
 .card-body details[open] summary::before { transform:rotate(90deg); }
 .card-body details > *:not(summary) { padding:0; }
@@ -209,6 +210,9 @@ padding:12px 14px 0; background:transparent;
 mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; padding:0 1px; }
 .card-body > :first-child { margin-top:0; }
 .card-body > :last-child { margin-bottom:0; }
+.card-footer { padding:4px 14px 12px; display:flex; align-items:center; }
+.card-link { font-size:12px; font-weight:500; color:var(--primary); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+.card-link:hover { text-decoration:underline; }
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
@@ -224,7 +228,8 @@ cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s;
 .copy-btn:active { background:var(--primary-light); }
 .copy-btn.done { color:var(--success); border-color:var(--success); background:#F0FFF4; }
 .code-wrap > .copy-btn { position:absolute; top:6px; right:6px; z-index:2; }
-.card-body summary .copy-btn { margin-left:auto; }
+.card-body summary .copy-btn { margin-left:auto; width:24px; height:24px; }
+.card-body summary .copy-btn svg { width:13px; height:13px; }
 /* ── SCROLL BUTTONS ─────────────────────────────────────── */
 #scrollTop, #scrollBottom {
 position:fixed; width:44px; height:44px;
@@ -697,7 +702,10 @@ function buildCard(item, query, asReply) {
         ${isBlaze ? '<span class="badge badge-blaze">Collaborator</span>' : ''}
       </div>
     </div>
-    <div class="card-body">${renderMarkdown(item.body, query)}</div>`;
+    <div class="card-body">${renderMarkdown(item.body, query)}</div>
+    <div class="card-footer">
+      <a class="card-link" href="${escH(item.url)}" target="_blank" rel="noopener">↗ View on GitHub</a>
+    </div>`;
   addCopyButtons(div.querySelector('.card-body'));
   return div;
 }
