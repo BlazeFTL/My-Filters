@@ -207,12 +207,31 @@ padding:12px 14px 0; background:transparent;
 .card-body details[open] summary::before { transform:rotate(90deg); }
 .card-body details > *:not(summary) { padding:0; }
 .card-body details > p { margin:0; }
+.card-body details:not([open]) > summary .copy-btn { display:none; }
 mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; padding:0 1px; }
 .card-body > :first-child { margin-top:0; }
 .card-body > :last-child { margin-bottom:0; }
-.card-footer { padding:4px 14px 12px; display:flex; align-items:center; }
-.card-link { font-size:12px; font-weight:500; color:var(--primary); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
-.card-link:hover { text-decoration:underline; }
+/* ── @MENTIONS ──────────────────────────────────────────── */
+.card-body a.mention {
+display:inline-flex; align-items:center; gap:5px; vertical-align:middle;
+background:var(--primary-light); border:1px solid #BBDEFB; border-radius:14px;
+padding:1px 9px 1px 2px; margin:1px; font-size:12.5px; font-weight:500;
+line-height:1.5; text-decoration:none; word-break:normal; color:var(--primary-dark);
+}
+.card-body a.mention.blaze { background:#FFF3E0; border-color:#FFE0B2; color:var(--accent2); font-weight:700; }
+.card-body a.mention img { width:18px; height:18px; max-width:none; border-radius:50%; background:var(--border); object-fit:cover; flex-shrink:0; }
+.card-body a.mention:active { opacity:0.7; }
+/* ── CARD FOOTER ────────────────────────────────────────── */
+.card-footer { padding:8px 14px 12px; display:flex; align-items:center; justify-content:flex-end; }
+.card-link {
+font-size:12px; font-weight:500; color:var(--primary); text-decoration:none;
+display:inline-flex; align-items:center; gap:6px;
+padding:5px 12px; border:1px solid var(--border2); border-radius:14px;
+transition:background 0.15s, border-color 0.15s;
+}
+.card-link svg { width:13px; height:13px; flex-shrink:0; }
+.card-link:hover { background:var(--primary-light); border-color:var(--primary); }
+.card-link:active { background:var(--primary-light); border-color:var(--primary); }
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
@@ -420,10 +439,12 @@ const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICON_REPLY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>';
 const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
 const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const ICON_EXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
 
 let allItems = [];
 let currentFilter = 'all';
 let currentQuery = '';
+const avatarMap = new Map();
 
 // ── Guide popup ──────────────────────────────────────────
 function guideHidden() {
@@ -500,6 +521,10 @@ window.reloadCache = async function() {
 // ── Load data into UI ────────────────────────────────────
 function loadFromData(data) {
   allItems = data.items;
+  avatarMap.clear();
+  for (const it of allItems) {
+    if (it.author && it.avatarUrl) avatarMap.set(String(it.author).toLowerCase(), it.avatarUrl);
+  }
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('filterRow').classList.add('show');
   document.getElementById('searchInput').disabled = false;
@@ -704,9 +729,10 @@ function buildCard(item, query, asReply) {
     </div>
     <div class="card-body">${renderMarkdown(item.body, query)}</div>
     <div class="card-footer">
-      <a class="card-link" href="${escH(item.url)}" target="_blank" rel="noopener">↗ View on GitHub</a>
+      <a class="card-link" href="${escH(item.url)}" target="_blank" rel="noopener">View on GitHub ${ICON_EXT}</a>
     </div>`;
   addCopyButtons(div.querySelector('.card-body'));
+  wireMentions(div);
   return div;
 }
 
@@ -772,6 +798,78 @@ function addCopyButtons(root) {
   });
 }
 
+// ── @mentions ────────────────────────────────────────────
+const MENTION_RE = /(?<![\w@\/.\-`])@([A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38})(?![\w@])/g;
+
+function ghAvatar(name) {
+  return 'https://github.com/' + name + '.png?size=48';
+}
+
+function mentionEl(name) {
+  const key = name.toLowerCase();
+  const a = document.createElement('a');
+  a.className = 'mention' + (key === 'blazeftl' ? ' blaze' : '');
+  a.href = 'https://github.com/' + name;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  const img = document.createElement('img');
+  img.alt = '';
+  img.loading = 'lazy';
+  img.src = avatarMap.get(key) || ghAvatar(name);
+  const span = document.createElement('span');
+  span.textContent = '@' + name;
+  a.append(img, span);
+  return a;
+}
+
+function linkMentions(html) {
+  if (html.indexOf('@') === -1) return html;
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html;
+  const walker = document.createTreeWalker(tpl.content, NodeFilter.SHOW_TEXT, {
+    acceptNode(n) {
+      if (n.nodeValue.indexOf('@') === -1) return NodeFilter.FILTER_REJECT;
+      const p = n.parentElement;
+      if (p && p.closest('pre,code,a,script,style,textarea')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const node of nodes) {
+    const text = node.nodeValue;
+    MENTION_RE.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, found = false, m;
+    while ((m = MENTION_RE.exec(text))) {
+      found = true;
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      frag.appendChild(mentionEl(m[1]));
+      last = m.index + m[0].length;
+    }
+    if (!found) continue;
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.replaceWith(frag);
+  }
+  return tpl.innerHTML;
+}
+
+function wireMentions(root) {
+  root.querySelectorAll('a.mention img').forEach(img => {
+    img.addEventListener('error', () => {
+      const a = img.parentElement;
+      const name = a.textContent.slice(1);
+      const fb = ghAvatar(name);
+      if (img.dataset.fb !== '1' && img.src !== fb) {
+        img.dataset.fb = '1';
+        img.src = fb;
+        return;
+      }
+      a.replaceWith(document.createTextNode(a.textContent));
+    });
+  });
+}
+
 function renderMarkdown(raw, query) {
   let text = raw;
   text = text.replace(/^>\s*\[!(TIP|NOTE|WARNING|IMPORTANT|CAUTION)\]\s*\n((?:>.*\n?)*)/gim,
@@ -784,6 +882,7 @@ function renderMarkdown(raw, query) {
   let html;
   try { html = marked.parse(text, { breaks:true, gfm:true }); }
   catch(e) { html = escH(raw).replace(/\n/g,'<br>'); }
+  try { html = linkMentions(html); } catch(e) {}
   if (query) {
     try {
       const esc = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
