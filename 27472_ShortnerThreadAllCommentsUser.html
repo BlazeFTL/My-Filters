@@ -135,7 +135,6 @@ border:1px solid var(--border2); border-top:3px solid var(--primary);
 overflow:hidden; box-shadow:var(--shadow2); background:var(--card);
 }
 .thread-group .result-card { margin:0; border:none; border-radius:0; box-shadow:none; }
-.thread-group > .result-card .card-footer { border-top:1px solid var(--border); }
 #results > .result-card { margin:0 12px 34px; }
 /* ── REPLY TREE (GitHub style) ──────────────────────────── */
 .thread-replies { background:var(--reply-bg); border-top:1px solid var(--border); padding:0; }
@@ -148,12 +147,12 @@ width:2px; background:var(--thread-line);
 }
 .thread-replies .result-card:first-child::before { top:26px; }
 .thread-replies .card-header {
-background:transparent; border:none; padding:12px 14px 4px;
+background:transparent; border:none; padding:12px 14px 0;
 position:relative; z-index:1;
 }
 .thread-replies .avatar { box-shadow:0 0 0 3px var(--reply-bg); }
-.thread-replies .card-body { padding:4px 14px 6px 50px; }
-.thread-replies .card-footer { border:none; padding:0 14px 10px 50px; }
+.thread-replies .card-body { padding:6px 14px 12px 50px; }
+.thread-replies .badge-reply { display:none; }
 .thread-group .result-card:hover { box-shadow:none; }
 .thread-replies .card-body pre { background:#E6EAEF; border-color:#CDD3DA; }
 .thread-replies .card-body :not(pre) > code { background:#E6EAEF; border-color:#CDD3DA; }
@@ -166,8 +165,7 @@ box-shadow:var(--shadow); overflow:hidden; transition:box-shadow 0.15s;
 .result-card:hover { box-shadow:var(--shadow2); }
 .card-header {
 display:flex; align-items:center; gap:8px;
-padding:10px 14px 8px; border-bottom:1px solid var(--border);
-background:var(--surface2);
+padding:12px 14px 0; background:transparent;
 }
 .avatar { width:28px; height:28px; border-radius:50%; background:var(--border); overflow:hidden; flex-shrink:0; }
 .avatar img { width:100%; height:100%; }
@@ -176,9 +174,10 @@ background:var(--surface2);
 .card-badges { display:flex; gap:4px; margin-left:auto; align-items:center; }
 .badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; letter-spacing:0.4px; text-transform:uppercase; }
 .badge-reply { background:#FFF3E0; color:#E65100; border:1px solid #FFE0B2; }
-.badge-blaze { background:#FBE9E7; color:#BF360C; border:1px solid #FFCCBC; }
-.card-date { font-size:11px; color:var(--text3); }
-.card-body { padding:12px 14px; font-size:13px; line-height:1.7; color:var(--text); word-break:break-word; overflow-x:auto; }
+.badge-blaze { background:transparent; color:var(--text2); border:1px solid var(--border2); border-radius:12px; padding:1px 8px; text-transform:none; font-size:11px; font-weight:500; letter-spacing:0; }
+.card-date { font-size:12px; color:var(--text2); white-space:nowrap; text-decoration:underline; text-decoration-color:var(--border2); text-underline-offset:3px; }
+.card-date:hover { color:var(--primary); }
+.card-body { padding:6px 14px 14px; font-size:13px; line-height:1.7; color:var(--text); word-break:break-word; overflow-x:auto; }
 .card-body h1,.card-body h2,.card-body h3 { font-weight:600; margin:12px 0 6px; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:4px; }
 .card-body h1 { font-size:16px; } .card-body h2 { font-size:15px; } .card-body h3 { font-size:14px; }
 .card-body p { margin:6px 0; }
@@ -208,9 +207,8 @@ background:var(--surface2);
 .card-body details > *:not(summary) { padding:0; }
 .card-body details > p { margin:0; }
 mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; padding:0 1px; }
-.card-footer { padding:6px 14px 8px; border-top:1px solid var(--border); display:flex; align-items:center; }
-.card-link { font-size:11px; color:var(--text3); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
-.card-link:hover { color:var(--primary); }
+.card-body > :first-child { margin-top:0; }
+.card-body > :last-child { margin-bottom:0; }
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
@@ -693,16 +691,13 @@ function buildCard(item, query, asReply) {
     <div class="card-header">
       <div class="avatar"><img src="${escH(item.avatarUrl)}" loading="lazy" onerror="this.style.display='none'"></div>
       <span class="author ${isBlaze ? 'blaze' : ''}">${escH(item.author)}</span>
+      <a class="card-date" href="${escH(item.url)}" target="_blank" rel="noopener" title="View on GitHub">${date || 'View on GitHub'}</a>
       <div class="card-badges">
         ${item.isReply ? '<span class="badge badge-reply">Reply</span>' : ''}
-        ${isBlaze ? '<span class="badge badge-blaze">BlazeFTL</span>' : ''}
+        ${isBlaze ? '<span class="badge badge-blaze">Collaborator</span>' : ''}
       </div>
-      <span class="card-date">${date}</span>
     </div>
-    <div class="card-body">${renderMarkdown(item.body, query)}</div>
-    <div class="card-footer">
-      <a class="card-link" href="${escH(item.url)}" target="_blank">↗ View on GitHub</a>
-    </div>`;
+    <div class="card-body">${renderMarkdown(item.body, query)}</div>`;
   addCopyButtons(div.querySelector('.card-body'));
   return div;
 }
