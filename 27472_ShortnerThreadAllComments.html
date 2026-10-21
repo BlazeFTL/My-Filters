@@ -19,15 +19,16 @@
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif; min-height:100vh; }
 #topWrap { position:sticky; top:0; z-index:200; }
-#appBar { background:var(--primary); color:#fff; padding:7px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.bar-left { min-width:0; flex:1 1 auto; display:flex; flex-direction:column; gap:3px; }
-.bar-line { display:flex; align-items:center; gap:8px; min-width:0; }
+#appBar { background:var(--primary); color:#fff; padding:7px 12px 8px; display:flex; flex-direction:column; gap:6px; }
+.bar-row { display:flex; align-items:center; justify-content:space-between; gap:10px; min-width:0; }
+.bar-head { display:flex; align-items:baseline; flex-wrap:wrap; gap:1px 8px; min-width:0; }
+.bar-sub { font-size:11px; opacity:0.75; white-space:nowrap; }
+.bar-center { justify-content:center; flex-wrap:wrap; gap:4px 14px; }
 .bar-title { font-size:16px; font-weight:500; letter-spacing:0.2px; white-space:nowrap; }
-#barStats { display:flex; align-items:center; flex-wrap:wrap; gap:2px 12px; font-size:11px; opacity:0.92; }
+#barStats { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:2px 12px; font-size:11px; opacity:0.95; }
 .stat { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
 .stat svg { width:14px; height:14px; fill:currentColor; opacity:0.9; }
 .stat b { font-weight:700; }
-.stat.dim { opacity:0.75; }
 #barActions { display:none; align-items:center; gap:6px; flex-shrink:0; }
 #barActions.show { display:flex; }
 .act {
@@ -118,9 +119,9 @@ white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
 .btn-primary { background:var(--primary); color:white; border:none; box-shadow:var(--shadow); }
 .btn-outline-muted { background:transparent; color:var(--text2); border:1.5px solid var(--border2); }
 .btn:disabled { opacity:0.35; pointer-events:none; }
-#progressWrap { display:none; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; }
-#progressLabel { font-size:12px; color:var(--text2); margin-bottom:8px; font-weight:500; }
-#progressBar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+#progressWrap { display:none; background:var(--surface); border-bottom:1px solid var(--border); padding:6px 12px 8px; box-shadow:var(--shadow2); }
+#progressLabel { font-size:11px; color:var(--text2); margin-bottom:5px; font-weight:500; }
+#progressBar { height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
 #progressFill { height:100%; background:var(--primary); width:0%; transition:width 0.3s; border-radius:2px; }
 #results { padding:8px 0 100px; }
 .no-results { padding:48px 16px; text-align:center; color:var(--text2); font-size:14px; }
@@ -200,17 +201,17 @@ pointer-events:none; max-width:calc(100vw - 40px); text-align:center;
 
 <div id="topWrap">
 <div id="appBar">
-<div class="bar-left">
-<div class="bar-line">
-<div class="bar-title">Discussion Search</div>
-<div id="patPill" onclick="togglePat()" title="Tap to manage PAT"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg><span id="patPillText">PAT</span><span id="patPillState"></span></div>
-</div>
-<div id="barStats"><span class="stat dim">uAssets · #27472</span><span class="stat">Not loaded</span></div>
-</div>
+<div class="bar-row">
+<div class="bar-head"><span class="bar-title">Discussion Search</span><span class="bar-sub">uAssets · #27472</span></div>
 <div id="barActions">
 <button class="act" id="refreshBtn" onclick="startFetch()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Refresh</span></button>
 <button class="act" onclick="saveToGithub()"><svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg><span>Save</span></button>
 <button class="act" onclick="clearCache()"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg><span>Clear</span></button>
+</div>
+</div>
+<div class="bar-row bar-center">
+<div id="patPill" onclick="togglePat()" title="Tap to manage PAT"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg><span id="patPillText">PAT</span><span id="patPillState"></span></div>
+<div id="barStats"><span class="stat">Not loaded</span></div>
 </div>
 </div>
 <div id="searchBar">
@@ -221,6 +222,10 @@ oninput="onSearchInput()" disabled autocorrect="off" autocapitalize="off" />
 <span id="resultCount"></span>
 <button id="searchClear" onclick="clearSearch()" title="Clear search"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
 </div>
+</div>
+<div id="progressWrap">
+<div id="progressLabel">Loading…</div>
+<div id="progressBar"><div id="progressFill"></div></div>
 </div>
 </div>
 
@@ -252,10 +257,6 @@ via GitHub GraphQL API. A <strong>Personal Access Token (PAT)</strong> is requir
 </div>
 </div>
 
-<div id="progressWrap">
-<div id="progressLabel">Loading…</div>
-<div id="progressBar"><div id="progressFill"></div></div>
-</div>
 
 <div id="results">
 <div class="no-results">
@@ -502,7 +503,7 @@ function loadFromData(items, ts, scrollToBottom) {
   $('searchInput').disabled = false;
   const comments = items.filter(i => !i.isReply).length;
   const replies = items.length - comments;
-  $('barStats').innerHTML = `<span class="stat dim">uAssets · #27472</span><span class="stat" title="Comments">${icon(IC_COMMENT)}<b>${comments}</b></span><span class="stat" title="Replies">${icon(IC_REPLY)}<b>${replies}</b></span><span class="stat" title="Last loaded">${icon(IC_TIME)}${ageText(ts)}</span>`;
+  $('barStats').innerHTML = `<span class="stat" title="Comments">${icon(IC_COMMENT)}<b>${comments}</b></span><span class="stat" title="Replies">${icon(IC_REPLY)}<b>${replies}</b></span><span class="stat" title="Last loaded">${icon(IC_TIME)}${ageText(ts)}</span>`;
   $('barActions').classList.add('show');
   if (currentQuery || currentFilter !== 'all') applyFilterAndSearch();
   else renderResults(allItems, '', scrollToBottom);
