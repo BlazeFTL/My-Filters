@@ -27,22 +27,23 @@ body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif;
 .stat { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
 .stat svg { width:14px; height:14px; fill:currentColor; opacity:0.9; }
 .stat b { font-weight:700; }
+.stat.dim { opacity:0.75; }
 #barActions { display:none; align-items:center; gap:6px; flex-shrink:0; }
 #barActions.show { display:flex; }
 .act {
-display:inline-flex; align-items:center; justify-content:center; gap:5px; height:32px; padding:0 11px;
-border-radius:16px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.12); color:#fff;
-font:500 12.5px 'Roboto',sans-serif; letter-spacing:0.2px; cursor:pointer; transition:background 0.15s, transform 0.1s;
+display:inline-flex; align-items:center; justify-content:center; gap:4px; height:26px; padding:0 9px;
+border-radius:13px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.12); color:#fff;
+font:500 11.5px 'Roboto',sans-serif; letter-spacing:0.2px; cursor:pointer; transition:background 0.15s, transform 0.1s;
 }
-.act svg { width:18px; height:18px; fill:currentColor; }
+.act svg { width:15px; height:15px; fill:currentColor; }
 .act:active { background:rgba(255,255,255,0.3); transform:scale(0.97); }
 .act:disabled { opacity:0.5; pointer-events:none; }
 .act.spin:disabled { opacity:1; }
 .act.spin svg { animation:spin 1s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 @media (max-width:520px) {
-.act { flex-direction:column; gap:1px; width:48px; height:42px; padding:0; border-radius:12px; font-size:10px; }
-.act svg { width:20px; height:20px; }
+.act { flex-direction:column; gap:1px; width:40px; height:36px; padding:0; border-radius:10px; font-size:9px; }
+.act svg { width:17px; height:17px; }
 }
 #patPill {
 display:inline-flex; align-items:center; gap:4px; flex-shrink:0; white-space:nowrap;
@@ -204,7 +205,7 @@ pointer-events:none; max-width:calc(100vw - 40px); text-align:center;
 <div class="bar-title">Discussion Search</div>
 <div id="patPill" onclick="togglePat()" title="Tap to manage PAT"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg><span id="patPillText">PAT</span><span id="patPillState"></span></div>
 </div>
-<div id="barStats"><span class="stat">Not loaded</span></div>
+<div id="barStats"><span class="stat dim">uAssets · #27472</span><span class="stat">Not loaded</span></div>
 </div>
 <div id="barActions">
 <button class="act" id="refreshBtn" onclick="startFetch()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Refresh</span></button>
@@ -501,7 +502,7 @@ function loadFromData(items, ts, scrollToBottom) {
   $('searchInput').disabled = false;
   const comments = items.filter(i => !i.isReply).length;
   const replies = items.length - comments;
-  $('barStats').innerHTML = `<span class="stat">${icon(IC_COMMENT)}<b>${comments}</b> Comments</span><span class="stat">${icon(IC_REPLY)}<b>${replies}</b> Replies</span><span class="stat">${icon(IC_TIME)}${ageText(ts)}</span>`;
+  $('barStats').innerHTML = `<span class="stat dim">uAssets · #27472</span><span class="stat" title="Comments">${icon(IC_COMMENT)}<b>${comments}</b></span><span class="stat" title="Replies">${icon(IC_REPLY)}<b>${replies}</b></span><span class="stat" title="Last loaded">${icon(IC_TIME)}${ageText(ts)}</span>`;
   $('barActions').classList.add('show');
   if (currentQuery || currentFilter !== 'all') applyFilterAndSearch();
   else renderResults(allItems, '', scrollToBottom);
