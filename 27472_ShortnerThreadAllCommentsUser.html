@@ -8,13 +8,14 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
 :root {
---bg:#F5F5F5; --surface:#FFFFFF; --surface2:#FAFAFA;
+--bg:#ECEFF1; --surface:#FFFFFF; --surface2:#FAFAFA;
 --card:#FFFFFF; --border:#E0E0E0; --border2:#BDBDBD;
 --primary:#1565C0; --primary-light:#E3F2FD; --primary-dark:#0D47A1;
 --accent2:#E65100; --text:#212121; --text2:#757575; --text3:#BDBDBD;
 --success:#2E7D32; --warn:#F57F17; --danger:#C62828;
 --shadow:0 1px 3px rgba(0,0,0,0.12); --shadow2:0 2px 8px rgba(0,0,0,0.16);
 --code-bg:#F6F8FA; --code-border:#E1E4E8;
+--reply-bg:#F6F8FA; --thread-line:#BDBDBD;
 }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:var(--text); font-family:'Roboto',sans-serif; min-height:100vh; }
@@ -123,25 +124,37 @@ padding:24px 16px; text-align:center;
 #errorPanel .err-hint { font-size:12px; color:var(--text2); }
 #errorPanel .btn { margin-top:14px; }
 /* ── RESULTS ────────────────────────────────────────────── */
-#results { padding:8px 0 100px; }
+#results { padding:18px 0 100px; }
 .no-results { padding:48px 16px; text-align:center; color:var(--text2); font-size:14px; }
 .no-results strong { color:var(--primary); }
 .no-results .hint { font-size:12px; color:var(--text3); margin-top:8px; display:block; }
 /* ── THREAD GROUPS ──────────────────────────────────────── */
 .thread-group {
-margin:12px 12px 20px; border-radius:10px;
-border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow);
+margin:0 12px 34px; border-radius:10px;
+border:1px solid var(--border2); border-top:3px solid var(--primary);
+overflow:hidden; box-shadow:var(--shadow2); background:var(--card);
 }
 .thread-group .result-card { margin:0; border:none; border-radius:0; box-shadow:none; }
-.thread-group .result-card.is-reply {
-border-top:1px solid var(--border);
-background:#FAFBFF; position:relative;
-border-left:6px solid #e74c3c !important;
+.thread-group > .result-card .card-footer { border-top:1px solid var(--border); }
+#results > .result-card { margin:0 12px 34px; }
+/* ── REPLY TREE (GitHub style) ──────────────────────────── */
+.thread-replies { background:var(--reply-bg); border-top:1px solid var(--border); padding:0 0 6px; }
+.thread-replies .result-card {
+position:relative; background:transparent; overflow:visible;
 }
-.thread-group .result-card.is-reply::before { display:none; }
-.thread-group .result-card.is-reply .card-header,
-.thread-group .result-card.is-reply .card-body,
-.thread-group .result-card.is-reply .card-footer { padding-left:20px; }
+.thread-replies .result-card::before {
+content:''; position:absolute; left:27px; top:0; bottom:0;
+width:2px; background:var(--thread-line);
+}
+.thread-replies .result-card:last-child::before { bottom:auto; height:26px; }
+.thread-replies .card-header {
+background:transparent; border:none; padding:12px 14px 4px;
+position:relative; z-index:1;
+}
+.thread-replies .avatar { box-shadow:0 0 0 3px var(--reply-bg); }
+.thread-replies .card-body { padding:4px 14px 6px 50px; }
+.thread-replies .card-footer { border:none; padding:0 14px 10px 50px; }
+/* ── CARDS ──────────────────────────────────────────────── */
 .result-card {
 background:var(--card); margin:8px 12px;
 border-radius:8px; border:1px solid var(--border);
@@ -185,7 +198,7 @@ background:var(--surface2);
 .card-body .gh-alert-important{ background:#EDE7F6; border-color:#6A1B9A; }
 .card-body .gh-alert-caution { background:#FFEBEE; border-color:#C62828; }
 .card-body .gh-alert-title { font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-.card-body details { margin:8px 0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.card-body details { margin:8px 0; border:1px solid var(--border); border-radius:6px; overflow:hidden; background:var(--card); }
 .card-body summary { padding:8px 12px; cursor:pointer; font-weight:500; font-size:13px; background:var(--surface2); user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
 .card-body summary::before { content:'▶'; font-size:10px; transition:transform 0.2s; }
 .card-body details[open] summary::before { transform:rotate(90deg); }
@@ -194,6 +207,23 @@ mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; pad
 .card-footer { padding:6px 14px 8px; border-top:1px solid var(--border); display:flex; align-items:center; }
 .card-link { font-size:11px; color:var(--text3); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
 .card-link:hover { color:var(--primary); }
+/* ── COPY BUTTONS ───────────────────────────────────────── */
+.code-wrap { position:relative; margin:8px 0; }
+.card-body .code-wrap pre { margin:0; padding-right:42px; }
+.card-body details > .code-wrap { padding:10px 12px; margin:0; }
+.copy-btn {
+display:inline-flex; align-items:center; justify-content:center;
+width:28px; height:28px; padding:0; flex-shrink:0;
+background:#fff; color:var(--text2);
+border:1px solid var(--border2); border-radius:6px;
+cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s;
+}
+.copy-btn svg { width:15px; height:15px; }
+.copy-btn:active { background:var(--primary-light); }
+.copy-btn.done { color:var(--success); border-color:var(--success); background:#F0FFF4; }
+.code-wrap > .copy-btn { position:absolute; top:6px; right:6px; z-index:2; }
+.card-body details > .code-wrap > .copy-btn { top:16px; right:18px; }
+.card-body summary .copy-btn { margin-left:auto; }
 /* ── SCROLL BUTTONS ─────────────────────────────────────── */
 #scrollTop, #scrollBottom {
 position:fixed; width:44px; height:44px;
@@ -382,6 +412,8 @@ const GUIDE_KEY = 'uadisc27472_guide_hidden';
 
 const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
 const ICON_REPLY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>';
+const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
 let allItems = [];
 let currentFilter = 'all';
@@ -636,7 +668,12 @@ function buildGroupEl(group, query) {
     const wrap = document.createElement('div');
     wrap.className = 'thread-group';
     wrap.appendChild(buildCard(group.parent, query, false));
-    for (const r of group.replies) wrap.appendChild(buildCard(r, query, true));
+    if (group.replies.length) {
+      const rep = document.createElement('div');
+      rep.className = 'thread-replies';
+      for (const r of group.replies) rep.appendChild(buildCard(r, query, true));
+      wrap.appendChild(rep);
+    }
     return wrap;
   }
   return buildCard(group.replies[0], query, true);
@@ -663,7 +700,70 @@ function buildCard(item, query, asReply) {
     <div class="card-footer">
       <a class="card-link" href="${escH(item.url)}" target="_blank">↗ View on GitHub</a>
     </div>`;
+  addCopyButtons(div.querySelector('.card-body'));
   return div;
+}
+
+// ── Copy buttons ─────────────────────────────────────────
+function copyText(text, btn) {
+  const ok = () => {
+    btn.classList.add('done');
+    btn.innerHTML = ICON_CHECK;
+    toast('Copied ✓', 'ok');
+    setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = ICON_COPY; }, 1500);
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    let done = false;
+    try { done = document.execCommand('copy'); } catch(e) {}
+    ta.remove();
+    if (done) ok(); else toast('Copy failed', 'err');
+  };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, fallback);
+  else fallback();
+}
+
+function makeCopyBtn(getText) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'copy-btn';
+  b.title = 'Copy';
+  b.setAttribute('aria-label', 'Copy');
+  b.innerHTML = ICON_COPY;
+  b.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    copyText(getText(), b);
+  });
+  return b;
+}
+
+function detailsText(d) {
+  const pres = [...d.querySelectorAll('pre')];
+  if (pres.length) return pres.map(p => p.textContent.replace(/\n$/, '')).join('\n');
+  const clone = d.cloneNode(true);
+  clone.querySelectorAll('summary, .copy-btn').forEach(n => n.remove());
+  return clone.textContent.trim();
+}
+
+function addCopyButtons(root) {
+  root.querySelectorAll('details').forEach(d => {
+    const s = d.querySelector('summary');
+    if (s) s.appendChild(makeCopyBtn(() => detailsText(d)));
+  });
+  root.querySelectorAll('pre').forEach(p => {
+    const d = p.closest('details');
+    const w = document.createElement('div');
+    w.className = 'code-wrap';
+    p.parentNode.insertBefore(w, p);
+    w.appendChild(p);
+    if (d && d.querySelectorAll('pre').length === 1) return;
+    w.appendChild(makeCopyBtn(() => p.textContent.replace(/\n$/, '')));
+  });
 }
 
 function renderMarkdown(raw, query) {
