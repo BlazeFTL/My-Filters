@@ -138,7 +138,7 @@ overflow:hidden; box-shadow:var(--shadow2); background:var(--card);
 .thread-group > .result-card .card-footer { border-top:1px solid var(--border); }
 #results > .result-card { margin:0 12px 34px; }
 /* ── REPLY TREE (GitHub style) ──────────────────────────── */
-.thread-replies { background:var(--reply-bg); border-top:1px solid var(--border); padding:0 0 6px; }
+.thread-replies { background:var(--reply-bg); border-top:1px solid var(--border); padding:0; }
 .thread-replies .result-card {
 position:relative; background:transparent; overflow:visible;
 }
@@ -146,7 +146,7 @@ position:relative; background:transparent; overflow:visible;
 content:''; position:absolute; left:27px; top:0; bottom:0;
 width:2px; background:var(--thread-line);
 }
-.thread-replies .result-card:last-child::before { bottom:auto; height:26px; }
+.thread-replies .result-card:first-child::before { top:26px; }
 .thread-replies .card-header {
 background:transparent; border:none; padding:12px 14px 4px;
 position:relative; z-index:1;
@@ -198,11 +198,12 @@ background:var(--surface2);
 .card-body .gh-alert-important{ background:#EDE7F6; border-color:#6A1B9A; }
 .card-body .gh-alert-caution { background:#FFEBEE; border-color:#C62828; }
 .card-body .gh-alert-title { font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-.card-body details { margin:8px 0; border:1px solid var(--border); border-radius:6px; overflow:hidden; background:var(--card); }
-.card-body summary { padding:8px 12px; cursor:pointer; font-weight:500; font-size:13px; background:var(--surface2); user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
+.card-body details { margin:6px 0; }
+.card-body summary { padding:4px 0; cursor:pointer; font-weight:500; font-size:13px; user-select:none; list-style:none; display:flex; align-items:center; gap:6px; }
 .card-body summary::before { content:'▶'; font-size:10px; transition:transform 0.2s; }
 .card-body details[open] summary::before { transform:rotate(90deg); }
-.card-body details > *:not(summary) { padding:10px 12px; }
+.card-body details > *:not(summary) { padding:0; }
+.card-body details > p { margin:0; }
 mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; padding:0 1px; }
 .card-footer { padding:6px 14px 8px; border-top:1px solid var(--border); display:flex; align-items:center; }
 .card-link { font-size:11px; color:var(--text3); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
@@ -210,7 +211,7 @@ mark { background:rgba(255,213,0,0.5); color:var(--text); border-radius:2px; pad
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
-.card-body details > .code-wrap { padding:10px 12px; margin:0; }
+.card-body details > .code-wrap { margin:4px 0 6px; }
 .copy-btn {
 display:inline-flex; align-items:center; justify-content:center;
 width:28px; height:28px; padding:0; flex-shrink:0;
@@ -222,7 +223,6 @@ cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s;
 .copy-btn:active { background:var(--primary-light); }
 .copy-btn.done { color:var(--success); border-color:var(--success); background:#F0FFF4; }
 .code-wrap > .copy-btn { position:absolute; top:6px; right:6px; z-index:2; }
-.card-body details > .code-wrap > .copy-btn { top:16px; right:18px; }
 .card-body summary .copy-btn { margin-left:auto; }
 /* ── SCROLL BUTTONS ─────────────────────────────────────── */
 #scrollTop, #scrollBottom {
