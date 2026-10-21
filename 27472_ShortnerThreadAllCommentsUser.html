@@ -222,15 +222,15 @@ line-height:1.5; text-decoration:none; word-break:normal; color:var(--primary-da
 .card-body a.mention:active { opacity:0.7; }
 /* ── GITHUB LINK ────────────────────────────────────────── */
 .card-link {
-position:relative; display:inline-flex; align-items:center; justify-content:center;
-gap:4px; height:19px; padding:0 8px; flex-shrink:0; white-space:nowrap;
-font-size:11px; font-weight:500; line-height:1; color:var(--primary); text-decoration:none;
-border:1px solid var(--border2); border-radius:12px;
-transition:background 0.15s, border-color 0.15s, color 0.15s;
+position:relative; display:inline-flex; align-items:center; gap:4px;
+flex-shrink:0; white-space:nowrap; padding:0;
+font-size:12px; font-weight:500; line-height:1.4; color:var(--text2); text-decoration:none;
+transition:color 0.15s;
 }
-.card-link::after { content:''; position:absolute; inset:-9px -6px; }
-.card-link svg { width:12px; height:12px; }
-.card-link:hover, .card-link:active { color:var(--primary-dark); background:var(--primary-light); border-color:var(--primary); }
+.card-link::after { content:''; position:absolute; inset:-10px -8px; }
+.card-link svg { width:12px; height:12px; flex-shrink:0; }
+.card-link:active { color:var(--primary); }
+@media (hover:hover) { .card-link:hover { color:var(--primary); } }
 /* ── COPY BUTTONS ───────────────────────────────────────── */
 .code-wrap { position:relative; margin:8px 0; }
 .card-body .code-wrap pre { margin:0; padding-right:42px; }
