@@ -118,8 +118,8 @@ white-space:nowrap; letter-spacing:0.3px; text-transform:uppercase;
 .btn-primary { background:var(--primary); color:white; border:none; box-shadow:var(--shadow); }
 .btn-outline-muted { background:transparent; color:var(--text2); border:1.5px solid var(--border2); }
 .btn:disabled { opacity:0.35; pointer-events:none; }
-#progressWrap { display:none; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; }
-#progressLabel { font-size:12px; color:var(--text2); margin-bottom:8px; font-weight:500; }
+#progressWrap { display:none; background:var(--surface); border-bottom:1px solid var(--border); padding:6px 12px 8px; box-shadow:var(--shadow2); }
+#progressLabel { font-size:12px; color:var(--text2); margin-bottom:4px; font-weight:500; }
 #progressBar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
 #progressFill { height:100%; background:var(--primary); width:0%; transition:width 0.3s; border-radius:2px; }
 #results { padding:8px 0 100px; }
@@ -222,6 +222,10 @@ oninput="onSearchInput()" disabled autocorrect="off" autocapitalize="off" />
 <button id="searchClear" onclick="clearSearch()" title="Clear search"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
 </div>
 </div>
+<div id="progressWrap">
+<div id="progressLabel">Loading…</div>
+<div id="progressBar"><div id="progressFill"></div></div>
+</div>
 </div>
 
 <div id="filterRow">
@@ -250,11 +254,6 @@ via GitHub GraphQL API. A <strong>Personal Access Token (PAT)</strong> is requir
 <button class="btn btn-primary" id="fetchBtn" onclick="startFetch()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Load All Comments</button>
 <button class="btn btn-outline-muted" onclick="togglePat()"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg> PAT</button>
 </div>
-</div>
-
-<div id="progressWrap">
-<div id="progressLabel">Loading…</div>
-<div id="progressBar"><div id="progressFill"></div></div>
 </div>
 
 <div id="results">
@@ -293,7 +292,8 @@ let currentFilter = 'all';
 let currentQuery = '';
 let pendingAfterPat = false;
 
-function getPat() { return localStorage.getItem('blaze_pat') || ''; }
+function cleanPat(s) { return String(s || '').replace(/[^\x21-\x7E]/g, ''); }
+function getPat() { return cleanPat(localStorage.getItem('blaze_pat')); }
 function updatePatUI() {
   const p = getPat();
   $('patStatus').textContent = p ? '✓ Set' : 'Not set';
@@ -312,7 +312,7 @@ window.togglePat = function() {
   if (show) $('patInput').focus();
 };
 window.savePat = function() {
-  const v = $('patInput').value.trim();
+  const v = cleanPat($('patInput').value);
   if (v) { localStorage.setItem('blaze_pat', v); toast('PAT saved', 'ok'); }
   updatePatUI();
   $('patPanel').classList.remove('show');
@@ -416,6 +416,7 @@ window.startFetch = async function() {
   $('fetchBtn').disabled = true;
   $('refreshBtn').disabled = true;
   $('refreshBtn').classList.add('spin');
+  setProgress(0, 'Starting…');
   $('progressWrap').style.display = 'block';
   try {
     const items = await fetchAllGql();
