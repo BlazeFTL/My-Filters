@@ -1,5 +1,3 @@
-/body>
-</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,6 +104,8 @@ background:var(--surface2); color:var(--text);
 #patStatus { font-size:11px; font-weight:600; }
 #patStatus.set { color:var(--success); }
 #patStatus.unset { color:var(--text2); }
+#patStatus.bad { color:var(--danger); }
+#patPillText { max-width:120px; overflow:hidden; text-overflow:ellipsis; }
 #fetchPanel { background:var(--surface); border-bottom:1px solid var(--border); padding:16px; }
 .fetch-info { font-size:13px; color:var(--text2); margin-bottom:12px; line-height:1.6; }
 .fetch-info a { color:var(--primary); text-decoration:none; }
@@ -311,13 +311,34 @@ function storePat(v) {
     catch(e2) { patErr = e2.name; return false; }
   }
 }
+let patUser = '';
+let patBad = false;
+try { patUser = localStorage.getItem('blaze_pat_user') || ''; } catch(e) {}
 function updatePatUI() {
   const p = getPat();
-  $('patStatus').textContent = p ? '✓ Set' : 'Not set';
-  $('patStatus').className = p ? 'set' : 'unset';
+  const u = p ? patUser : '';
+  $('patStatus').textContent = !p ? 'Not set' : patBad ? '✗ Invalid token' : (u ? '✓ ' + u : '✓ Set');
+  $('patStatus').className = !p ? 'unset' : patBad ? 'bad' : 'set';
   if (p) $('patInput').value = p;
-  $('patPill').classList.toggle('pat-set', !!p);
-  $('patPillState').innerHTML = icon(p ? IC_OK : IC_NO);
+  $('patPill').classList.toggle('pat-set', !!p && !patBad);
+  $('patPillText').textContent = u || 'PAT';
+  $('patPillState').innerHTML = icon(p && !patBad ? IC_OK : IC_NO);
+}
+async function fetchPatUser() {
+  if (!getPat()) return;
+  try {
+    const d = await gqlFetch('query{viewer{login}}', {});
+    patUser = d.viewer.login || '';
+    patBad = false;
+    try { localStorage.setItem('blaze_pat_user', patUser); } catch(e) {}
+  } catch(e) {
+    if (/401|Bad credentials/i.test(e.message)) {
+      patBad = true;
+      patUser = '';
+      try { localStorage.removeItem('blaze_pat_user'); } catch(e2) {}
+    }
+  }
+  updatePatUI();
 }
 function openPat() {
   $('patPanel').classList.add('show');
@@ -334,8 +355,15 @@ window.savePat = function() {
     if (!v) { toast('Invalid PAT', 'err'); return; }
     const ok = storePat(v);
     toast(ok ? 'PAT saved' : 'Storage failed (' + patErr + ') — PAT kept for this session only', ok ? 'ok' : 'err');
+    patUser = '';
+    patBad = false;
+    try { localStorage.removeItem('blaze_pat_user'); } catch(e2) {}
     updatePatUI();
     $('patPanel').classList.remove('show');
+    fetchPatUser().then(() => {
+      if (patUser) toast('Signed in as ' + patUser, 'ok');
+      else if (patBad) toast('Invalid token', 'err');
+    });
     if (pendingAfterPat) { pendingAfterPat = false; startFetch(); }
   } catch(e) {
     toast('Save error: ' + e.message, 'err');
@@ -343,7 +371,9 @@ window.savePat = function() {
 };
 window.clearPat = function() {
   patMem = '';
-  try { localStorage.removeItem('blaze_pat'); } catch(e) {}
+  patUser = '';
+  patBad = false;
+  try { localStorage.removeItem('blaze_pat'); localStorage.removeItem('blaze_pat_user'); } catch(e) {}
   $('patInput').value = '';
   updatePatUI();
   toast('PAT cleared');
@@ -759,6 +789,7 @@ window.addEventListener('scroll', () => {
 
 (async function init() {
   updatePatUI();
+  fetchPatUser();
   const local = loadLocalCache();
   if (local && local.items && local.items.length) {
     loadFromData(local.items, local.ts, true);
