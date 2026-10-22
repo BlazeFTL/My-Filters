@@ -1,3 +1,5 @@
+/body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -237,8 +239,8 @@ oninput="onSearchInput()" disabled autocorrect="off" autocapitalize="off" />
 </div>
 
 <div id="patPanel">
-<input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
-<button class="btn btn-primary" onclick="savePat()" style="text-transform:none;font-size:12px;padding:7px 12px">Save</button>
+<input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" onkeydown="if(event.key==='Enter')savePat()" />
+<button class="btn btn-primary" onmousedown="event.preventDefault()" onclick="savePat()" style="text-transform:none;font-size:12px;padding:7px 12px">Save</button>
 <button class="btn btn-outline-muted" onclick="clearPat()" style="text-transform:none;font-size:12px;padding:7px 12px">Clear</button>
 <span id="patStatus" class="unset">Not set</span>
 </div>
@@ -293,7 +295,22 @@ let currentQuery = '';
 let pendingAfterPat = false;
 
 function cleanPat(s) { return String(s || '').replace(/[^\x21-\x7E]/g, ''); }
-function getPat() { return cleanPat(localStorage.getItem('blaze_pat')); }
+let patMem = '';
+function getPat() {
+  let s = '';
+  try { s = localStorage.getItem('blaze_pat') || ''; } catch(e) {}
+  return cleanPat(s || patMem);
+}
+let patErr = '';
+function storePat(v) {
+  patMem = v;
+  try { localStorage.setItem('blaze_pat', v); return true; }
+  catch(e) {
+    patErr = e.name;
+    try { localStorage.removeItem(CACHE_KEY); localStorage.setItem('blaze_pat', v); return true; }
+    catch(e2) { patErr = e2.name; return false; }
+  }
+}
 function updatePatUI() {
   const p = getPat();
   $('patStatus').textContent = p ? '✓ Set' : 'Not set';
@@ -312,14 +329,21 @@ window.togglePat = function() {
   if (show) $('patInput').focus();
 };
 window.savePat = function() {
-  const v = cleanPat($('patInput').value);
-  if (v) { localStorage.setItem('blaze_pat', v); toast('PAT saved', 'ok'); }
-  updatePatUI();
-  $('patPanel').classList.remove('show');
-  if (v && pendingAfterPat) { pendingAfterPat = false; startFetch(); }
+  try {
+    const v = cleanPat($('patInput').value);
+    if (!v) { toast('Invalid PAT', 'err'); return; }
+    const ok = storePat(v);
+    toast(ok ? 'PAT saved' : 'Storage failed (' + patErr + ') — PAT kept for this session only', ok ? 'ok' : 'err');
+    updatePatUI();
+    $('patPanel').classList.remove('show');
+    if (pendingAfterPat) { pendingAfterPat = false; startFetch(); }
+  } catch(e) {
+    toast('Save error: ' + e.message, 'err');
+  }
 };
 window.clearPat = function() {
-  localStorage.removeItem('blaze_pat');
+  patMem = '';
+  try { localStorage.removeItem('blaze_pat'); } catch(e) {}
   $('patInput').value = '';
   updatePatUI();
   toast('PAT cleared');
