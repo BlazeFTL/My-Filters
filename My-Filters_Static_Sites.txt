@@ -2100,29 +2100,14 @@ scriptgrowagarden.com##+js(trusted-click-element, #notarobot > #notarobot, , , l
 
 ! https://arolinks.com/G9a
 ! https://vplink.in/yObrd
-!#if false
-!famemingles.com,vidhia.in,crimejasoos.in##[id*="btn"], [id*="snp"]:style(display: block !important; margin-top: 180px !important;)
+
 !famemingles.com,vidhia.in,crimejasoos.in###btn7, #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
 !Arolinks Custom Button
-!famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/readmore" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue Arolinks On 3rd Page</button></a>)
-! VPLink Custom Button
-!famemingles.com,vidhia.in,crimejasoos.in##+js(trusted-create-html, #btn7, <a href="/studyeducates/learn_more.php"]" role="button" id="cross-snp2" rel="nofollow" style="display: block; margin-top: 10px;">Continue VpLinks On 3rd Page</button></a>)
-!famemingles.com,vidhia.in,crimejasoos.in###gcont, .ad-container
-!#endif
-!famemingles.com,vidhia.in,crimejasoos.in###gcont, .inside-article
 
 ! AROLINKS Suurp
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2, .captcha-check, .text-center.cross-top, .text-center.tp-top, #tp-generate, #ce-text:others()
-pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com###stick, [id^="btn"], #cross-snp2, #tp-snp2:style(display: block !important)
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, "'IFRAME'", "'BODY'")
-!pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-sib, /.?/, *, 0.02)
-!pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(nano-stb, , *, 0.02)
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(cookie-remover, iotes)
-!dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, /\d{4}/gms, 10)
-!pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '10000, button#cross-snp2', 15000)
-!pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(trusted-click-element, '1000, #btn7', 15000)
-
-!arolinks.com,vplink.in##+js(nano-stb, /.?/, *)
 arolinks.com##+js(set, blurred, false)
 
 vercel-bypass.vercel.app##+js(rpnt, script, /show_9788260\(\).*?\.then/s, show_9788260().catch)
