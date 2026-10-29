@@ -348,46 +348,6 @@ cs.rin.ru##div.postbody ~div:has-text(/amd|intel|nvidia/rtx/i)
 cs.rin.ru##div.postbody:nth-of-type(2):has([src*="pcgamebenchmark.com"])
 cs.rin.ru##table.tablebg > tbody:has-text(Who is online)
 cs.rin.ru##div.postbody ~div:has([src*="i.ibb.co"])
-! Redesign
-cs.rin.ru##body:style(font-size: 75% ! important; font-family: "Roboto","Arial",sans-serif! important;)
-cs.rin.ru##[class^=row], .postbody:style(background-color: white! important; color: black !important;)
-cs.rin.ru##.quotecontent, .attachcontent:style(border-color: black ! important; background-color: white ! important; color: black ! important; )
-! Bold Black
-cs.rin.ru##a.postlink:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##.postauthor:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##.quotetitle:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##[href="#wrapheader"]:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##.postdetails:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##[href^="./memberlist.php"]:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##div.attachtitle:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##.topictitle:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##a[href^="./viewtopic.php"]:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##.topictitle:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-cs.rin.ru##a[href^="./viewtopic.php"]:style(color:color-mix(in srgb, var(--primary-color) 30%, #000)! important;)
-! Red Color
-cs.rin.ru##tr.row1 > td > table > tbody > tr > td > div.postbody > span > span:style(color: red ! important;)
-cs.rin.ru##div.attachcontent > .genmed > [href]:style(color: red ! important;)
-cs.rin.ru##tr.row1 div.postbody > span:style(color: red ! important;)
-cs.rin.ru##div.postbody > a.postlink > span > span:style(color: red ! important;)
-cs.rin.ru##[href^="./download/file.php"]:style(color: red ! important;)
-cs.rin.ru##tr.row2 > td > table > tbody > tr > td > .postbody > span > span:style(color: red !important;)
-cs.rin.ru##.postbody > span > span:style(color: red !important;)
-! Blue
-cs.rin.ru##tr.row2 > td > table > tbody > tr > td > div.postbody > span:style(color: blue ! important;)
-! Purple
-cs.rin.ru##span[style="color: #00FFFF"], span[style="color: #FFFF00"]:style(color: purple ! important;)
-! Black
-cs.rin.ru##.breadcrumbs > .breadcrumbs:style(color: black !important;)
-cs.rin.ru##[href^="./viewforum.php"]:style(color: black !important;)
-cs.rin.ru##.breadcrumbs > .breadcrumbs:style(color: black !important;)
-cs.rin.ru##[href^="./viewforum.php"]:style(color: black !important;)
-cs.rin.ru##.postlink > span:style(color: black !important;)
-cs.rin.ru##.postbody > ul > ul  *:style(color: black !important;)
-cs.rin.ru##[style*="color: #BFFFFF"]:style(color: black !important;)
-! nGreen
-cs.rin.ru##.quotecontent > span > span:style(color: green !important;)
-cs.rin.ru##.quotecontent > .quotecontent > span:nth-of-type(3):style(color: green !important;)
-cs.rin.ru##span > span > span > span > span:style(color: green !important;)
 
 ! Oct 25, 2025 http://main.circleftp.net
 main.circleftp.net###responsive-menu-item-21451 > .responsive-menu-item-link, #responsive-menu-item-157433 > .responsive-menu-item-link, #responsive-menu-item-100778 > .responsive-menu-item-link, #responsive-menu-item-141965 > .responsive-menu-item-link, #responsive-menu-item-67561 > .responsive-menu-item-link, #responsive-menu-item-75516 > .responsive-menu-item-link, #responsive-menu-item-22141 > .responsive-menu-item-link, [href="http://hd.circleftp.net/"], [href="http://main.circleftp.net/category/islamic/"], [href="http://main.circleftp.net/category/mobile-apps-and-games/"], #menu-item-22140, #menu-item-75518
