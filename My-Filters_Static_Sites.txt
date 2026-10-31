@@ -2074,6 +2074,7 @@ pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rpnt, script, "'IFRAME'", "'BODY'")
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(cookie-remover, iotes)
 pipefitter.in,entiredust.in,dharona.in,krishitalk.com,newsfront.xyz,naukaritimes24.in,sarkarijobcorner.com##+js(rmnt, script, history.replaceState)
+vplink.in##.telegram-section, footer
 
 
 vercel-bypass.vercel.app##+js(rpnt, script, /show_9788260\(\).*?\.then/s, show_9788260().catch)
