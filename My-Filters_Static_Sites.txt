@@ -1485,6 +1485,13 @@ farsroid.com##.site-header:style(top: initial! important;)
 4pda.to##article[class^="post "]:has(a[target="_blank"] > img[src$=".jpg"]):has(img[src$=".gif"])
 4pda.to##body[itemtype="http://schema.org/WebPage"] > * > a[target="_blank"] > img[border="0"]
 4pda.to##div > div[itemprop="description"] > p > a[title] > img[itemprop="image"]
+! 4pda.to – inline ad slots that leave a hole in the news grid
+4pda.to##body:has(h2.list-post-title) article.post:not(:has(.list-post-title))
+! 4pda.to – empty ad wrapper that creates the big gap under the menu
+4pda.to##body:has(h2.list-post-title) *:not(:has(.list-post-title)):has(article.post)
+! 4pda.to – top banner (Huawei etc.) and its empty spacer div, found as the siblings right before the menu
+4pda.to##div:has(~ * > .holder-no-hidden > a.logo)
+4pda.to##*:has(> * > * > .advanced-area):style(background: none !important)
 
 ! Aug 9, 2025 https://en.softonic.com
 softonic.com##+js(nano-stb, /.?/, *)
