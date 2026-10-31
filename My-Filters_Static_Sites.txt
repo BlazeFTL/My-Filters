@@ -1458,6 +1458,8 @@ uptodown.com##tr:has-text(/License|Permission|File type|Rating|Advertisem|SHA256
 uptodown.com##.turbo-link
 uptodown.com###detail-download-button:has-text(/App Store/i)
 uptodown.com##h1:has-text(/VIRUS-FREE/i)
+uptodown.com##+js(nano-sib, /.?/, *)
+uptodown.com##+js(nano-stb, /.?/, *)
 
 ! Sep 19, 2025 https://farsroid.com
 farsroid.com###ma_top_alert,.homepage-slider,div.single-text-ads.site-middle-banners,.labeled-dw-ads.download-link-csm-below,.cas-pubg.cas,.post-foot-stuff,.widget-game-developers.widget,.site-footer, .farsroid-ads.gtm-farsroid-ads
