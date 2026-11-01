@@ -353,17 +353,6 @@ cs.rin.ru##div.postbody ~div:has([src*="i.ibb.co"])
 main.circleftp.net###responsive-menu-item-21451 > .responsive-menu-item-link, #responsive-menu-item-157433 > .responsive-menu-item-link, #responsive-menu-item-100778 > .responsive-menu-item-link, #responsive-menu-item-141965 > .responsive-menu-item-link, #responsive-menu-item-67561 > .responsive-menu-item-link, #responsive-menu-item-75516 > .responsive-menu-item-link, #responsive-menu-item-22141 > .responsive-menu-item-link, [href="http://hd.circleftp.net/"], [href="http://main.circleftp.net/category/islamic/"], [href="http://main.circleftp.net/category/mobile-apps-and-games/"], #menu-item-22140, #menu-item-75518
 main.circleftp.net##[href="http://hd.circleftp.net/"]
 main.circleftp.net###menu-item-44 > [href="http://circleftp.net/movie-list"]:remove-attr(href)
-!#if !env_mobile
-main.circleftp.net##.entry-featured:style(height: 30%! important; width: 30%! important; margin-left: 34%! important;)
-main.circleftp.net##.cf-date-wrapper:has(.gm-modern-download-button):style(margin-left: 34% ! important; margin-top: -20px ! important;)
-main.circleftp.net##.entry-header:style(font-size: 85% ! important;)
-main.circleftp.net##.category_wrapper > article > [href] > .loaded.lazy.wp-post-image.size-medium.attachment-medium:style(height: 10vw! important;)
-main.circleftp.net##.category_wrapper > article:style(width: 150px ! important;)
-main.circleftp.net##.nano-content.width.max:style(font-size: 1.31rem ! important;)
-main.circleftp.net##.category_wrapper article:style(min-height: 300px! important;)
-main.circleftp.net##section.listing article a:style(margin-top: initial! important; margin-bottom: initial! important; line-height: 0.8 ! important;)
-main.circleftp.net##.entry-title:style(height: 30%! important; font-size: 13px ! important; padding: 0 5px ! important;)
-!#endif
 
 ! Oct 27, 2025 http://new.circleftp.net
 new.circleftp.net##a.dropdown-item.text-capitalize:has-text(Console)
@@ -373,58 +362,7 @@ new.circleftp.net##.nav-link.ms-1.text-uppercase.fw-normal.text-white
 new.circleftp.net##.show.dropdown-menu > a.dropdown-item.text-capitalize:has-text(/Islamic|Comic|Mobile|Wwe/i)
 new.circleftp.net##.py-2.mt-auto.text-center.mb-0.text-white.bg-dark
 new.circleftp.net##a.dropdown-item.text-capitalize:has-text(/^Console/)
-!new.circleftp.net##.row>*:style(width: 50% ! important;)
-!new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 80% ! important; width: 80% ! important;)
-new.circleftp.net##.text-white:style(font-size: 90% ! important;)
-!#if !env_mobile
-new.circleftp.net##.card.m-4.p-2:style(max-width: 50% !important; width: auto !important; margin-left: 27%! important;)
-new.circleftp.net##div.card.p-2:style(height: 30! important; width: 30%! important; margin-left: 37%! important;)
-new.circleftp.net##.rounded.SinglePost_singlePost_image__roLcd:style(height: 250px ! important; width: 220px ! important;)
-!#endif
 ||circleftp.net^$media,domain=new.circleftp.net
-
-! For Mobile Maybe
-!#if false
-! 1. Responsive Grid (3 per row for better fit) Little Not Alinged
-new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
-new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; display: flex !important; flex-direction: column !important; margin-bottom: 30px !important; padding: 5px !important;)
-! 2. Standardize Image & Card Height
-new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(width: 100% !important; height: 180px !important; object-fit: cover !important;)
-! 3. Fix Text Cutoff (Wraps to multiple lines)
-new.circleftp.net##.text-white.fs-5:style(white-space: normal !important; overflow: visible !important; height: auto !important; display: block !important; font-size: 0.9rem !important; line-height: 1.2 !important; min-height: 50px !important; padding: 0 5px !important;)
-! 4. Align Buttons to the Bottom
-new.circleftp.net##.btn-danger:style(margin-top: auto !important; width: 90% !important; align-self: center !important; font-size: 0.8rem !important; padding: 5px !important;)
-new.circleftp.net##.text-white.fs-5:style(transform: scale(.65) !important;)
-!#endif
-
-!#if env_mobile
-!!#if false
-! 1. Grid Setup (3 per row) Alinged But Font Small
-new.circleftp.net##.row:style(display: flex !important; flex-wrap: wrap !important; align-items: stretch !important;)
-new.circleftp.net##div[class*="col-"]:style(flex: 0 0 33.33% !important; max-width: 33.33% !important; padding: 5px !important; margin-bottom: 20px !important; display: flex !important;)
-! 2. Card Layout (The Flexbox Trick)
-new.circleftp.net##.SinglePost_singlePost_card__MLfCk:style(display: flex !important; flex-direction: column !important; width: 100% !important; height: 100% !important; background: rgba(255,255,255,0.05) !important;)
-! 3. Text & Title (Fixed Height + Line Breaks)
-new.circleftp.net##.SinglePost_singlePost_text__TQn9G:style(flex-grow: 1 !important; display: flex !important; flex-direction: column !important; padding: 10px 5px !important;)
-new.circleftp.net##.text-white.fs-5:style(font-size: 0.75rem !important; line-height: 1.2 !important; white-space: normal !important; word-break: break-word !important; height: 3.6em !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 3 !important; -webkit-box-orient: vertical !important; margin-bottom: 5px !important;)
-! 4. Image Height
-new.circleftp.net##.SinglePost_singlePost_image__roLcd:style(height: 150px !important; width: 100% !important; object-fit: contain !important;)
-new.circleftp.net##.text-white.fs-5:style(transform: scale(.75) !important;)
-!!#endif
-!#endif
-
-!#if env_mobile
-!!#if false
-! Forces uniform dimensions for the article and image
-main.circleftp.net##.category_wrapper > article img:style(width: 147px !important; height: 200px !important; object-fit: cover !important; display: block !important;)
-! Cleans up the text alignment to match the Featured style
-main.circleftp.net##.category_wrapper > article .entry-title:style(text-align: center !important; font-size: 14px !important; min-height: 40px !important;)
-main.circleftp.net##.category_wrapper:style(display: flex !important; flex-wrap: wrap !important;)
-main.circleftp.net##.category_wrapper > article:style(flex: 0 0 33.33% !important; max-width: 33.33% !important;)
-main.circleftp.net##.downloadbtn:style(margin: 0 4px !important;)
-main.circleftp.net##.category_wrapper > article:style(margin: 0 !important; width: 31% !important;)
-!!#endif
-!#endif
 ||cineplexbd.net/news_embed.php$xhr,1p
 
 ! File Hosting Sites
