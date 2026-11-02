@@ -364,6 +364,10 @@ new.circleftp.net##.py-2.mt-auto.text-center.mb-0.text-white.bg-dark
 new.circleftp.net##a.dropdown-item.text-capitalize:has-text(/^Console/)
 ||circleftp.net^$media,domain=new.circleftp.net
 ||cineplexbd.net/news_embed.php$xhr,1p
+! Block Their Ad
+circleftp.net##.show.modal.mt-5.fade
+circleftp.net##.show.modal-backdrop.fade
+circleftp.net##html:style(overflow: auto !important;)
 
 ! File Hosting Sites
 ! https://dailyuploads.net/uqv9dxflkxdk
