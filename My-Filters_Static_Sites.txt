@@ -801,17 +801,17 @@ teknoasian.com##+js(nano-sib, /.?/, *)
 teknoasian.com##.right-sidebar.penci_sidebar.container,.penci-home-popular-posts.container,p,ul,li,[href*="s0-greate"],#sidebar,.post-pagination,.single-breadcrumb.penci-breadcrumb.container,.penci-move-title-above.post-image,#footer-section
 
 ! Jun 18, 2024 https://psa.wf
-psa.wf##.group.hu-pad.page-title, .one-half.grid.footer-widget-1, .wpd-rating-title
-psa.wf##.expanded.s1.sidebar, .collapsed.s1.sidebar, .group.container, .group.related-posts, #footer, .post-category, .post-comments, .post-date, #adsContainer
-psa.wf##.heading:has-text(You may)
-psa.wf##[href*="/category/year/"], [href*="/category/other/"], [href*="/category/tools/"], [href*="/contact-us-2/"], [href*="/support-us/"]
-psa.wf##.widget_hu_tabs.widget, .one-half.grid.footer-widget-1 > .widget_custom_html.widget.widget_text, [src*="youtube.com"], .post-tags
-psa.wf##.col-2cl .container-inner>.main::after, .col-2cl .main-inner:style(padding-right: 0px !important;)
-psa.wf##:matches-path(/tv-show) div.sp-wrap-steelblue.sp-wrap:not(:has(.sp-body > div.sp-wrap-steelblue.sp-wrap)):has-text(/720p|2160p/)
-psa.wf##:matches-path(/movie) .entry-inner > div.sp-wrap-steelblue.sp-wrap > .sp-head:has-text(/720p|2160p/)
-psa.wf##:matches-path(/goto) body:style(height: initial! important;)
-psa.wf##:matches-path(/goto) picture
-psa.wf##+js(rpnt, script, /4000|5000/, 10, condition, redirect)
+psa.*##.group.hu-pad.page-title, .one-half.grid.footer-widget-1, .wpd-rating-title
+psa.*##.expanded.s1.sidebar, .collapsed.s1.sidebar, .group.container, .group.related-posts, #footer, .post-category, .post-comments, .post-date, #adsContainer
+psa.*##.heading:has-text(You may)
+psa.*##[href*="/category/year/"], [href*="/category/other/"], [href*="/category/tools/"], [href*="/contact-us-2/"], [href*="/support-us/"]
+psa.*##.widget_hu_tabs.widget, .one-half.grid.footer-widget-1 > .widget_custom_html.widget.widget_text, [src*="youtube.com"], .post-tags
+psa.*##.col-2cl .container-inner>.main::after, .col-2cl .main-inner:style(padding-right: 0px !important;)
+psa.*##:matches-path(/tv-show) div.sp-wrap-steelblue.sp-wrap:not(:has(.sp-body > div.sp-wrap-steelblue.sp-wrap)):has-text(/720p|2160p/)
+psa.*##:matches-path(/movie) .entry-inner > div.sp-wrap-steelblue.sp-wrap > .sp-head:has-text(/720p|2160p/)
+psa.*##:matches-path(/goto) body:style(height: initial! important;)
+psa.*##:matches-path(/goto) picture
+psa.*##+js(rpnt, script, /4000|5000/, 10, condition, redirect)
 ! Shortner Gateway
 go2.pics##+js(rpnt, script, 5000);, 10);)
 
