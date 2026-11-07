@@ -283,6 +283,7 @@ github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) .js-comment-c
 ! Uassets
 github.com##:matches-path(/uBlockOrigin/uAssets/commits/master/) [id*="-list-view-node-"]:has-text(/Update.*asset|badware|cookie|adcrap|consent|uBOL|breakage|GDPR|email tracker|consent/i)
 github.com##.prc-Timeline-TimelineItem-Sd-t-.Timeline-Item:has-text(pull)
+github.com##:matches-path(/uBlockOrigin/uAssets) ul[aria-label="Drag and drop pinned issues list."]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="OverviewRepoFiles-module__Box_2__"]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class^="prc-components-UnderlineItemList-"] > li:has-text(/Action|Security|Insight/)
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="PinnedIssues-module__area__"]
