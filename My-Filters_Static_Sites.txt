@@ -1442,6 +1442,8 @@ farsroid.com##.site-header:style(top: initial! important;)
 ! 4pda.to – top banner (Huawei etc.) and its empty spacer div, found as the siblings right before the menu
 4pda.to##div:has(~ * > .holder-no-hidden > a.logo)
 4pda.to##*:has(> * > * > .advanced-area):style(background: none !important)
+! Bottom Banner
+4pda.to##*:has(a[href^="/20"]:not([href*="_"]) > img):matches-css(position: /^(fixed|sticky)$/)
 4pda.to###logostrip:style(height: initial ! important)
 
 ! Aug 9, 2025 https://en.softonic.com
