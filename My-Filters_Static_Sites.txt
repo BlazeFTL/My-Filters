@@ -2419,6 +2419,7 @@ ankergames.net##.font-medium.dark\:text-gray-300.text-gray-700.text-lg.text-cent
 ankergames.net##.mb-6.h-8
 ankergames.net##+js(set-local-storage-item, dark-mode, false)
 
+! Cuty.io
 cuttty.com,cety.app,cutlink.net,cutnet.net,cuttlinks.com,exe-links.com,exe-urls.com,exego.app,exeygo.com,exnion.com##.premium-option.option-card
 exeygo.com##.lp-pitch, .lp-plus
 
@@ -2426,29 +2427,16 @@ exeygo.com##.lp-pitch, .lp-plus
 ||paypal.com^$script,domain=cloudfam.io
 ||razorpay.com^$script,domain=cloudfam.io
 cloudfam.io##+js(trusted-replace-argument, Math.max, 1, 0)
-!cloudfam.io##+js(trusted-replace-argument, Math.max, 0, 0)
-!cloudfam.io##+js(no-fetch-if, /.?/)
-!||antiadblockcore.com^$script,domain=cloudfam.io
-cloudfam.io##+js(nano-stb, /.?/, *)
-cloudfam.io##+js(no-fetch-if, /googletagservices\.com|doubleclick\.net|googlesyndication\.com|googleadservices\.com|amazon-adsystem\.com|antiadblockcore|llvpn|analytics|adskeeper\.com/)
 cloudfam.io##+js(trusted-replace-argument, Math.max, 1, 0)
+!cloudfam.io##+js(trusted-replace-argument, Math.max, 0, 0)
 cloudfam.io##+js(trusted-create-html, head, <img src='/Blazed.png' onerror='(function(){"use strict";const origNow=performance.now.bind(performance);const start=origNow();performance.now=()=>start+(origNow()-start)*100;const origST=window.setTimeout;window.setTimeout=function(fn\,delay\,...args){return origST(fn\,1\,...args);};const origSI=window.setInterval;window.setInterval=function(fn\,delay\,...args){return origSI(fn\,1\,...args);};})();'></img>)
 cloudfam.io#%#//scriptlet('trusted-replace-node-text', 'script', 'blocked', '/if\s*\(!blocked\)/g', 'if(!0)')
-cloudfam.io###preload-monthly-promo-modal
-cloudfam.io##.py-10.border-slate-800.border-t.mt-auto.text-white.bg-slate-900
-cloudfam.io##.border-blue-200.to-blue-50\/40.from-white.bg-gradient-to-br.sm\:p-5.p-4.cf-card
-cloudfam.io##.text-gray-400.text-xs.text-center.py-6.bg-\[\#0A0B1E\].border-gray-100.border-t
-cloudfam.io##.border-emerald-500\/20.border.text-emerald-400.bg-emerald-500\/10.tracking-wider.uppercase.font-bold.text-xs.rounded-full.py-1.px-3\.5.gap-2.items-center.inline-flex
-cloudfam.io##div.overflow-hidden.min-h-\[250px\].justify-center.items-center.flex-col.flex.text-center.p-4.cf-ad-slot
-cloudfam.io##.gap-3.items-center.flex
-cloudfam.io##.py-12.border-paper-border.border-t.mt-auto.text-ink.bg-paper
-cloudfam.io##.cf-safety
-cloudfam.io##.cf-dl-hero > p
-cloudfam.io##span.cf-chip:has-text(Verifi)
-cloudfam.io###age-modal
-cloudfam.io###cf-watch-promo-pop
-cloudfam.io###stream-upsell-modal
+cloudfam.io##+js(nano-stb, /.?/, *)
+cloudfam.io##+js(no-fetch-if, /googletagservices\.com|doubleclick\.net|googlesyndication\.com|googleadservices\.com|amazon-adsystem\.com|antiadblockcore|llvpn|analytics|adskeeper\.com/)
+!cloudfam.io##+js(no-fetch-if, /.?/)
 cloudfam.io##+js(rpnt, script, const requireAgeVerification = true;, const requireAgeVerification = false;)
 cloudfam.io##+js(rpnt, script, if (continueBtn.disabled) return;, if (continueBtn.disabled) return; proceedToFreeStream(); return;)
 cloudfam.io##+js(rpnt, script, const isAbDetected = (window.isAdblockDetected || isDomBlocked) ? '1' : '0';, const isAbDetected = '0';)
-cloudfam.io##.bg-white.gap-4.justify-between.items-center.flex.sm\:p-5.p-4.cf-card
+!||antiadblockcore.com^$script,domain=cloudfam.io
+cloudfam.io###preload-monthly-promo-modal,#age-modal,#cf-watch-promo-pop,#stream-upsell-modal,.cf-safety,.cf-dl-hero > p,.gap-3.items-center.flex,div.overflow-hidden.min-h-\[250px\].justify-center.items-center.flex-col.flex.text-center.p-4.cf-ad-slot,.py-10.border-slate-800.border-t.mt-auto.text-white.bg-slate-900,.py-12.border-paper-border.border-t.mt-auto.text-ink.bg-paper,.text-gray-400.text-xs.text-center.py-6.bg-\[\#0A0B1E\].border-gray-100.border-t,.border-blue-200.to-blue-50\/40.from-white.bg-gradient-to-br.sm\:p-5.p-4.cf-card,.bg-white.gap-4.justify-between.items-center.flex.sm\:p-5.p-4.cf-card,.border-emerald-500\/20.border.text-emerald-400.bg-emerald-500\/10.tracking-wider.uppercase.font-bold.text-xs.rounded-full.py-1.px-3\.5.gap-2.items-center.inline-flex
+cloudfam.io##span.cf-chip:has-text(Verifi)
