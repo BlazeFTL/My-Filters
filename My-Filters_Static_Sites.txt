@@ -2445,3 +2445,10 @@ cloudfam.io##.py-12.border-paper-border.border-t.mt-auto.text-ink.bg-paper
 cloudfam.io##.cf-safety
 cloudfam.io##.cf-dl-hero > p
 cloudfam.io##span.cf-chip:has-text(Verifi)
+cloudfam.io###age-modal
+cloudfam.io###cf-watch-promo-pop
+cloudfam.io###stream-upsell-modal
+cloudfam.io##+js(rpnt, script, const requireAgeVerification = true;, const requireAgeVerification = false;)
+cloudfam.io##+js(rpnt, script, if (continueBtn.disabled) return;, if (continueBtn.disabled) return; proceedToFreeStream(); return;)
+cloudfam.io##+js(rpnt, script, const isAbDetected = (window.isAdblockDetected || isDomBlocked) ? '1' : '0';, const isAbDetected = '0';)
+cloudfam.io##.bg-white.gap-4.justify-between.items-center.flex.sm\:p-5.p-4.cf-card
