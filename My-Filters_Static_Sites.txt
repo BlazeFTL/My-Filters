@@ -801,7 +801,8 @@ gdrivedescarga.com##body:style(-webkit-touch-callout: default !important; -webki
 pornhubhd.shop##h3 > .su-button-center
 
 ! pahe.ink
-pahe.ink##+js(rpnt, script, location.href = e.srcElement.href, window.open(e.target.href, "_blank"))
+! pahe.ink##+js(rpnt, script, location.href = e.srcElement.href, window.open(e.target.href, "_blank"))
+pahe.ink##+js(trusted-set-attr, a.shortc-button, target, _blank)
 pahe.plus##footer, .text-left, #link-view > [href], .box-main > [href]
 !*$csp=script-src 'self' * 'unsafe-inline',domain=intercelestial.com|linegee.net|teknoasian.com
 teknoasian.com##+js(rpnt, script, 'Date.now() - LLACAT_D < 200', false)
