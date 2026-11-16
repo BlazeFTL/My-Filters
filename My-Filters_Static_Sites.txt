@@ -312,6 +312,7 @@ github.com##:matches-path(/gorhill/uBlock/commits/master) #actions-tab
 github.com##:matches-path(/uBlockOrigin/uAssets) [id^="browse-repo-"]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="AsyncChecksStatusBadge-module__ChecksStatusBadge__"]
 github.com##:matches-path(/uBlockOrigin/uAssets) [class*="prc-Button-IconButton-"]:has(.octicon-copy)
+github.com##:matches-path(/releases/) li.flex-md-row.flex-column.d-flex.Box-row:has-text(/v7a|x86|linux|macos|arm64\./)
 ! Ublock Issues
 github.com##:matches-path(/uBlockOrigin/uBlock-issues) [class^=ListItems-module__listItem--]:has([class*=prc-Link-Link-]:has-text(/declined|filterlist|invalid|external/i))
 ! Hide Empty Space Near Comments Icon
