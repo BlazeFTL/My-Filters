@@ -269,6 +269,9 @@ github.com##li[class*="prc-UnderlineNav-OverflowMenuItem-"][class*="prc-ActionLi
 github.com##[id*="_r_dc_-list-view-node-_"] > [class*="container__"] > [class*="inner__"] > [class*="container__"] > span:nth-of-type(1)
 ! Hide Repo Name From Issue
 github.com##[id*="-list-view-node-"] > [class*="container__"] > [class*="inner__"] > [class*="container__"] > span:nth-of-type(1)
+! Hide Action Skipped And Nuisance
+github.com##:matches-path(/action) [class*="ListItem__"][class*="listItem__"]:has(.octicon-skip)
+github.com##:matches-path(/action) job-summaries.js-socket-channel.js-updatable-content
 ! Post Discussion Thread
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/17361) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"])
 github.com##:matches-path(/uBlockOrigin/uAssets/discussions/27472) div.js-quote-selection-container.js-timeline-progressive-focus-container.js-timeline-item:has([href*="culinaxok"], [href*="Sandor-He"], [href*="ghajini"], [href*="iam-py"], [href*="kasya"], [href*="Kamany"], [href*="jadreas"], [href*="miamitrafik"], [href*="Balachandarsmr"], [href*="Signup-pawan"], [href*="monkeyde"], [href*="Lahiru"], [href*="kaiji"], [href*="nishizawa"], [href*="shenawy36"], [href*="mudiyadhupoda"], [href*="vovareuckij"], [href*="kaiji05"], [href*="Abaid39"], [href*="mylenar817"], [href*="Nordmoon"], [href*="ropi32"], [href*="Akubston"], [href*="Lamdudex"], [href*="ahmedok2022"], [href*="Nogososro33"], [href*="RvNaaM"], [href*="Salngader"], [href*="labaikbae"], [href*="ilham372"], [href*="Ocurata"], [href*="milan001dev"], [href*="aaradhya953"])
@@ -620,16 +623,12 @@ hdhub4u.*##[data-ved] > a[href][target="_blank"], h3:has-text(/480p|720p/)
 hdhub4u.*##hr:empty
 hdhub4u.*##.code-block-1.code-block
 hdhub4u.*##.mwb-2col
-hdhub4u.*##.content-wrapper.container:not(:has(.row)):style(width: 100% ! important; margin-left: 2% ! important;)
 hdhub4u.*##.navbar-left.navbar-nav.nav
 hdhub4u.*##[href] > p:style(color: white! important;)
 hdhub4u.*##[id^="bb-overlay-"]
 hdhub4u.*##+js(rpnt, script, target="_blank", target="_self", condition, ping)
 hdhub4u.*##+js(trusted-click-element, '500, .btn-primary.btn-radius.btn-lg.btn.new-tab', 1500)
 hdhub4u.*##+js(alert-buster)
-!#if env_mobile
-hdhub4u.*##.recent-movies:style(zoom: 0.75 !important;)
-!#endif
 4khdhub.*##a.movie-card:has-text(/S01|S02/)
 ||hdhub4u.*^$removeparam=/utm|tx/
 ||youtube.com^$domain=hdhub4u.*
@@ -647,6 +646,7 @@ anyrojgar.com##+js(trusted-click-element, #top_nav)
 
 ! 2022-08-06 cinevood.vip
 1cinevood.*,cinevood.*###site-footer, [href$="/web-series/"] > .glow-on-hover, [href$="/punjabi/"] > .glow-on-hover, .breadcrumb, .thecategory, #sidebar, #commentsAdd, .aligncenter.wp-image-95.size-full, .clearfix.rrssb-buttons, [href="/how-to-download/"], .thecomment, .related-posts, hr, [href*="pogoplex.com"], [href*="apkpure.com"]
+1cinevood.*,cinevood.*##.cvfaq-wrap, .alert-danger.alert, .entry-content.mark-links.box.post-single-content > center, .cv-card-branding-notice.cv-card-box, .cv-card-download-info.cv-card-box, .rank-math-breadcrumb
 1cinevood.*,cinevood.*##p:has-text(/Mobile/tab|Provide You Super/)
 1cinevood.*,cinevood.*##article.excerpt.latestPost:has-text(/(?!.*\+).*?(Marathi|Gujarati|Asia Cup|Punjabi)\b.*/)
 !1cinevood.*,cinevood.*##h6:has-text(/720p|480p/)
